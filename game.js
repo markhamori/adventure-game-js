@@ -2,7 +2,8 @@ kaboom({
   global:true,
   fullscreen: true,
   scale: 1,
-  debug: true
+  debug: true,
+  clearColor: [0,0,0,1]
 })
 
 const MOVE_SPEED = 120
@@ -70,18 +71,19 @@ scene("game", ({ level, score }) => {
     'y': [sprite('top-left-wall'), solid(), 'wall'],
     'z': [sprite('bottom-right-wall'), solid(), 'wall'],
     'x': [sprite('bottom-left-wall'), solid(), 'wall'],
-    '%': [sprite('left-door'), solid()],
+    '%': [sprite('left-door'), solid(), 'door'],
     '^': [sprite('top-door'), 'next-level'],
     '$': [sprite('stairs'), 'next-level'],
-    '*': [sprite('slicer'), 'slicer', { dir: -1 }],
-    '}': [sprite('skeletor')],
+    '*': [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous'],
+    '}': [sprite('skeletor'), 'dangerous', { dir: -1, timer: 0 }, 'skeletor'],
     ')': [sprite('lantern'), solid()],
     '(': [sprite('fire-pot'), solid()],
   }
 
   addLevel(maps[level], levelCfg)
 
-  // add([sprite('bg'), layer('bg')])
+  add([sprite('bg'), layer('bg')])
+  
   const scoreLabel = add([
     text('0'),
     pos(400,450),
@@ -137,7 +139,31 @@ scene("game", ({ level, score }) => {
     player.move(0, MOVE_SPEED)
     player.dir = vec2(0,1)
   })
+  
+  function spawnKaboom(p) {
+    const obj = add([sprite('kaboom'), pos(p), 'kaboom'])
+    wait(1, () => {
+      destroy(obj)
+    })
+  }
 
+  keyPress('space', () => {
+    spawnKaboom(player.pos.add(player.dir.scale(48)))
+  })
+
+  player.collides('door', (d)=> {
+    destroy(d)
+  })
+
+  collides('kaboom', 'skeletor', (k, s) => {
+    camShake(4)
+    wait(1, () => {
+      destroy(k)
+    })
+    destroy(s)
+    scoreLabel.value++
+    scoreLabel.text = scoreLabel.value
+  })
   const SLICER_SPEED = 100
 
   action('slicer', (s) => {
@@ -147,6 +173,29 @@ scene("game", ({ level, score }) => {
   collides('slicer', 'wall', (s) => {
     s.dir = -s.dir
   })
+
+  const SKELETOR_SPEED = 60
+
+  action('skeletor', (s) => {
+    s.move(0, s.dir * SKELETOR_SPEED)
+    s.timer -= dt()
+    if (s.timer <= 0 ) {
+      s.dir =- s.dir
+      s.timer = rand(5)
+    }
+  })
+
+  collides('skeletor', 'wall', (s) => {
+    s.dir = -s.dir
+  })
+
+  player.overlaps('dangerous', () => {
+    go('lose', { score: scoreLabel.value})
+  })
 })
 
-start("game", { level: 1, score:0})
+scene('lose', ({ score }) => {
+  add([text(score, 32), origin('center'),  pos(width() / 2, height() / 2)])
+})
+
+start("game", { level: 0, score:0})
