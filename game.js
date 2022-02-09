@@ -13,7 +13,7 @@ loadSprite('link-going-left', 'eiY5zyX.png')
 loadSprite('link-going-right', 'yZIb8O2.png')
 loadSprite('link-going-down', 'tVtlP6y.png')
 loadSprite('link-going-up', 'UkV0we0.png')
-loadSprite('bg', 'u4DVsx6.png')
+loadSprite('bg', 'xBEU9c3.png')
 
 loadSprite('grass-1', 'T9tpXI4.png')
 loadSprite('grass-2', 'wzBKZcm.png')
@@ -26,6 +26,7 @@ loadSprite('tree-1', 'UOfA0pM.png')
 loadSprite('tree-2', '2GQojWF.png')
 loadSprite('tree-3', 'kaq8Cq5.png')
 loadSprite('tree-4', 'UFHFl1h.png')
+loadSprite('tree-5', 'OlhP0OY.png')
 loadSprite('flower-1', 'Yzxr9Jr.png')
 loadSprite('flower-2', 'cy7pfxE.png')
 loadSprite('flower-3', 'Nr43Xyq.png')
@@ -40,6 +41,13 @@ loadSprite('wall-top', 'oqMjbxr.png')
 loadSprite('wall-bottom', 'oqMjbxr.png')
 loadSprite('wall-bottom-left', 'OkRvV6v.png')
 loadSprite('wall-bottom-right', '5G4Slsi.png')
+loadSprite('fence-1', 'QKLh2QM.png')
+loadSprite('fence-middle-connect', 'ERfxMOn.png')
+loadSprite('fence-bottom-left', '6aslZqt.png')
+loadSprite('fence-left-connect', 'HhNYOyv.png')
+loadSprite('fence-top-end', 'OGMRp1y.png')
+loadSprite('fence-right-end', 'mzHvCbp.png')
+loadSprite('kaboom', 'o9WizfI.png')
 
 
 scene("game", ({ level, score }) => {
@@ -54,19 +62,19 @@ scene("game", ({ level, score }) => {
       'a                            a',
       'a                            a',
       'a                            a',
+      'a   s                        a',
+      'a   v       x^               a',
+      'a   v                        a',
+      'a   v                        a',
+      'a   zyyyyyyyyyyyyyyyyyyyym   a',
+      'a   ^]]]]]^      ^^     ^    a',
       'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
+      'a                 {{         a',
+      'a         2                  a',
+      'a    22                      a',
+      'a     2       `              a',
+      'a  2        2                a',
+      'a      2              ´      a',
       'fccccccccccccccccccccccccccccg',
     ]
   ]
@@ -81,20 +89,32 @@ scene("game", ({ level, score }) => {
     'e': [sprite('wall-top-right'), solid(), 'wall'],
     'f': [sprite('wall-bottom-left'), solid(), 'wall'],
     'g': [sprite('wall-bottom-right'), solid(), 'wall'],
+    'm': [sprite('fence-right-end'), solid(), 'wall'],
+    's': [sprite('fence-top-end'), solid(), 'wall'],
+    'v': [sprite('fence-left-connect'), solid(), 'wall'],
+    'x': [sprite('fence-1'), solid(), 'wall'],
+    'y': [sprite('fence-middle-connect'), solid(), 'wall'],
+    'z': [sprite('fence-bottom-left'), solid(), 'wall'],
     ']': [sprite('tall-grass-1')],
     '[': [sprite('tall-grass-2')],
     '.': [sprite('flower-1')],
     ',': [sprite('flower-2')],
     '-': [sprite('flower-3')],
+    '^': [sprite('tree-1'), 'wall'],
+    '´': [sprite('tree-2'), 'wall'],
+    '`': [sprite('tree-3'), 'wall'],
+    '2': [sprite('tree-5'), 'wall'],
+    '{': [sprite('mushroom-1'), 'wall'],
+    '1': [sprite('grass-1')],
   }
 
   addLevel(maps[level], levelCfg)
 
-  // add([sprite('bg'), layer('bg')])
+  add([sprite('bg'), layer('bg')])
 
   const scoreLabel = add([
     text('0'),
-    pos(400,450),
+    pos(10,680),
     layer('ui'),
     {
       value: score
@@ -102,7 +122,7 @@ scene("game", ({ level, score }) => {
     scale(2)
   ]) 
 
-  add([text('level ' + parseInt(level + 1)), pos(400,485), scale(2)])
+  add([text('level ' + parseInt(level + 1)), pos(10,720), scale(2)])
 
   const player = add([
     sprite('link-going-right'),
