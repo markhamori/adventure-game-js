@@ -13,84 +13,82 @@ loadSprite('link-going-left', 'eiY5zyX.png')
 loadSprite('link-going-right', 'yZIb8O2.png')
 loadSprite('link-going-down', 'tVtlP6y.png')
 loadSprite('link-going-up', 'UkV0we0.png')
+loadSprite('left-wall', 'rfDoaa1.png')
+loadSprite('top-wall', 'QA257Bj.png')
+loadSprite('bottom-wall', 'vWJWmvb.png')
+loadSprite('right-wall', 'SmHhgUn.png')
+loadSprite('bottom-left-wall', 'awnTfNC.png')
+loadSprite('bottom-right-wall', '84oyTFy.png')
+loadSprite('top-left-wall', 'xlpUxIm.png')
+loadSprite('top-right-wall', 'z0OmBd1.jpeg')
+loadSprite('top-door', 'U9nre4n.png')
+loadSprite('left-door', 'okdJNls.png')
+loadSprite('fire-pot', 'I7xSp7w.png')
+loadSprite('lantern', 'wiSiY09.png')
+loadSprite('slicer', 'c6JFi5Z.png')
+loadSprite('skeletor', 'Ei1VnX8.png')
+loadSprite('kaboom', 'o9WizfI.png')
+loadSprite('stairs', 'VghkL08.png')
 loadSprite('bg', 'u4DVsx6.png')
 
-loadSprite('grass-1', 'T9tpXI4.png')
-loadSprite('grass-2', 'wzBKZcm.png')
-loadSprite('grass-3', 'zm2ZwLa.png')
-loadSprite('grass-4', 'EQyXHzF.png')
-loadSprite('grass-2', 'wzBKZcm.png')
-loadSprite('tall-grass-1', 'rCoOsRa.png')
-loadSprite('tall-grass-2', 'pSXKOGT.png')
-loadSprite('tree-1', 'UOfA0pM.png')
-loadSprite('tree-2', '2GQojWF.png')
-loadSprite('tree-3', 'kaq8Cq5.png')
-loadSprite('tree-4', 'UFHFl1h.png')
-loadSprite('flower-1', 'Yzxr9Jr.png')
-loadSprite('flower-2', 'cy7pfxE.png')
-loadSprite('flower-3', 'Nr43Xyq.png')
-loadSprite('flower-4', 'tkokRhJ.png')
-loadSprite('mushroom-1', 'fUaiv4U.png')
-
-loadSprite('wall-left', 'PhbwlZI.png')
-loadSprite('wall-right', 'qNJFgeA.png')
-loadSprite('wall-top-left', 'j2gzIbx.png')
-loadSprite('wall-top-right', 'LTUQhS4.png')
-loadSprite('wall-top', 'oqMjbxr.png')
-loadSprite('wall-bottom', 'oqMjbxr.png')
-loadSprite('wall-bottom-left', 'OkRvV6v.png')
-loadSprite('wall-bottom-right', '5G4Slsi.png')
-
+loadSprite('grass-tile-light', 'CO0FGmB.png', {
+  sliceX: 8,
+  sliceY: 130
+})
 
 scene("game", ({ level, score }) => {
   layers(['bg', 'obj', 'ui'], 'obj')
 
   const maps = [
     [
-      'dcccccccccccccccccccccccccccce',
-      'a  ]]]]]]]]]]]]]]]]]]]]]]]   a',
-      'a       ,[[[[[]]],,]]]]],    a',
-      'a                ,,          a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'a                            a',
-      'fccccccccccccccccccccccccccccg',
+      'ycc)cc^ccw',
+      'a        b',
+      'a      * b',
+      'a    (   b',
+      '%        b',
+      'a    (   b',
+      'a   *    b',
+      'a        b',
+      'xdd)dd)ddz',
+    ],
+    [
+      'yccccccccw',
+      'a        b',
+      ')        )',
+      'a        b',
+      'a        b',
+      'a    $   b',
+      ')   }    )',
+      'a        b',
+      'xddddddddz',
     ]
+    
   ]
 
   const levelCfg = {
-    width: 32,
-    height: 32,
-    'a': [sprite('wall-left'), solid(), 'wall'],
-    'b': [sprite('wall-right'), solid(), 'wall'],
-    'c': [sprite('wall-top'), solid(), 'wall'],
-    'd': [sprite('wall-top-left'), solid(), 'wall'],
-    'e': [sprite('wall-top-right'), solid(), 'wall'],
-    'f': [sprite('wall-bottom-left'), solid(), 'wall'],
-    'g': [sprite('wall-bottom-right'), solid(), 'wall'],
-    ']': [sprite('tall-grass-1')],
-    '[': [sprite('tall-grass-2')],
-    '.': [sprite('flower-1')],
-    ',': [sprite('flower-2')],
-    '-': [sprite('flower-3')],
+    width: 48,
+    height: 48,
+    'a': [sprite('left-wall'), solid(), 'wall'],
+    'b': [sprite('right-wall'), solid(), 'wall'],
+    'c': [sprite('top-wall'), solid(), 'wall'],
+    'd': [sprite('bottom-wall'), solid(), 'wall'],
+    'w': [sprite('top-right-wall'), solid(), 'wall'],
+    'y': [sprite('top-left-wall'), solid(), 'wall'],
+    'z': [sprite('bottom-right-wall'), solid(), 'wall'],
+    'x': [sprite('bottom-left-wall'), solid(), 'wall'],
+    '%': [sprite('left-door'), solid(), 'door'],
+    '^': [sprite('top-door'), 'next-level'],
+    '$': [sprite('stairs'), 'next-level'],
+    '*': [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous'],
+    '}': [sprite('skeletor'), 'dangerous', { dir: -1, timer: 0 }, 'skeletor'],
+    ')': [sprite('lantern'), solid()],
+    '(': [sprite('fire-pot'), solid()],
+    ']': [sprite('grass-tile-light')],
   }
 
   addLevel(maps[level], levelCfg)
 
-  // add([sprite('bg'), layer('bg')])
+  add([sprite('bg'), layer('bg')])
 
   const scoreLabel = add([
     text('0'),
@@ -106,12 +104,13 @@ scene("game", ({ level, score }) => {
 
   const player = add([
     sprite('link-going-right'),
-    pos(20,190),
+    pos(5,190),
     {
       // right by default
       dir: vec2(1,0)
     }
   ])
+
   player.action(() => {
     player.resolve()
   })
