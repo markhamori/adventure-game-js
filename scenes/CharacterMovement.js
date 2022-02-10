@@ -17,44 +17,7 @@ export function CharacterMovement() {
     sprite('faune'),
     origin('center')
   ])
-
-  const map = [
-    [
-      'ycc)cc^ccw',
-      'a        b',
-      'a      * b',
-      'a    (   b',
-      '%        b',
-      'a    (   b',
-      'a   *    b',
-      'a        b',
-      'xdd)dd)ddz',
-    ]
-  ]
-
-  const levelCfg = {
-    width: 48,
-    height: 48,
-    'a': [sprite('left-wall'), solid(), 'wall'],
-    'b': [sprite('right-wall'), solid(), 'wall'],
-    'c': [sprite('top-wall'), solid(), 'wall'],
-    'd': [sprite('bottom-wall'), solid(), 'wall'],
-    'w': [sprite('top-right-wall'), solid(), 'wall'],
-    'y': [sprite('top-left-wall'), solid(), 'wall'],
-    'z': [sprite('bottom-right-wall'), solid(), 'wall'],
-    'x': [sprite('bottom-left-wall'), solid(), 'wall'],
-    '%': [sprite('left-door'), solid(), 'door'],
-    '^': [sprite('top-door'), 'next-level'],
-    '$': [sprite('stairs'), 'next-level'],
-    '*': [sprite('slicer'), 'slicer', { dir: -1 }, 'dangerous'],
-    '}': [sprite('skeletor'), 'dangerous', { dir: -1, timer: 0 }, 'skeletor'],
-    ')': [sprite('lantern'), solid()],
-    '(': [sprite('fire-pot'), solid()],
-    ']': [sprite('grass-tile-light')],
-  }
-
-  addLevel(map, levelCfg)
-
+  
   add([
     text('ADVENTURE GAME', 10),
     pos(width() - 200, height() - 10),
