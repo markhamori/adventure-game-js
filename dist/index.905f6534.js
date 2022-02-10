@@ -523,11 +523,14 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("./kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _characterMovement = require("./scenes/CharacterMovement");
+var _shared = require("./shared");
 const { scene , go , loadSprite , loadSpriteAtlas  } = _kaboomDefault.default;
-loadSprite('arrow-up', './assets/keys/arrowUp.png');
-loadSprite('arrow-down', './assets/keys/arrowDown.png');
-loadSprite('arrow-left', './assets/keys/arrowLeft.png');
-loadSprite('arrow-right', './assets/keys/arrowRight.png');
+// Keyboard arrows load
+loadSprite('arrow-up', 'https://i.imgur.com/SF656CE.png');
+loadSprite('arrow-down', 'https://i.imgur.com/MaIRmau.png');
+loadSprite('arrow-left', 'https://i.imgur.com/EjWmZs8.png');
+loadSprite('arrow-right', 'https://i.imgur.com/GeZiBRT.png');
+// Character load
 loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
     'faune': {
         x: 0,
@@ -569,10 +572,127 @@ loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
         }
     }
 });
+// Map load
+loadSpriteAtlas('https://i.imgur.com/qBiNpV0.png', {
+    [_shared.TileSymbol.Grass]: {
+        x: 144,
+        y: 64,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.Grass2]: {
+        x: 144,
+        y: 48,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBody]: {
+        x: 64,
+        y: 80,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBody2]: {
+        x: 48,
+        y: 192,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBody3]: {
+        x: 64,
+        y: 96,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallLeft]: {
+        x: 48,
+        y: 64,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallLeft2]: {
+        x: 48,
+        y: 80,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallRight]: {
+        x: 112,
+        y: 64,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallRight2]: {
+        x: 112,
+        y: 80,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallRight3]: {
+        x: 112,
+        y: 48,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallTop]: {
+        x: 80,
+        y: 32,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallTop2]: {
+        x: 64,
+        y: 32,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBottom]: {
+        x: 48,
+        y: 240,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBottom2]: {
+        x: 48,
+        y: 208,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBottom3]: {
+        x: 64,
+        y: 112,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallTopLeft]: {
+        x: 48,
+        y: 32,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallTopRight]: {
+        x: 112,
+        y: 32,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBotLeft]: {
+        x: 48,
+        y: 112,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    },
+    [_shared.TileSymbol.WallBotRight]: {
+        x: 112,
+        y: 112,
+        width: _shared.TILE_SIZE,
+        height: _shared.TILE_SIZE
+    }
+});
 scene('char-movement', _characterMovement.CharacterMovement);
 go('char-movement');
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/CharacterMovement":"gjS8w","./kaboom":"h3uqb"}],"gkKU3":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/CharacterMovement":"gjS8w","./kaboom":"h3uqb","./shared":"5xf0S"}],"gkKU3":[function(require,module,exports) {
 exports.interopDefault = function(a) {
     return a && a.__esModule ? a : {
         default: a
@@ -617,6 +737,111 @@ function CharacterMovement() {
         sprite('faune'),
         origin('center')
     ]);
+    const map = [
+        [
+            'ycc)cc^ccw',
+            'a        b',
+            'a      * b',
+            'a    (   b',
+            '%        b',
+            'a    (   b',
+            'a   *    b',
+            'a        b',
+            'xdd)dd)ddz', 
+        ]
+    ];
+    const levelCfg = {
+        width: 48,
+        height: 48,
+        'a': [
+            sprite('left-wall'),
+            solid(),
+            'wall'
+        ],
+        'b': [
+            sprite('right-wall'),
+            solid(),
+            'wall'
+        ],
+        'c': [
+            sprite('top-wall'),
+            solid(),
+            'wall'
+        ],
+        'd': [
+            sprite('bottom-wall'),
+            solid(),
+            'wall'
+        ],
+        'w': [
+            sprite('top-right-wall'),
+            solid(),
+            'wall'
+        ],
+        'y': [
+            sprite('top-left-wall'),
+            solid(),
+            'wall'
+        ],
+        'z': [
+            sprite('bottom-right-wall'),
+            solid(),
+            'wall'
+        ],
+        'x': [
+            sprite('bottom-left-wall'),
+            solid(),
+            'wall'
+        ],
+        '%': [
+            sprite('left-door'),
+            solid(),
+            'door'
+        ],
+        '^': [
+            sprite('top-door'),
+            'next-level'
+        ],
+        '$': [
+            sprite('stairs'),
+            'next-level'
+        ],
+        '*': [
+            sprite('slicer'),
+            'slicer',
+            {
+                dir: -1
+            },
+            'dangerous'
+        ],
+        '}': [
+            sprite('skeletor'),
+            'dangerous',
+            {
+                dir: -1,
+                timer: 0
+            },
+            'skeletor'
+        ],
+        ')': [
+            sprite('lantern'),
+            solid()
+        ],
+        '(': [
+            sprite('fire-pot'),
+            solid()
+        ],
+        ']': [
+            sprite('grass-tile-light')
+        ]
+    };
+    addLevel(map, levelCfg);
+    add([
+        text('ADVENTURE GAME', 10),
+        pos(width() - 200, height() - 10),
+        origin('center'),
+        scale(0.25)
+    ]);
     faune.play('idle-down');
     faune.action(()=>{
         const left = keyIsDown('left');
@@ -644,10 +869,10 @@ function CharacterMovement() {
             faune.play(`idle-${direction}`);
         }
     });
-    createArrow('arrow-up', 'up', width() - 50, height() - 55);
-    createArrow('arrow-down', 'down', width() - 50, height() - 32);
-    createArrow('arrow-left', 'left', width() - 75, height() - 55);
-    createArrow('arrow-right', 'right', width() - 25, height() - 55);
+    createArrow('arrow-up', 'up', width() - 80, height() - 85);
+    createArrow('arrow-down', 'down', width() - 80, height() - 55);
+    createArrow('arrow-left', 'left', width() - 110, height() - 55);
+    createArrow('arrow-right', 'right', width() - 50, height() - 55);
 }
 function createArrow(spriteName, key, x, y) {
     const arrow = add([
@@ -655,7 +880,7 @@ function createArrow(spriteName, key, x, y) {
         sprite(spriteName),
         fixed(),
         opacity(1),
-        scale(0.5)
+        scale(0.25)
     ]);
     arrow.action(()=>{
         arrow.opacity = keyIsDown(key) ? 1 : 0.5;
@@ -674,9 +899,9 @@ const k = _kaboomDefault.default({
     height: 300,
     scale: 2,
     background: [
-        0,
-        0,
-        0,
+        255,
+        255,
+        255,
         1
     ]
 });
@@ -4670,6 +4895,88 @@ var no = a((i = {
     if (i.plugins && i.plugins.forEach(Bn), i.global !== !1) for(let e1 in ye)window[e1] = ye[e1];
     return ye;
 }, "default");
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"5xf0S":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "TILE_SIZE", ()=>TILE_SIZE
+);
+parcelHelpers.export(exports, "Tile", ()=>Tile
+);
+parcelHelpers.export(exports, "TileSymbol", ()=>TileSymbol
+);
+// this is used to convert the numerical level used by easystar.js
+// to a string based level definition used by Kaboom.js
+parcelHelpers.export(exports, "tileToSymbol", ()=>tileToSymbol
+);
+const TILE_SIZE = 16;
+const Tile = {
+    Grass: 125,
+    Grass2: 96,
+    WallTopLeft: 61,
+    WallTopRight: 65,
+    WallTop: 63,
+    WallTop2: 62,
+    WallRight: 123,
+    WallRight2: 152,
+    WallRight3: 94,
+    WallLeft: 119,
+    WallLeft2: 148,
+    WallBody: 149,
+    WallBody2: 351,
+    WallBody3: 178,
+    WallBotLeft: 206,
+    WallBottom: 438,
+    WallBottom2: 380,
+    WallBottom3: 207,
+    WallBotRight: 210
+};
+const TileSymbol = {
+    Grass: ' ',
+    Grass2: 'a',
+    WallTopLeft: 'b',
+    WallTopRight: 'c',
+    WallTop: 'd',
+    WallTop2: 'e',
+    WallRight: 'f',
+    WallRight2: 'g',
+    WallRight3: 'h',
+    WallLeft: 'i',
+    WallLeft2: 'j',
+    WallBody: 'k',
+    WallBody2: 'l',
+    WallBody3: 'm',
+    WallBotLeft: 'n',
+    WallBottom: 'o',
+    WallBottom2: 'p',
+    WallBottom3: 'q',
+    WallBotRight: 'r'
+};
+// mapping of Tile number to Tile string character
+const convertToSymbol = {
+    [Tile.Grass]: TileSymbol.Grass,
+    [Tile.Grass2]: TileSymbol.Grass2,
+    [Tile.WallTopLeft]: TileSymbol.WallTopLeft,
+    [Tile.WallTopRight]: TileSymbol.WallTopRight,
+    [Tile.WallTop]: TileSymbol.WallTop,
+    [Tile.WallTop2]: TileSymbol.WallTop2,
+    [Tile.WallRight]: TileSymbol.WallRight,
+    [Tile.WallRight2]: TileSymbol.WallRight2,
+    [Tile.WallRight3]: TileSymbol.WallRight3,
+    [Tile.WallLeft]: TileSymbol.WallLeft,
+    [Tile.WallLeft2]: TileSymbol.WallLeft2,
+    [Tile.WallBody]: TileSymbol.WallBody,
+    [Tile.WallBody2]: TileSymbol.WallBody2,
+    [Tile.WallBody3]: TileSymbol.WallBody3,
+    [Tile.WallBotLeft]: TileSymbol.WallBotLeft,
+    [Tile.WallBottom]: TileSymbol.WallBottom,
+    [Tile.WallBottom2]: TileSymbol.WallBottom2,
+    [Tile.WallBottom3]: TileSymbol.WallBottom3,
+    [Tile.WallBotRight]: TileSymbol.WallBotRight
+};
+function tileToSymbol(tile) {
+    return convertToSymbol[tile];
+}
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
 

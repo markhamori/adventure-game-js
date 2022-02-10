@@ -4,7 +4,7 @@ export const k = kaboom({
   width: 400,
   height: 300,
   scale: 2,
-  background: [0,0,0,1]
+  background: [255,255,255,1]
 })
 
 export default k
