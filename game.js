@@ -1,6 +1,5 @@
 import k from "./kaboom";
 import { CharacterMovement } from './scenes/CharacterMovement';
-import { TILE_SIZE, Tile, TileSymbol, tileToSymbol } from './shared'
 
 const {
   scene,
@@ -35,122 +34,55 @@ loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
 })
 
 // Map load
-loadSpriteAtlas('https://i.imgur.com/qBiNpV0.png', {
-  [TileSymbol.Grass]: {
-		x: 144,
-		y: 64,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.Grass2]: {
-		x: 144,
-		y: 48,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	} ,
-	[TileSymbol.WallBody]: {
-		x: 64,
-		y: 80,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBody2]: {
-		x: 48,
-		y: 192,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBody3]: {
-		x: 64,
-		y: 96,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallLeft]: {
-		x: 48,
-		y: 64,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallLeft2]: {
-		x: 48,
-		y: 80,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallRight]: {
-		x: 112,
-		y: 64,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallRight2]: {
-		x: 112,
-		y: 80,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallRight3]: {
-		x: 112,
-		y: 48,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallTop]: {
-		x: 80,
-		y: 32,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallTop2]: {
-		x: 64,
-		y: 32,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBottom]: {
-		x: 48,
-		y: 240,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBottom2]: {
-		x: 48,
-		y: 208,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBottom3]: {
-		x: 64,
-		y: 112,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallTopLeft]: {
-		x: 48,
-		y: 32,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallTopRight]: {
-		x: 112,
-		y: 32,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBotLeft]: {
-		x: 48,
-		y: 112,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-	[TileSymbol.WallBotRight]: {
-		x: 112,
-		y: 112,
-		width: TILE_SIZE,
-		height: TILE_SIZE
-	},
-})
+loadRoot('https://i.imgur.com/')
+loadSprite('bg', "xBEU9c3.png")
+loadSprite('grass-1', 'T9tpXI4.png')
+loadSprite('grass-2', 'wzBKZcm.png')
+loadSprite('grass-3', 'zm2ZwLa.png')
+loadSprite('grass-4', 'EQyXHzF.png')
+loadSprite('grass-2', 'wzBKZcm.png')
+loadSprite('tall-grass-1', 'rCoOsRa.png')
+loadSprite('tall-grass-2', 'pSXKOGT.png')
+loadSprite('tree-1', 'UOfA0pM.png')
+loadSprite('tree-2', '2GQojWF.png')
+loadSprite('tree-3', 'kaq8Cq5.png')
+loadSprite('tree-4', 'UFHFl1h.png')
+loadSprite('tree-5', 'OlhP0OY.png')
+loadSprite('flower-1', 'Yzxr9Jr.png')
+loadSprite('flower-2', 'cy7pfxE.png')
+loadSprite('flower-3', 'Nr43Xyq.png')
+loadSprite('flower-4', 'tkokRhJ.png')
+loadSprite('mushroom-1', 'fUaiv4U.png')
+
+loadSprite('floor-1', 'kjiVSiw.png')
+
+loadSprite('wall-left', 'PhbwlZI.png')
+loadSprite('wall-right', 'qNJFgeA.png')
+loadSprite('wall-top-left', 'j2gzIbx.png')
+loadSprite('wall-top-right', 'LTUQhS4.png')
+loadSprite('wall-top', 'oqMjbxr.png')
+loadSprite('wall-bottom', 'oqMjbxr.png')
+loadSprite('wall-bottom-left', 'OkRvV6v.png')
+loadSprite('wall-bottom-right', '5G4Slsi.png')
+loadSprite('fence-1', 'QKLh2QM.png')
+loadSprite('fence-middle-connect', 'ERfxMOn.png')
+loadSprite('fence-bottom-left', '6aslZqt.png')
+loadSprite('fence-bottom-right', 'w8ZBIBh.png')
+loadSprite('fence-left-connect', 'HhNYOyv.png')
+loadSprite('fence-top-end', 'OGMRp1y.png')
+loadSprite('fence-top-left', 'sYpMQvb.png')
+loadSprite('fence-top-right', 'gBZi7ze.png')
+loadSprite('fence-right-end', 'mzHvCbp.png')
+loadSprite('kaboom', 'o9WizfI.png')
+loadSprite('bucket', 'CaSTkhF.png')
+loadSprite('wood-cut', 'LI1pEvj.png')
+loadSprite('wood-pile', 'nhJPa8L.png')
+loadSprite('down-stairs', 'G4kZK5G.png')
+loadSprite('teddy', 'bC25cuC.png')
+loadSprite('pumpkin', 'dBzZLg5.png')
+
+loadSprite('kaboom', 'o9WizfI.png')
 
 scene('char-movement', CharacterMovement)
+
 go('char-movement')
