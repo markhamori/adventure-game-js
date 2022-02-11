@@ -1,6 +1,7 @@
 // import type { Key } from 'kaboom'
 import k from "../kaboom";
 import { maps, mapConfig } from '../maps';
+import { npcText, healthText } from "../textFunctions";
 
 const {
   pos,
@@ -19,19 +20,11 @@ export function CharacterMovement() {
   const SPIKE = -5;
   const APPLE_HEAL = 15;
   
+  // ADD BACKGROUND
   add([sprite('bg'), layer('bg')])
 
+  // SELECTED MAP
   addLevel(maps[0], mapConfig)
-
-  const scoreLabel = add([
-    text('0', { size: 6, font: "sink"}),
-    pos(365,275),
-    layer('ui'),
-    {
-      value: "SCORE"
-    },
-    scale(2)
-  ]) 
 
   add([
     pos(192, 64),
@@ -52,7 +45,18 @@ export function CharacterMovement() {
     }
   ])
 
-  onCollide("faune", "wall", (f, w) => {
+  
+  const scoreLabel = add([
+    text('0', { size: 6, font: "sink"}),
+    pos(365,275),
+    layer('ui'),
+    {
+      value: faune.score
+    },
+    scale(2)
+  ]) 
+
+  onCollide("faune", "wall", (faune, wall) => {
     // run_action = false;
     updatePlayerHealth(WALL_DAMAGE)
   });
@@ -67,28 +71,22 @@ export function CharacterMovement() {
     })
   }
 
-  onCollide("faune", "wall", (f, w) => {
+  onCollide("faune", "wall", (faune, wall) => {
     // run_action = false;
-    wallText(f)
+    wallText(faune)
   });
 
-  function teddyText(t) {
-    const obj = add([
-      text('OMG, SO CUTE! ♥', { size: 6, font: "sink"}),
-      pos(t.pos)
-    ])
-    wait(2, () => {
-      destroy(obj)
-    })
-  }
 
-  onCollide("faune", "teddy", (f, t) => {
+  onCollide("faune", "teddy", (faune, teddy) => {
     // run_action = false;
-    teddyText(t)
+    npcText('OMG, SO CUTE! ♥', "125,55,255" , teddy)
+    scoreLabel.value += 10
+    scoreLabel.text = scoreLabel.value
   });
 
-  onCollide('faune', 'down-stairs', (f, ds) => {
+  onCollide('faune', 'down-stairs', (faune, downStairs) => {
     updatePlayerHealth(APPLE_HEAL)
+    healthText(APPLE_HEAL, "127,255,0")
   })
 
   add([
