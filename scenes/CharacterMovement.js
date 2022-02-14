@@ -7,6 +7,8 @@ const {
   pos,
   sprite,
   origin,
+  area,
+  solid,
   keyIsDown,
   scale,
   width,
@@ -37,10 +39,11 @@ export function CharacterMovement() {
     pos(width() * 0.5, height() * 0.5),
     sprite('faune'),
     origin('center'),
-    area(),
+    area({width: 32, height: 32}),
     "faune",
     {
       health: 100,
+      speed: 120,
       score: 0
     }
   ])
@@ -48,16 +51,23 @@ export function CharacterMovement() {
   
   const scoreLabel = add([
     text('0', { size: 6, font: "sink"}),
-    pos(365,275),
+    // pos(365,275),
+    pos(width() - 150, height() - 40),
     layer('ui'),
     {
       value: faune.score
     },
-    scale(2)
+    scale(2),
+    fixed()
   ]) 
+
+  faune.onUpdate(() => {
+    camPos(faune.pos)
+  })
 
   onCollide("faune", "wall", (faune, wall) => {
     // run_action = false;
+    // destroy(faune)
     updatePlayerHealth(WALL_DAMAGE)
   });
 
@@ -89,34 +99,49 @@ export function CharacterMovement() {
     healthText(APPLE_HEAL, "127,255,0")
   })
 
+  onUpdate('faune', (f) => {
+    add([
+      text(faune.health, { size: 8, font: "sink"}),
+      pos(width() - 350, height() - 35),
+      origin("center"),
+      layer("ui"),
+      fixed()
+    ]);
+  })
+  
+
   add([
     text("HEALTH", { size: 8, font: "sink"}),
-    pos(30, 280),
+    pos(width() - 450, height() - 35),
     origin("center"),
     layer("ui"),
+    fixed()
   ]);
 
   const healthHolder = add ([
     rect(52,12),
-    pos(80, 280),
+    pos(width() - 395, height() - 35),
     color(100,100,100),
     origin("center"),
     layer("ui"),
+    fixed()
   ]);
 
   const healthHolderInside = add ([
       rect(50,10),
-      pos(80, 280),
+      pos(width() - 395, height() - 35),
       color(0,0,0),
       origin("center"),
       layer("ui"),
+      fixed()
   ]);
 
   const healthBar = add ([
       rect(50,10),
-      pos(55, 275),
+      pos(width() - 420, height() - 40),
       color(0,255,0),
       layer("ui"),
+      fixed()
   ]);
 
   function updatePlayerHealth(healthPoints){
@@ -144,7 +169,7 @@ export function CharacterMovement() {
             go("endGame");
         });
     }
-}
+  }
 
   function addScore (playerScore) {
     faune.score += playerScore
@@ -223,3 +248,34 @@ function createArrow(spriteName, key, x, y) {
     arrow.opacity = keyIsDown(key) ? 1 : 0.5
   })
 }
+
+// bullet 
+
+// action('bullet', (b) => {
+// 	b.move(b.dir * 200, 0)
+// })
+
+// function shootRight() {
+//   if (playerRight) {
+//     spawnBullet(player.pos.add(5,0), 1)
+//   }
+// }
+
+// function shootLeft() {
+//   if (playerLeft) {
+//     spawnBullet(player.pos.add(-5,0), -1)
+//   }
+// } 
+
+// function spawnBullet(p, dir) {
+//   add([
+//     rect(5,1), 
+//     pos(p), 
+//     origin(vec2(-3, -20)), 
+//     color(255, 255, 0),
+//     'bullet',
+//     { dir: dir },
+//   ])
+// }
+
+// spawnBullet(player.pos.add(5,0), 1)
