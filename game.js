@@ -81,6 +81,16 @@ loadSprite('down-stairs', 'G4kZK5G.png')
 loadSprite('teddy', 'bC25cuC.png')
 loadSprite('pumpkin', 'dBzZLg5.png')
 
+//TABLE
+loadSprite('table-1', 'QPwAagu.png')
+loadSprite('table-2', '6y9ciWy.png')
+loadSprite('table-3', 'ofURkvi.png')
+loadSprite('table-4', 'kBnpuBK.png')
+
+//ROOF-1
+loadSprite('roof-1', 'c1lJtSK.png')
+loadSprite('roof-2', '2wV7dDl.png')
+
 loadSprite('kaboom', 'o9WizfI.png')
 
 scene('char-movement', CharacterMovement)

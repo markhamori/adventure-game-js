@@ -1,9 +1,9 @@
 import k from "../kaboom";
-import { maps, mapConfig } from '../maps';
-import { npcText, healthText } from "../textFunctions";
+import { maps, mapConfig } from '../map/map';
+import { npcText, healthText } from "../utils/textFunctions";
 
 export function CharacterMovement() {
-  layers(['bg', 'game', 'ui'], 'game')
+  layers(['bg', 'game', 'table', 'ui'], 'game')
 
   //  DAMAGES, HEALS
   const WALL_DAMAGE = -5;
@@ -41,6 +41,45 @@ export function CharacterMovement() {
     'kaboom'
   ])
 
+  function CreateTable() {
+    add([
+      pos(400,400),
+      sprite('table-1'),
+      area({width: 20, height: 20}),
+    ])
+  
+    add([
+      pos(420,400),
+      sprite('table-2'),
+      area({width: 20, height: 20}),
+    ])
+  
+    add([
+      pos(400,420),
+      sprite('table-3'),
+      area({width: 20, height: 20}),
+      solid(),
+    ])
+  
+    add([
+      pos(420,420),
+      sprite('table-4'),
+      area({width: 20, height: 20}),
+      solid(),
+    ])
+  }
+
+  CreateTable()
+
+  // CreateRoof()
+
+  onCollide("faune", "roof", (faune, roof) => {
+    roof.opacity = 0.5
+    roof.layer = "ui"
+    wait(4, () => {
+      roof.opacity = 1
+    })
+  });
 
   onCollide("faune", "kaboom", (faune, kaboom) => {
     destroy(kaboom)
