@@ -15,11 +15,8 @@
   "author": "Mark Hamori",
   "license": "ISC",
   "dependencies": {
-    "kaboom": "^2000.2.7",
+    "kaboom": "^2000.2.8",
     "parcel": "^2.3.0"
-  },
-  "alias": {
-    "kaboom": "./node_modules/kaboom/dist/kaboom.mjs"
   },
   "bugs": {
     "url": "https://github.com/markhamori/adventure-game-js/issues"

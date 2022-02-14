@@ -1,61 +1,59 @@
-// import type { Key } from 'kaboom'
 import k from "../kaboom";
 import { maps, mapConfig } from '../maps';
 import { npcText, healthText } from "../textFunctions";
 
-const {
-  pos,
-  sprite,
-  origin,
-  area,
-  solid,
-  keyIsDown,
-  scale,
-  width,
-  height
-}  = k
-
 export function CharacterMovement() {
+  layers(['bg', 'game', 'ui'], 'game')
 
   //  DAMAGES, HEALS
   const WALL_DAMAGE = -5;
   const SPIKE = -5;
   const APPLE_HEAL = 15;
+
+  // SELECTED MAP
+  addLevel(maps[0], mapConfig)
   
   // ADD BACKGROUND
   add([sprite('bg'), layer('bg')])
 
-  // SELECTED MAP
-  addLevel(maps[0], mapConfig)
-
-  add([
-    pos(192, 64),
-    sprite('down-stairs'),
-    area(),
-    'down-stairs'
-  ])
-
+  // ADD PLAYER
   const faune = add([
-    pos(width() * 0.5, height() * 0.5),
     sprite('faune'),
+    pos(width() * 0.5, height() * 0.5),
     origin('center'),
+    solid(),
+    body({weight: 0}),
     area({width: 32, height: 32}),
     "faune",
     {
       health: 100,
-      speed: 120,
+      speed: 2,
       score: 0
     }
   ])
 
-  
+  const kaboom = add([
+    pos(width() * 0.4, height() * 0.4),
+    sprite('kaboom'),
+    area({width: 20, height: 20}),
+    solid(),
+    scale(0.5),
+    'kaboom'
+  ])
+
+
+  onCollide("faune", "kaboom", (faune, kaboom) => {
+    destroy(kaboom)
+    faune.speed = 5
+  });
+
+  // ADD UI
   const scoreLabel = add([
     text('0', { size: 6, font: "sink"}),
-    // pos(365,275),
     pos(width() - 150, height() - 40),
     layer('ui'),
     {
-      value: faune.score
+      value: faune.score,
     },
     scale(2),
     fixed()
@@ -99,15 +97,15 @@ export function CharacterMovement() {
     healthText(APPLE_HEAL, "127,255,0")
   })
 
-  onUpdate('faune', (f) => {
-    add([
-      text(faune.health, { size: 8, font: "sink"}),
-      pos(width() - 350, height() - 35),
-      origin("center"),
-      layer("ui"),
-      fixed()
-    ]);
-  })
+  // onUpdate('faune', (f) => {
+  //   add([
+  //     text(faune.health, { size: 8, font: "sink"}),
+  //     pos(width() - 350, height() - 35),
+  //     origin("center"),
+  //     layer("ui"),
+  //     fixed()
+  //   ]);
+  // })
   
 
   add([
@@ -155,20 +153,20 @@ export function CharacterMovement() {
     else if (faune.health < 50) healthBar.color = rgb(255,127,0);
     else healthBar.color = rgb(0,255,0);
 
-    if (faune.health <=0){
-        destroy(faune);
-        for (let i = 0; i < 500; i++) {
-            wait(0.01 *i, ()=>{
-                makeExplosion(vec2(rand(0,MAP_WIDTH,), rand(0, MAP_HEIGHT)), 5, 10, 10);
-                play("explosion", {
-                    detune: rand(-1200, 1200)
-                });
-            });
-        }
-        wait(2, ()=>{
-            go("endGame");
-        });
-    }
+    // if (faune.health <=0){
+    //     destroy(faune);
+    //     for (let i = 0; i < 500; i++) {
+    //         wait(0.01 *i, ()=>{
+    //             makeExplosion(vec2(rand(0,MAP_WIDTH,), rand(0, MAP_HEIGHT)), 5, 10, 10);
+    //             play("explosion", {
+    //                 detune: rand(-1200, 1200)
+    //             });
+    //         });
+    //     }
+    //     wait(2, ()=>{
+    //         go("endGame");
+    //     });
+    // }
   }
 
   function addScore (playerScore) {
@@ -178,12 +176,12 @@ export function CharacterMovement() {
   faune.play('idle-down')
 
   faune.action(() => {
-    const left = keyIsDown('left')
-    const right = keyIsDown('right')
-    const up = keyIsDown('up')
-    const down = keyIsDown('down')
+    const left = isKeyDown('left')
+    const right = isKeyDown('right')
+    const up = isKeyDown('up')
+    const down = isKeyDown('down')
 
-    const speed = 2
+    const speed = faune.speed
     const curAnim = faune.curAnim()
 
     if(left) 
