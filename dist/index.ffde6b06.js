@@ -142,13 +142,13 @@
       this[globalName] = mainExports;
     }
   }
-})({"g5aBM":[function(require,module,exports) {
+})({"7Qliz":[function(require,module,exports) {
 "use strict";
 var HMR_HOST = null;
 var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
-module.bundle.HMR_BUNDLE_ID = "f1da0e86905f6534";
+module.bundle.HMR_BUNDLE_ID = "839e9679ffde6b06";
 function _toConsumableArray(arr) {
     return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
 }
@@ -518,12 +518,22 @@ function hmrAcceptRun(bundle, id) {
     acceptedAssets[id] = true;
 }
 
-},{}],"5JiMD":[function(require,module,exports) {
+},{}],"jy2Fs":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _kaboom = require("./kaboom");
+var _kaboom = require("kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-var _characterMovement = require("./scenes/CharacterMovement");
-const { scene , go , loadSprite , loadSpriteAtlas  } = _kaboomDefault.default;
+var _maps = require("./maps");
+var _textFunctions = require("./textFunctions");
+const k = _kaboomDefault.default({
+    scale: 2,
+    background: [
+        0,
+        0,
+        0,
+        1
+    ]
+});
+const { scene , go , loadSprite , loadSpriteAtlas ,  } = k;
 // Keyboard arrows load
 loadSprite('arrow-up', 'https://i.imgur.com/SF656CE.png');
 loadSprite('arrow-down', 'https://i.imgur.com/MaIRmau.png');
@@ -591,7 +601,7 @@ loadSprite('flower-2', 'cy7pfxE.png');
 loadSprite('flower-3', 'Nr43Xyq.png');
 loadSprite('flower-4', 'tkokRhJ.png');
 loadSprite('mushroom-1', 'fUaiv4U.png');
-loadSprite('tiles-1', 'kjiVSiw.png');
+loadSprite('floor-1', 'kjiVSiw.png');
 loadSprite('wall-left', 'PhbwlZI.png');
 loadSprite('wall-right', 'qNJFgeA.png');
 loadSprite('wall-top-left', 'j2gzIbx.png');
@@ -616,44 +626,212 @@ loadSprite('wood-pile', 'nhJPa8L.png');
 loadSprite('down-stairs', 'G4kZK5G.png');
 loadSprite('teddy', 'bC25cuC.png');
 loadSprite('pumpkin', 'dBzZLg5.png');
-//TABLE
-loadSprite('table-1', 'QPwAagu.png');
-loadSprite('table-2', '6y9ciWy.png');
-loadSprite('table-3', 'ofURkvi.png');
-loadSprite('table-4', 'kBnpuBK.png');
-//ROOF-1
-loadSprite('roof-1', 'c1lJtSK.png');
-loadSprite('roof-2', '2wV7dDl.png');
-//FLOOR
-loadSprite('floor-1', 'rz0gmUd.png');
-loadSprite('floor-2', 'AHmV9Yw.png');
-//WALL
-loadSprite('house-floor-1', 'TWa6h7y.png');
 loadSprite('kaboom', 'o9WizfI.png');
-scene('char-movement', _characterMovement.CharacterMovement);
+function CharacterMovement() {
+    layers([
+        'bg',
+        'game',
+        'ui'
+    ], 'game');
+    //  DAMAGES, HEALS
+    const WALL_DAMAGE = -5;
+    const SPIKE = -5;
+    const APPLE_HEAL = 15;
+    // SELECTED MAP
+    const map = addLevel(_maps.maps[0], _maps.mapConfig);
+    // ADD PLAYER
+    const faune1 = add([
+        sprite('faune'),
+        pos(width() * 0.5, height() * 0.5),
+        origin('center'),
+        solid(),
+        area({
+            width: 32,
+            height: 32
+        }),
+        "faune",
+        {
+            health: 100,
+            speed: 2,
+            score: 0
+        }
+    ]);
+    // ADD BACKGROUND
+    add([
+        sprite('bg'),
+        layer('bg')
+    ]);
+    // CAM FOLLOW PLAYER
+    faune1.onUpdate(()=>{
+        camPos(faune1.pos);
+    });
+    // TEST KABOOM
+    const kaboom1 = add([
+        pos(width() * 0.4, height() * 0.4),
+        sprite('kaboom'),
+        area({
+            width: 20,
+            height: 20
+        }),
+        solid(),
+        scale(0.5),
+        'kaboom'
+    ]);
+    // COLLIDE - FAUNE - KABOOM
+    onCollide("faune", "kaboom", (faune, kaboom)=>{
+        destroy(kaboom);
+        faune.speed = 5;
+    });
+    // COLLIDE - FAUNE - WALL
+    onCollide("faune", "wall", (faune, wall)=>{
+        // run_action = false;
+        updatePlayerHealth(WALL_DAMAGE);
+        wallText(faune);
+    });
+    // COLLIDE - FAUNE - TEDDY
+    onCollide("faune", "teddy", (faune, teddy)=>{
+        // run_action = false;
+        _textFunctions.npcText('OMG, SO CUTE! ♥', "125,55,255", teddy);
+        scoreLabel.value += 10;
+        scoreLabel.text = scoreLabel.value;
+    });
+    // COLLIDE - FAUNE - DOWNSTAIRS
+    onCollide('faune', 'down-stairs', (faune, downStairs)=>{
+        updatePlayerHealth(APPLE_HEAL);
+        _textFunctions.healthText(APPLE_HEAL, "127,255,0");
+    });
+    // ADD UI
+    const scoreLabel = add([
+        text('0', {
+            size: 6,
+            font: "sink"
+        }),
+        pos(width() - 150, height() - 40),
+        layer('ui'),
+        {
+            value: faune1.score
+        },
+        scale(2),
+        fixed()
+    ]);
+    function wallText(f) {
+        const obj = add([
+            text('WALL', {
+                size: 6,
+                font: "sink"
+            }),
+            pos(f.pos)
+        ]);
+        wait(1, ()=>{
+            destroy(obj);
+        });
+    }
+    // ADD HEALTH BAR
+    add([
+        text("HEALTH", {
+            size: 8,
+            font: "sink"
+        }),
+        pos(width() - 450, height() - 35),
+        origin("center"),
+        layer("ui"),
+        fixed()
+    ]);
+    const healthHolder = add([
+        rect(52, 12),
+        pos(width() - 395, height() - 35),
+        color(100, 100, 100),
+        origin("center"),
+        layer("ui"),
+        fixed()
+    ]);
+    const healthHolderInside = add([
+        rect(50, 10),
+        pos(width() - 395, height() - 35),
+        color(0, 0, 0),
+        origin("center"),
+        layer("ui"),
+        fixed()
+    ]);
+    const healthBar = add([
+        rect(50, 10),
+        pos(width() - 420, height() - 40),
+        color(0, 255, 0),
+        layer("ui"),
+        fixed()
+    ]);
+    function updatePlayerHealth(healthPoints) {
+        faune1.health += healthPoints;
+        faune1.health = Math.max(faune1.health, 0);
+        faune1.health = Math.min(faune1.health, 100);
+        healthBar.width = 50 * (faune1.health / 100);
+        if (faune1.health < 20) healthBar.color = rgb(255, 0, 0);
+        else if (faune1.health < 50) healthBar.color = rgb(255, 127, 0);
+        else healthBar.color = rgb(0, 255, 0);
+        if (faune1.health <= 0) {
+            destroy(faune1);
+            for(let i = 0; i < 500; i++)wait(0.01 * i, ()=>{
+                makeExplosion(vec2(rand(0, MAP_WIDTH), rand(0, MAP_HEIGHT)), 5, 10, 10);
+                play("explosion", {
+                    detune: rand(-1200, 1200)
+                });
+            });
+            wait(2, ()=>{
+                go("endGame");
+            });
+        }
+    }
+    function addScore(playerScore) {
+        faune1.score += playerScore;
+    }
+    faune1.play('idle-down');
+    faune1.action(()=>{
+        const left = isKeyDown('left');
+        const right = isKeyDown('right');
+        const up = isKeyDown('up');
+        const down = isKeyDown('down');
+        const speed = faune1.speed;
+        const curAnim = faune1.curAnim();
+        if (left) {
+            if (curAnim !== 'walk-side') faune1.play('walk-side');
+            faune1.flipX(true);
+            faune1.pos.x -= speed;
+        } else if (up) {
+            if (curAnim !== 'walk-up') faune1.play('walk-up');
+            faune1.pos.y -= speed;
+        } else if (down) {
+            if (curAnim !== 'walk-down') faune1.play('walk-down');
+            faune1.pos.y += speed;
+        } else if (right) {
+            if (curAnim !== 'walk-side') faune1.play('walk-side');
+            faune1.flipX(false);
+            faune1.pos.x += speed;
+        } else {
+            const direction = curAnim.split('-').pop() ?? 'down';
+            faune1.play(`idle-${direction}`);
+        }
+    });
+    createArrow('arrow-up', 'up', width() - 80, height() - 85);
+    createArrow('arrow-down', 'down', width() - 80, height() - 55);
+    createArrow('arrow-left', 'left', width() - 110, height() - 55);
+    createArrow('arrow-right', 'right', width() - 50, height() - 55);
+}
+function createArrow(spriteName, key, x, y) {
+    const arrow = add([
+        pos(x, y),
+        sprite(spriteName),
+        fixed(),
+        opacity(1),
+        scale(0.25)
+    ]);
+    arrow.action(()=>{
+        arrow.opacity = keyIsDown(key) ? 1 : 0.5;
+    });
+}
+scene('char-movement', CharacterMovement);
 go('char-movement');
 
-},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h3uqb":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "k", ()=>k
-);
-var _kaboom = require("kaboom");
-var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-const k = _kaboomDefault.default({
-    scale: 2,
-    background: [
-        0,
-        0,
-        0,
-        1
-    ],
-    global: true,
-    debug: true
-});
-exports.default = k;
-
-},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"larQu":[function(require,module,exports) {
+},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./maps":"7N678","./textFunctions":"a42CY"}],"larQu":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "default", ()=>no
@@ -4676,316 +4854,12 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"gjS8w":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "CharacterMovement", ()=>CharacterMovement
-);
-var _kaboom = require("../kaboom");
-var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-var _map = require("../map/map");
-var _textFunctions = require("../utils/textFunctions");
-function CharacterMovement() {
-    layers([
-        'bg',
-        'game',
-        'table',
-        'ui'
-    ], 'game');
-    //  DAMAGES, HEALS
-    const WALL_DAMAGE = -5;
-    const SPIKE = -5;
-    const APPLE_HEAL = 15;
-    function CreateRoof() {
-        // add([
-        //   pos(320,790),
-        //   sprite('roof-1'),
-        //   area({width: 20, height: 20}),
-        // ])
-        addLevel(_map.maps2[0], _map.mapConfig2);
-    }
-    CreateRoof();
-    // SELECTED MAP
-    addLevel(_map.maps[0], _map.mapConfig);
-    // ADD BACKGROUND
-    add([
-        sprite('bg'),
-        layer('bg')
-    ]);
-    // ADD PLAYER
-    const faune1 = add([
-        sprite('faune'),
-        pos(width() * 0.5, height() * 0.5),
-        origin('center'),
-        solid(),
-        body({
-            weight: 0
-        }),
-        area({
-            width: 32,
-            height: 32
-        }),
-        "faune",
-        {
-            health: 100,
-            speed: 10,
-            score: 0
-        }
-    ]);
-    const kaboom1 = add([
-        pos(width() * 0.4, height() * 0.4),
-        sprite('kaboom'),
-        area({
-            width: 20,
-            height: 20
-        }),
-        solid(),
-        scale(0.5),
-        'kaboom'
-    ]);
-    function CreateTable() {
-        add([
-            pos(400, 400),
-            sprite('table-1'),
-            area({
-                width: 20,
-                height: 20
-            }), 
-        ]);
-        add([
-            pos(420, 400),
-            sprite('table-2'),
-            area({
-                width: 20,
-                height: 20
-            }), 
-        ]);
-        add([
-            pos(400, 420),
-            sprite('table-3'),
-            area({
-                width: 20,
-                height: 20
-            }),
-            solid(), 
-        ]);
-        add([
-            pos(420, 420),
-            sprite('table-4'),
-            area({
-                width: 20,
-                height: 20
-            }),
-            solid(), 
-        ]);
-    }
-    CreateTable();
-    onCollide("faune", "roof", (faune, roof)=>{
-        roof.opacity = 0.5;
-        roof.layer = "ui";
-        wait(2, ()=>{
-            roof.opacity = 1;
-        });
-    });
-    onCollide("faune", "kaboom", (faune, kaboom)=>{
-        destroy(kaboom);
-        faune.speed = 5;
-    });
-    // ADD UI
-    const scoreLabel = add([
-        text('0', {
-            size: 6,
-            font: "sink"
-        }),
-        pos(width() - 150, height() - 40),
-        layer('ui'),
-        {
-            value: faune1.score
-        },
-        scale(2),
-        fixed()
-    ]);
-    faune1.onUpdate(()=>{
-        camPos(faune1.pos);
-    });
-    onCollide("faune", "wall", (faune, wall)=>{
-        // run_action = false;
-        // destroy(faune)
-        updatePlayerHealth(WALL_DAMAGE);
-    });
-    function wallText(f) {
-        const obj = add([
-            text('WALL', {
-                size: 6,
-                font: "sink"
-            }),
-            pos(f.pos)
-        ]);
-        wait(1, ()=>{
-            destroy(obj);
-        });
-    }
-    onCollide("faune", "wall", (faune, wall)=>{
-        // run_action = false;
-        wallText(faune);
-    });
-    onCollide("faune", "teddy", (faune, teddy)=>{
-        // run_action = false;
-        _textFunctions.npcText('OMG, SO CUTE! ♥', "125,55,255", teddy);
-        scoreLabel.value += 10;
-        scoreLabel.text = scoreLabel.value;
-    });
-    onCollide('faune', 'down-stairs', (faune, downStairs)=>{
-        updatePlayerHealth(APPLE_HEAL);
-        _textFunctions.healthText(APPLE_HEAL, "127,255,0");
-    });
-    // onUpdate('faune', (f) => {
-    //   add([
-    //     text(faune.health, { size: 8, font: "sink"}),
-    //     pos(width() - 350, height() - 35),
-    //     origin("center"),
-    //     layer("ui"),
-    //     fixed()
-    //   ]);
-    // })
-    add([
-        text("HEALTH", {
-            size: 8,
-            font: "sink"
-        }),
-        pos(width() - 450, height() - 35),
-        origin("center"),
-        layer("ui"),
-        fixed()
-    ]);
-    const healthHolder = add([
-        rect(52, 12),
-        pos(width() - 395, height() - 35),
-        color(100, 100, 100),
-        origin("center"),
-        layer("ui"),
-        fixed()
-    ]);
-    const healthHolderInside = add([
-        rect(50, 10),
-        pos(width() - 395, height() - 35),
-        color(0, 0, 0),
-        origin("center"),
-        layer("ui"),
-        fixed()
-    ]);
-    const healthBar = add([
-        rect(50, 10),
-        pos(width() - 420, height() - 40),
-        color(0, 255, 0),
-        layer("ui"),
-        fixed()
-    ]);
-    function updatePlayerHealth(healthPoints) {
-        faune1.health += healthPoints;
-        faune1.health = Math.max(faune1.health, 0);
-        faune1.health = Math.min(faune1.health, 100);
-        healthBar.width = 50 * (faune1.health / 100);
-        if (faune1.health < 20) healthBar.color = rgb(255, 0, 0);
-        else if (faune1.health < 50) healthBar.color = rgb(255, 127, 0);
-        else healthBar.color = rgb(0, 255, 0);
-    // if (faune.health <=0){
-    //     destroy(faune);
-    //     for (let i = 0; i < 500; i++) {
-    //         wait(0.01 *i, ()=>{
-    //             makeExplosion(vec2(rand(0,MAP_WIDTH,), rand(0, MAP_HEIGHT)), 5, 10, 10);
-    //             play("explosion", {
-    //                 detune: rand(-1200, 1200)
-    //             });
-    //         });
-    //     }
-    //     wait(2, ()=>{
-    //         go("endGame");
-    //     });
-    // }
-    }
-    function addScore(playerScore) {
-        faune1.score += playerScore;
-    }
-    faune1.play('idle-down');
-    faune1.action(()=>{
-        const left = isKeyDown('left');
-        const right = isKeyDown('right');
-        const up = isKeyDown('up');
-        const down = isKeyDown('down');
-        const speed = faune1.speed;
-        const curAnim = faune1.curAnim();
-        if (left) {
-            if (curAnim !== 'walk-side') faune1.play('walk-side');
-            faune1.flipX(true);
-            faune1.pos.x -= speed;
-        } else if (up) {
-            if (curAnim !== 'walk-up') faune1.play('walk-up');
-            faune1.pos.y -= speed;
-        } else if (down) {
-            if (curAnim !== 'walk-down') faune1.play('walk-down');
-            faune1.pos.y += speed;
-        } else if (right) {
-            if (curAnim !== 'walk-side') faune1.play('walk-side');
-            faune1.flipX(false);
-            faune1.pos.x += speed;
-        } else {
-            const direction = curAnim.split('-').pop() ?? 'down';
-            faune1.play(`idle-${direction}`);
-        }
-    });
-    createArrow('arrow-up', 'up', width() - 80, height() - 85);
-    createArrow('arrow-down', 'down', width() - 80, height() - 55);
-    createArrow('arrow-left', 'left', width() - 110, height() - 55);
-    createArrow('arrow-right', 'right', width() - 50, height() - 55);
-}
-function createArrow(spriteName, key, x, y) {
-    const arrow = add([
-        pos(x, y),
-        sprite(spriteName),
-        fixed(),
-        opacity(1),
-        scale(0.25)
-    ]);
-    arrow.action(()=>{
-        arrow.opacity = keyIsDown(key) ? 1 : 0.5;
-    });
-} // bullet 
- // action('bullet', (b) => {
- // 	b.move(b.dir * 200, 0)
- // })
- // function shootRight() {
- //   if (playerRight) {
- //     spawnBullet(player.pos.add(5,0), 1)
- //   }
- // }
- // function shootLeft() {
- //   if (playerLeft) {
- //     spawnBullet(player.pos.add(-5,0), -1)
- //   }
- // } 
- // function spawnBullet(p, dir) {
- //   add([
- //     rect(5,1), 
- //     pos(p), 
- //     origin(vec2(-3, -20)), 
- //     color(255, 255, 0),
- //     'bullet',
- //     { dir: dir },
- //   ])
- // }
- // spawnBullet(player.pos.add(5,0), 1)
-
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../kaboom":"h3uqb","../map/map":"1X5Ec","../utils/textFunctions":"knIhf"}],"1X5Ec":[function(require,module,exports) {
+},{}],"7N678":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "maps", ()=>maps
 );
 parcelHelpers.export(exports, "mapConfig", ()=>mapConfig
-);
-parcelHelpers.export(exports, "maps2", ()=>maps2
-);
-parcelHelpers.export(exports, "mapConfig2", ()=>mapConfig2
 );
 const maps = [
     [
@@ -5009,12 +4883,12 @@ const maps = [
         'v  {                          v',
         'v             ----        8   v',
         'v       ]                    ,v',
-        'v   d//c//e                  ,v',
-        'v   fcccccf          ] {     ,v',
-        'v   fcccccf ]                ,v',
-        'v   fcccccf        {         ,v',
-        'v  ]fcccccf                  ,v',
-        'v   n/////*                   v',
+        'v                            ,v',
+        'v                    ] {     ,v',
+        'v           ]                ,v',
+        'v                  {         ,v',
+        'v  ]                         ,v',
+        'v                             v',
         'v          ]        ]         v',
         'v {                           v',
         'v   8    {                    v',
@@ -5025,72 +4899,51 @@ const maps = [
 const mapConfig = {
     width: 32,
     height: 32,
-    'f': ()=>[
+    'a': ()=>[
             sprite('wall-left'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
     ,
-    'g': ()=>[
+    'b': ()=>[
             sprite('wall-right'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
     ,
-    '/': ()=>[
+    'c': ()=>[
             sprite('wall-top'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
     ,
     'd': ()=>[
             sprite('wall-top-left'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
     ,
     'e': ()=>[
             sprite('wall-top-right'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
     ,
-    'n': ()=>[
+    'f': ()=>[
             sprite('wall-bottom-left'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
     ,
-    '*': ()=>[
+    'g': ()=>[
             sprite('wall-bottom-right'),
-            area({
-                width: 10,
-                height: 10
-            }),
+            area(),
             solid(),
             'wall'
         ]
@@ -5137,19 +4990,19 @@ const mapConfig = {
     ,
     'v': ()=>[
             sprite('fence-left-connect'),
-            solid(),
             area({
                 width: 10,
                 height: 10
             }),
+            solid(),
             'wall'
         ]
     ,
     'x': ()=>[
             sprite('fence-1'),
             area(),
-            solid(),
-            'wall'
+            'wall',
+            solid()
         ]
     ,
     'y': ()=>[
@@ -5252,17 +5105,11 @@ const mapConfig = {
         ]
     ,
     '9': ()=>[
-            sprite('tiles-1')
+            sprite('floor-1')
         ]
     ,
     '8': ()=>[
-            sprite('bucket'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
+            sprite('bucket')
         ]
     ,
     '7': ()=>[
@@ -5292,64 +5139,11 @@ const mapConfig = {
         ]
     ,
     'k': ()=>[
-            sprite('pumpkin'),
-            area({
-                width: 10,
-                height: 10
-            })
-        ]
-    ,
-    // 'a': () =>  [sprite('roof-1'), area({width: 10, height: 10}), "roof"],
-    // 'b': () =>  [sprite('roof-2'), area({width: 10, height: 10}), "roof"],
-    'c': ()=>[
-            sprite('house-floor-1'),
-            "house-floor"
-        ]
-};
-const maps2 = [
-    [
-        'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
-    ]
-];
-const mapConfig2 = {
-    width: 32,
-    height: 32,
-    "*": ()=>[
-            sprite("floor-1"), 
+            sprite('pumpkin')
         ]
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"knIhf":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"a42CY":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "npcText", ()=>npcText
@@ -5386,6 +5180,6 @@ function healthText(h, c) {
     });
 }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["7Qliz","jy2Fs"], "jy2Fs", "parcelRequireb82c")
 
-//# sourceMappingURL=index.905f6534.js.map
+//# sourceMappingURL=index.ffde6b06.js.map

@@ -54,7 +54,7 @@ loadSprite('flower-3', 'Nr43Xyq.png')
 loadSprite('flower-4', 'tkokRhJ.png')
 loadSprite('mushroom-1', 'fUaiv4U.png')
 
-loadSprite('floor-1', 'kjiVSiw.png')
+loadSprite('tiles-1', 'kjiVSiw.png')
 
 loadSprite('wall-left', 'PhbwlZI.png')
 loadSprite('wall-right', 'qNJFgeA.png')
@@ -90,6 +90,13 @@ loadSprite('table-4', 'kBnpuBK.png')
 //ROOF-1
 loadSprite('roof-1', 'c1lJtSK.png')
 loadSprite('roof-2', '2wV7dDl.png')
+
+//FLOOR
+loadSprite('floor-1', 'rz0gmUd.png')
+loadSprite('floor-2', 'AHmV9Yw.png')
+
+//WALL
+loadSprite('house-floor-1', 'TWa6h7y.png')
 
 loadSprite('kaboom', 'o9WizfI.png')
 

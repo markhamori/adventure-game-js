@@ -1,6 +1,7 @@
 import k from "../kaboom";
 import { maps, mapConfig } from '../map/map';
 import { npcText, healthText } from "../utils/textFunctions";
+import { maps2, mapConfig2 } from "../map/map";
 
 export function CharacterMovement() {
   layers(['bg', 'game', 'table', 'ui'], 'game')
@@ -9,6 +10,18 @@ export function CharacterMovement() {
   const WALL_DAMAGE = -5;
   const SPIKE = -5;
   const APPLE_HEAL = 15;
+
+  function CreateRoof() {
+    // add([
+    //   pos(320,790),
+    //   sprite('roof-1'),
+    //   area({width: 20, height: 20}),
+    // ])
+    addLevel(maps2[0], mapConfig2)
+    
+  }
+
+  CreateRoof()
 
   // SELECTED MAP
   addLevel(maps[0], mapConfig)
@@ -27,7 +40,7 @@ export function CharacterMovement() {
     "faune",
     {
       health: 100,
-      speed: 2,
+      speed: 10,
       score: 0
     }
   ])
@@ -71,12 +84,10 @@ export function CharacterMovement() {
 
   CreateTable()
 
-  // CreateRoof()
-
   onCollide("faune", "roof", (faune, roof) => {
     roof.opacity = 0.5
     roof.layer = "ui"
-    wait(4, () => {
+    wait(2, () => {
       roof.opacity = 1
     })
   });
