@@ -2,34 +2,34 @@ export const maps = [
   [
     'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
     'v] 8              ]      ]    v',
-    'v  ,,   ]    ]       7777     v',
-    'v q                    8      v',
-    'v  k    ,   {                 v',
+    'v  ,,           ]   7777      v',
+    'v q   ]                 8     v',
+    'v  k       {                  v',
     'v  .     ]       ]     ]      v',
-    'v8                        {   v',
+    'v8  ]          ,           {  v',
     'v                             v',
-    'v            ]      ]         v',
-    'v     ]                       v',
+    'v            ]      ] ]       v',
+    'v     ]          ]            v',
     'v7                            v',
     'v7           ]         ]      v',
     'v7                            v',
-    'v7---                         v',
-    'v99999999999999999999999999999v',
-    'v99999999999999999999999999999v',
-    'v8 ^^^^^^^              {{    v',
+    'v7--- ^  ^^^^   ^             v',
+    'v                             v',
+    'v                             v',
+    'v8 ^      `           ` {{  ` v',
     'v  {                          v',
-    'v             ----        8   v',
+    'v  ]          ----        8   v',
     'v       ]                    ,v',
-    'v   d//c//e                  ,v',
-    'v   fcccccf          ] {     ,v',
-    'v   fcccccf ]                ,v',
-    'v   fcccccf        {         ,v',
-    'v  ]fcccccf                  ,v',
-    'v   n/////*                   v',
-    'v          ]        ]         v',
-    'v {                           v',
-    'v   8    {                    v',
-    'v  777             {         lv',
+    'v                            ,v',
+    'v    ]               ] {     ,v',
+    'v     ]     ]                ,v',
+    'v       ]          s      ]  ,v',
+    'v  ] ]             v         ,v',
+    'v    ]   ]         v          v',
+    'v          ]       v    ]     v',
+    'v {     *yyyyyyyyyyu          v',
+    'v   8    {              ]     v',
+    'v  777                    {  lv',
     'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu',
   ]
 ]
@@ -37,13 +37,7 @@ export const maps = [
 export const mapConfig = {
   width: 32,
   height: 32,
-  'f': () => [sprite('wall-left'), area({width: 10, height: 10}), solid(), 'wall'],
-  'g': () =>  [sprite('wall-right'), area({width: 10, height: 10}), solid(), 'wall'],
-  '/': () =>  [sprite('wall-top'), area({width: 10, height: 10}), solid(), 'wall'],
-  'd': () =>  [sprite('wall-top-left'), area({width: 10, height: 10}), solid(), 'wall'],
-  'e': () =>  [sprite('wall-top-right'), area({width: 10, height: 10}), solid(), 'wall'],
-  'n': () =>  [sprite('wall-bottom-left'), area({width: 10, height: 10}), solid(), 'wall'],
-  '*': () =>  [sprite('wall-bottom-right'), area({width: 10, height: 10}), solid(), 'wall'],
+  '*': () =>  [sprite('fence-left-end'), area({width: 10, height: 10}), solid(), 'wall'],
   'm': () =>  [sprite('fence-right-end'), area({width: 10, height: 10}), solid(), 'wall'],
   's': () =>  [sprite('fence-top-end'), area({width: 10, height: 10}), solid(), 'wall'],
   'h': () =>  [sprite('fence-top-left'), area({width: 10, height: 10}), solid(), 'wall'],
@@ -64,7 +58,6 @@ export const mapConfig = {
   '2': () =>  [sprite('tree-5'), area({width: 10, height: 10}), solid(),'wall'],
   '{': () =>  [sprite('mushroom-1')],
   '1': () =>  [sprite('grass-2')],
-  '9': () =>  [sprite('tiles-1')],
   '8': () =>  [sprite('bucket'), area({width: 10, height: 10}), solid(), 'wall'],
   '7': () =>  [sprite('wood-pile'), area({width: 10, height: 10}), solid(), 'wall'],
   'q': () =>  [sprite('wood-cut'), area({width: 10, height: 10}), solid(), 'wall'],
@@ -76,9 +69,143 @@ export const mapConfig = {
   'c': () =>  [sprite('house-floor-1'), "house-floor"],
 }
 
-export const maps2 = [
+export const floors = [
+  [
+	'hyyyyyy22yyyyyyyyyyyyyyyyyyyyyj',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  'v      22                     v',
+  '2222222222222222222222222222222',
+  '2222222222222222222222222222222',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  '55555555555555555555555       v',
+  '55555555555555555555555       v',
+  '55555555555555555555555       v',
+  '55555555555555555555555       v',
+  'v                             v',
+  'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu',
+  ]
+]
+
+export const floorsConfig = {
+	width:32,
+	height: 32,
+	"1": () => [
+		sprite("floor-1"),
+	],
+  '2': () =>  [
+    sprite('tiles-1')
+  ],
+  '3': () =>  [
+    sprite('grass-1')
+  ],
+  '4': () =>  [
+    sprite('floor-2')
+  ],
+  '5': () =>  [
+    sprite('floor-3')
+  ],
+}
+
+export const environment = [
   [
 	'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+  'v    13   13                  v',
+  'v    24   24                  v',
+  'v       13  1313 1313         v',
+  'v       24132424 2424         v',
+  'v  13     24                  v',
+  'v  24         13              v',
+  'v             24              v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v             56              v',
+  'v             78              v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                 13          v',
+  'v                 2413        v',
+  'v     13            2413      v',
+  'v     24              24      v',
+  'v                             v',
+  'v                       13    v',
+  'v                       24    v',
+  'v                             v',
+  'v                   13    13  v',
+  'v                   24    24  v',
+  'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu',
+  ]
+]
+
+export const environmentConfig = {
+	width:32,
+	height: 32,
+  '1': () =>  [
+    sprite('tree-left-top-1'), area({width: 10, height: 10}), "tree"
+  ],
+  '2': () =>  [
+    sprite('tree-left-bottom-1'), area({width: 10, height: 10}), "tree"
+  ],
+  '3': () =>  [
+    sprite('tree-right-top-1'), area({width: 10, height: 10}), "tree"
+  ],
+  '4': () =>  [
+    sprite('tree-right-bottom-1'), area({width: 10, height: 10}), "tree"
+  ],
+  '5': () =>  [
+    sprite('table-1'), "table"
+  ],
+  '6': () =>  [
+    sprite('table-2'), "table"
+  ],
+  '7': () =>  [
+    sprite('table-3'), area({width: 10, height: 10}), solid(), "table"
+  ],
+  '8': () =>  [
+    sprite('table-4'), area({width: 20, height: 10}), solid(), "table"
+  ],
+}
+
+export const treasures = [
+  [
+	'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+  'v     2                       v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                3            v',
+  'v                             v',
+  'v                        2    v',
+  'v    6      4                 v',
+  'v                      7      v',
+  'v                             v',
+  'v                 5           v',
   'v                             v',
   'v                             v',
   'v                             v',
@@ -93,17 +220,6 @@ export const maps2 = [
   'v                             v',
   'v                             v',
   'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v   ********                  v',
-  'v   ********                  v',
-  'v   ********                  v',
-  'v   ********                  v',
-  'v   ********                  v',
-  'v   ********                  v',
   'v                             v',
   'v                             v',
   'v                             v',
@@ -112,10 +228,108 @@ export const maps2 = [
   ]
 ]
 
-export const mapConfig2 = {
-	width: 32,
+export const treasuresConfig = {
+	width:32,
 	height: 32,
-	"*": () => [
-		sprite("floor-1"),
-	],
+  '1': () =>  [
+    sprite('gem-1'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '2': () =>  [
+    sprite('gem-2'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '3': () =>  [
+    sprite('gem-3'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '4': () =>  [
+    sprite('gem-4'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '5': () =>  [
+    sprite('gem-5'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '6': () =>  [
+    sprite('gem-6'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '7': () =>  [
+    sprite('gem-7'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '8': () =>  [
+    sprite('gem-8'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '9': () =>  [
+    sprite('gem-9'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+  '*': () =>  [
+    sprite('gem-10'), area({width: 10, height: 10}), "gem", scale(0.5)
+  ],
+}
+
+export const potions = [
+  [
+	'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+  'v     2                       v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                3            v',
+  'v                             v',
+  'v                        2    v',
+  'v    6      4                 v',
+  'v                      7      v',
+  'v                             v',
+  'v                 5           v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu',
+  ]
+]
+
+export const potionConfig = {
+	width:32,
+	height: 32,
+  '1': () =>  [
+    sprite('potion-white'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '2': () =>  [
+    sprite('potion-blue'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '3': () =>  [
+    sprite('potion-brown'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '4': () =>  [
+    sprite('potion-purple'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '5': () =>  [
+    sprite('potion-orange'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '6': () =>  [
+    sprite('potion-beige'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '7': () =>  [
+    sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '8': () =>  [
+    sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '9': () =>  [
+    sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
+  '*': () =>  [
+    sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+  ],
 }

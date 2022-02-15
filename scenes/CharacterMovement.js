@@ -1,7 +1,8 @@
 import k from "../kaboom";
 import { maps, mapConfig } from '../map/map';
-import { npcText, healthText } from "../utils/textFunctions";
-import { maps2, mapConfig2 } from "../map/map";
+import { npcText, healthText, tableText, wallText, gemText } from "../utils/textFunctions";
+import { floors, floorsConfig,environment, environmentConfig, treasures, treasuresConfig } from "../map/map";
+import { updateDialog } from "../utils/dialogFunction";
 
 export function CharacterMovement() {
   layers(['bg', 'game', 'table', 'ui'], 'game')
@@ -9,19 +10,10 @@ export function CharacterMovement() {
   //  DAMAGES, HEALS
   const WALL_DAMAGE = -5;
   const SPIKE = -5;
-  const APPLE_HEAL = 15;
+  const POTION_HEAL = 15;
 
-  function CreateRoof() {
-    // add([
-    //   pos(320,790),
-    //   sprite('roof-1'),
-    //   area({width: 20, height: 20}),
-    // ])
-    addLevel(maps2[0], mapConfig2)
-    
-  }
-
-  CreateRoof()
+  // ADD FLOORS - TILES
+  addLevel(floors[0], floorsConfig)
 
   // SELECTED MAP
   addLevel(maps[0], mapConfig)
@@ -40,13 +32,21 @@ export function CharacterMovement() {
     "faune",
     {
       health: 100,
-      speed: 10,
+      speed: 2,
+      gems: 0,
       score: 0
     }
   ])
 
+
+  // SELECTED MAP
+  addLevel(treasures[0], treasuresConfig)
+
+  // SELECTED MAP
+  addLevel(environment[0], environmentConfig)
+
   const kaboom = add([
-    pos(width() * 0.4, height() * 0.4),
+    pos(width() * 0.5, height() * 0.5),
     sprite('kaboom'),
     area({width: 20, height: 20}),
     solid(),
@@ -54,41 +54,45 @@ export function CharacterMovement() {
     'kaboom'
   ])
 
-  function CreateTable() {
-    add([
-      pos(400,400),
-      sprite('table-1'),
-      area({width: 20, height: 20}),
-    ])
-  
-    add([
-      pos(420,400),
-      sprite('table-2'),
-      area({width: 20, height: 20}),
-    ])
-  
-    add([
-      pos(400,420),
-      sprite('table-3'),
-      area({width: 20, height: 20}),
-      solid(),
-    ])
-  
-    add([
-      pos(420,420),
-      sprite('table-4'),
-      area({width: 20, height: 20}),
-      solid(),
-    ])
-  }
+  onCollide("faune", "table", (faune, table) => {
+    const dialogs = [
+      [ "table-4", "Hi Bibe!" ],
+      [ "table-4", "You have one task in this" ],
+      [ "table-4", "cute little game." ],
+      [ "faune", "What's that?" ],
+      [ "table-4", "Find all of the missing" ],
+      [ "table-4", "gemstones. Gl! :)" ],
+    ]
+    let curDialog = 0
 
-  CreateTable()
+    // Text bubble
+    const textbox = add([
+      rect(width() - 300, 100, { radius: 16 }),
+      origin("center"),
+      pos(center().x + 80, height() - 50),
+      outline(2),
+    ])
 
-  onCollide("faune", "roof", (faune, roof) => {
-    roof.opacity = 0.5
-    roof.layer = "ui"
-    wait(2, () => {
-      roof.opacity = 1
+    // Text
+    const txt = add([
+      text("Hi Bibe!", { size: 16, width: width() - 300 }),
+      pos(textbox.pos),
+      origin("center")
+    ])
+
+    // Update the on screen sprite & text
+    function updateDialog() {
+      const [ char, dialog ] = dialogs[curDialog]
+      txt.text = dialog
+    }
+    
+    onKeyPress("space", () => {
+      if (curDialog === 5) {
+        destroy(textbox)
+        destroy(txt)
+      }
+      curDialog = (curDialog + 1) % dialogs.length
+      updateDialog()
     })
   });
 
@@ -119,15 +123,12 @@ export function CharacterMovement() {
     updatePlayerHealth(WALL_DAMAGE)
   });
 
-  function wallText(f) {
-    const obj = add([
-      text('WALL', { size: 6, font: "sink"}),
-      pos(f.pos)
-    ])
-    wait(1, () => {
-      destroy(obj)
+  onCollide("faune", "tree", (faune, tree) => {
+    tree.opacity = 0.5
+    wait(3, () => {
+      tree.opacity = 1
     })
-  }
+  });
 
   onCollide("faune", "wall", (faune, wall) => {
     // run_action = false;
@@ -142,10 +143,28 @@ export function CharacterMovement() {
     scoreLabel.text = scoreLabel.value
   });
 
-  onCollide('faune', 'down-stairs', (faune, downStairs) => {
-    updatePlayerHealth(APPLE_HEAL)
-    healthText(APPLE_HEAL, "127,255,0")
+  // onCollide('faune', 'potion', (faune, potion) => {
+  //   updatePlayerHealth(POTION_HEAL)
+  //   destroy(potion)
+  //   healthText(POTION_HEAL, "127,255,0")
+  // })
+
+  onCollide('faune', 'gem', (faune, gem) => {
+    updateGemQty(1)
+    const obj = add([
+      text(`You found: ${faune.gems} gems`),
+      pos(faune.pos),
+      color(255,255,255),
+      scale(0.2),
+      layer('ui'),
+    ])
+    destroy(gem)
+    wait(2, () => destroy(obj))
   })
+
+  function updateGemQty(gem){
+    faune.gems += gem;
+  }
 
   // onUpdate('faune', (f) => {
   //   add([
@@ -296,34 +315,3 @@ function createArrow(spriteName, key, x, y) {
     arrow.opacity = keyIsDown(key) ? 1 : 0.5
   })
 }
-
-// bullet 
-
-// action('bullet', (b) => {
-// 	b.move(b.dir * 200, 0)
-// })
-
-// function shootRight() {
-//   if (playerRight) {
-//     spawnBullet(player.pos.add(5,0), 1)
-//   }
-// }
-
-// function shootLeft() {
-//   if (playerLeft) {
-//     spawnBullet(player.pos.add(-5,0), -1)
-//   }
-// } 
-
-// function spawnBullet(p, dir) {
-//   add([
-//     rect(5,1), 
-//     pos(p), 
-//     origin(vec2(-3, -20)), 
-//     color(255, 255, 0),
-//     'bullet',
-//     { dir: dir },
-//   ])
-// }
-
-// spawnBullet(player.pos.add(5,0), 1)

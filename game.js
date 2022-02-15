@@ -1,5 +1,6 @@
 import k from "./kaboom";
 import { CharacterMovement } from './scenes/CharacterMovement';
+import { MenuScene } from './scenes/MenuScene';
 
 const {
   scene,
@@ -55,6 +56,7 @@ loadSprite('flower-4', 'tkokRhJ.png')
 loadSprite('mushroom-1', 'fUaiv4U.png')
 
 loadSprite('tiles-1', 'kjiVSiw.png')
+loadSprite('tiles-2', 'kjiVSiw.png')
 
 loadSprite('wall-left', 'PhbwlZI.png')
 loadSprite('wall-right', 'qNJFgeA.png')
@@ -69,6 +71,7 @@ loadSprite('fence-middle-connect', 'ERfxMOn.png')
 loadSprite('fence-bottom-left', '6aslZqt.png')
 loadSprite('fence-bottom-right', 'w8ZBIBh.png')
 loadSprite('fence-left-connect', 'HhNYOyv.png')
+loadSprite('fence-left-end', 'TnPeYsc.png')
 loadSprite('fence-top-end', 'OGMRp1y.png')
 loadSprite('fence-top-left', 'sYpMQvb.png')
 loadSprite('fence-top-right', 'gBZi7ze.png')
@@ -94,9 +97,40 @@ loadSprite('roof-2', '2wV7dDl.png')
 //FLOOR
 loadSprite('floor-1', 'rz0gmUd.png')
 loadSprite('floor-2', 'AHmV9Yw.png')
+loadSprite('floor-3', 'qU8qiOJ.png')
+
+//GEMS
+loadSprite('gem-1', 'NJzgV3c.png')
+loadSprite('gem-2', 'yTKYP7A.png')
+loadSprite('gem-3', 'zHjxHh5.png')
+loadSprite('gem-4', 'VMWH4be.png')
+loadSprite('gem-5', 'ctS0f09.png')
+loadSprite('gem-6', 'qOYZq7y.png')
+loadSprite('gem-7', '0e8PleJ.png')
+loadSprite('gem-8', 'UU6tVJF.png')
+loadSprite('gem-9', 'fRcJKJt.png')
+loadSprite('gem-10', '0pgnZRE.png')
+loadSprite('gem-11', 'qDP8vw1.png')
+loadSprite('gem-12', '2W3TzuB.png')
 
 //WALL
 loadSprite('house-floor-1', 'TWa6h7y.png')
+
+//TREE
+loadSprite('tree-left-top-1', 'GrXDM5P.png')
+loadSprite('tree-left-bottom-1', 'A5YlEvj.png')
+loadSprite('tree-right-top-1', 'yTHXGcr.png')
+loadSprite('tree-right-bottom-1', 'GIDxRYK.png')
+
+//POTIONS
+loadSprite('potion-white', 'pQaO9jf.png')
+loadSprite('potion-blue', 'XGMFw7M.png')
+loadSprite('potion-brown', 'sc8fj1t.png')
+loadSprite('potion-purple', '1Zkrupo.png')
+loadSprite('potion-orange', 'P9iyFoJ.png')
+loadSprite('potion-beige', '9uA8cJS.png')
+loadSprite('potion-green', 'lJkAlhD.png')
+
 
 loadSprite('kaboom', 'o9WizfI.png')
 

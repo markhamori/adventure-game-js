@@ -2,7 +2,7 @@ import kaboom from "kaboom";
 
 loadSprite("border", "/border.png");
 
-init({
+kaboom({
 	width: 480,
 	height: 360,
 	scale: 2,
@@ -11,7 +11,7 @@ init({
 scene("menu", () => {
 
 	add([
-		text("Snake game"),
+		text("Adventure game for Bibe <3"),
 		pos(240, 80),
 		scale(3),
 	]);

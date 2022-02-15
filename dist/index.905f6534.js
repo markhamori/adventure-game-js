@@ -523,6 +523,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("./kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _characterMovement = require("./scenes/CharacterMovement");
+var _menuScene = require("./scenes/MenuScene");
 const { scene , go , loadSprite , loadSpriteAtlas  } = _kaboomDefault.default;
 // Keyboard arrows load
 loadSprite('arrow-up', 'https://i.imgur.com/SF656CE.png');
@@ -592,6 +593,7 @@ loadSprite('flower-3', 'Nr43Xyq.png');
 loadSprite('flower-4', 'tkokRhJ.png');
 loadSprite('mushroom-1', 'fUaiv4U.png');
 loadSprite('tiles-1', 'kjiVSiw.png');
+loadSprite('tiles-2', 'kjiVSiw.png');
 loadSprite('wall-left', 'PhbwlZI.png');
 loadSprite('wall-right', 'qNJFgeA.png');
 loadSprite('wall-top-left', 'j2gzIbx.png');
@@ -605,6 +607,7 @@ loadSprite('fence-middle-connect', 'ERfxMOn.png');
 loadSprite('fence-bottom-left', '6aslZqt.png');
 loadSprite('fence-bottom-right', 'w8ZBIBh.png');
 loadSprite('fence-left-connect', 'HhNYOyv.png');
+loadSprite('fence-left-end', 'TnPeYsc.png');
 loadSprite('fence-top-end', 'OGMRp1y.png');
 loadSprite('fence-top-left', 'sYpMQvb.png');
 loadSprite('fence-top-right', 'gBZi7ze.png');
@@ -627,13 +630,40 @@ loadSprite('roof-2', '2wV7dDl.png');
 //FLOOR
 loadSprite('floor-1', 'rz0gmUd.png');
 loadSprite('floor-2', 'AHmV9Yw.png');
+loadSprite('floor-3', 'qU8qiOJ.png');
+//GEMS
+loadSprite('gem-1', 'NJzgV3c.png');
+loadSprite('gem-2', 'yTKYP7A.png');
+loadSprite('gem-3', 'zHjxHh5.png');
+loadSprite('gem-4', 'VMWH4be.png');
+loadSprite('gem-5', 'ctS0f09.png');
+loadSprite('gem-6', 'qOYZq7y.png');
+loadSprite('gem-7', '0e8PleJ.png');
+loadSprite('gem-8', 'UU6tVJF.png');
+loadSprite('gem-9', 'fRcJKJt.png');
+loadSprite('gem-10', '0pgnZRE.png');
+loadSprite('gem-11', 'qDP8vw1.png');
+loadSprite('gem-12', '2W3TzuB.png');
 //WALL
 loadSprite('house-floor-1', 'TWa6h7y.png');
+//TREE
+loadSprite('tree-left-top-1', 'GrXDM5P.png');
+loadSprite('tree-left-bottom-1', 'A5YlEvj.png');
+loadSprite('tree-right-top-1', 'yTHXGcr.png');
+loadSprite('tree-right-bottom-1', 'GIDxRYK.png');
+//POTIONS
+loadSprite('potion-white', 'pQaO9jf.png');
+loadSprite('potion-blue', 'XGMFw7M.png');
+loadSprite('potion-brown', 'sc8fj1t.png');
+loadSprite('potion-purple', '1Zkrupo.png');
+loadSprite('potion-orange', 'P9iyFoJ.png');
+loadSprite('potion-beige', '9uA8cJS.png');
+loadSprite('potion-green', 'lJkAlhD.png');
 loadSprite('kaboom', 'o9WizfI.png');
 scene('char-movement', _characterMovement.CharacterMovement);
 go('char-movement');
 
-},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h3uqb":[function(require,module,exports) {
+},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/MenuScene":"1YSb8"}],"h3uqb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "k", ()=>k
@@ -4685,6 +4715,7 @@ var _kaboom = require("../kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _map = require("../map/map");
 var _textFunctions = require("../utils/textFunctions");
+var _dialogFunction = require("../utils/dialogFunction");
 function CharacterMovement() {
     layers([
         'bg',
@@ -4695,16 +4726,9 @@ function CharacterMovement() {
     //  DAMAGES, HEALS
     const WALL_DAMAGE = -5;
     const SPIKE = -5;
-    const APPLE_HEAL = 15;
-    function CreateRoof() {
-        // add([
-        //   pos(320,790),
-        //   sprite('roof-1'),
-        //   area({width: 20, height: 20}),
-        // ])
-        addLevel(_map.maps2[0], _map.mapConfig2);
-    }
-    CreateRoof();
+    const POTION_HEAL = 15;
+    // ADD FLOORS - TILES
+    addLevel(_map.floors[0], _map.floorsConfig);
     // SELECTED MAP
     addLevel(_map.maps[0], _map.mapConfig);
     // ADD BACKGROUND
@@ -4728,12 +4752,17 @@ function CharacterMovement() {
         "faune",
         {
             health: 100,
-            speed: 10,
+            speed: 2,
+            gems: 0,
             score: 0
         }
     ]);
+    // SELECTED MAP
+    addLevel(_map.treasures[0], _map.treasuresConfig);
+    // SELECTED MAP
+    addLevel(_map.environment[0], _map.environmentConfig);
     const kaboom1 = add([
-        pos(width() * 0.4, height() * 0.4),
+        pos(width() * 0.5, height() * 0.5),
         sprite('kaboom'),
         area({
             width: 20,
@@ -4743,48 +4772,64 @@ function CharacterMovement() {
         scale(0.5),
         'kaboom'
     ]);
-    function CreateTable() {
-        add([
-            pos(400, 400),
-            sprite('table-1'),
-            area({
-                width: 20,
-                height: 20
-            }), 
-        ]);
-        add([
-            pos(420, 400),
-            sprite('table-2'),
-            area({
-                width: 20,
-                height: 20
-            }), 
-        ]);
-        add([
-            pos(400, 420),
-            sprite('table-3'),
-            area({
-                width: 20,
-                height: 20
+    onCollide("faune", "table", (faune, table)=>{
+        const dialogs = [
+            [
+                "table-4",
+                "Hi Bibe!"
+            ],
+            [
+                "table-4",
+                "You have one task in this"
+            ],
+            [
+                "table-4",
+                "cute little game."
+            ],
+            [
+                "faune",
+                "What's that?"
+            ],
+            [
+                "table-4",
+                "Find all of the missing"
+            ],
+            [
+                "table-4",
+                "gemstones. Gl! :)"
+            ], 
+        ];
+        let curDialog = 0;
+        // Text bubble
+        const textbox = add([
+            rect(width() - 300, 100, {
+                radius: 16
             }),
-            solid(), 
+            origin("center"),
+            pos(center().x + 80, height() - 50),
+            outline(2), 
         ]);
-        add([
-            pos(420, 420),
-            sprite('table-4'),
-            area({
-                width: 20,
-                height: 20
+        // Text
+        const txt = add([
+            text("Hi Bibe!", {
+                size: 16,
+                width: width() - 300
             }),
-            solid(), 
+            pos(textbox.pos),
+            origin("center")
         ]);
-    }
-    CreateTable();
-    onCollide("faune", "roof", (faune, roof)=>{
-        roof.opacity = 0.5;
-        roof.layer = "ui";
-        wait(2, ()=>{
-            roof.opacity = 1;
+        // Update the on screen sprite & text
+        function updateDialog() {
+            const [char, dialog] = dialogs[curDialog];
+            txt.text = dialog;
+        }
+        onKeyPress("space", ()=>{
+            if (curDialog === 5) {
+                destroy(textbox);
+                destroy(txt);
+            }
+            curDialog = (curDialog + 1) % dialogs.length;
+            updateDialog();
         });
     });
     onCollide("faune", "kaboom", (faune, kaboom)=>{
@@ -4813,21 +4858,15 @@ function CharacterMovement() {
         // destroy(faune)
         updatePlayerHealth(WALL_DAMAGE);
     });
-    function wallText(f) {
-        const obj = add([
-            text('WALL', {
-                size: 6,
-                font: "sink"
-            }),
-            pos(f.pos)
-        ]);
-        wait(1, ()=>{
-            destroy(obj);
+    onCollide("faune", "tree", (faune, tree)=>{
+        tree.opacity = 0.5;
+        wait(3, ()=>{
+            tree.opacity = 1;
         });
-    }
+    });
     onCollide("faune", "wall", (faune, wall)=>{
         // run_action = false;
-        wallText(faune);
+        _textFunctions.wallText(faune);
     });
     onCollide("faune", "teddy", (faune, teddy)=>{
         // run_action = false;
@@ -4835,10 +4874,27 @@ function CharacterMovement() {
         scoreLabel.value += 10;
         scoreLabel.text = scoreLabel.value;
     });
-    onCollide('faune', 'down-stairs', (faune, downStairs)=>{
-        updatePlayerHealth(APPLE_HEAL);
-        _textFunctions.healthText(APPLE_HEAL, "127,255,0");
+    // onCollide('faune', 'potion', (faune, potion) => {
+    //   updatePlayerHealth(POTION_HEAL)
+    //   destroy(potion)
+    //   healthText(POTION_HEAL, "127,255,0")
+    // })
+    onCollide('faune', 'gem', (faune, gem)=>{
+        updateGemQty(1);
+        const obj = add([
+            text(`You found: ${faune.gems} gems`),
+            pos(faune.pos),
+            color(255, 255, 255),
+            scale(0.2),
+            layer('ui'), 
+        ]);
+        destroy(gem);
+        wait(2, ()=>destroy(obj)
+        );
     });
+    function updateGemQty(gem) {
+        faune1.gems += gem;
+    }
     // onUpdate('faune', (f) => {
     //   add([
     //     text(faune.health, { size: 8, font: "sink"}),
@@ -4950,143 +5006,71 @@ function createArrow(spriteName, key, x, y) {
     arrow.action(()=>{
         arrow.opacity = keyIsDown(key) ? 1 : 0.5;
     });
-} // bullet 
- // action('bullet', (b) => {
- // 	b.move(b.dir * 200, 0)
- // })
- // function shootRight() {
- //   if (playerRight) {
- //     spawnBullet(player.pos.add(5,0), 1)
- //   }
- // }
- // function shootLeft() {
- //   if (playerLeft) {
- //     spawnBullet(player.pos.add(-5,0), -1)
- //   }
- // } 
- // function spawnBullet(p, dir) {
- //   add([
- //     rect(5,1), 
- //     pos(p), 
- //     origin(vec2(-3, -20)), 
- //     color(255, 255, 0),
- //     'bullet',
- //     { dir: dir },
- //   ])
- // }
- // spawnBullet(player.pos.add(5,0), 1)
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../kaboom":"h3uqb","../map/map":"1X5Ec","../utils/textFunctions":"knIhf"}],"1X5Ec":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../kaboom":"h3uqb","../map/map":"1X5Ec","../utils/textFunctions":"knIhf","../utils/dialogFunction":"2of7M"}],"1X5Ec":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "maps", ()=>maps
 );
 parcelHelpers.export(exports, "mapConfig", ()=>mapConfig
 );
-parcelHelpers.export(exports, "maps2", ()=>maps2
+parcelHelpers.export(exports, "floors", ()=>floors
 );
-parcelHelpers.export(exports, "mapConfig2", ()=>mapConfig2
+parcelHelpers.export(exports, "floorsConfig", ()=>floorsConfig
+);
+parcelHelpers.export(exports, "environment", ()=>environment
+);
+parcelHelpers.export(exports, "environmentConfig", ()=>environmentConfig
+);
+parcelHelpers.export(exports, "treasures", ()=>treasures
+);
+parcelHelpers.export(exports, "treasuresConfig", ()=>treasuresConfig
+);
+parcelHelpers.export(exports, "potions", ()=>potions
+);
+parcelHelpers.export(exports, "potionConfig", ()=>potionConfig
 );
 const maps = [
     [
         'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
         'v] 8              ]      ]    v',
-        'v  ,,   ]    ]       7777     v',
-        'v q                    8      v',
-        'v  k    ,   {                 v',
+        'v  ,,           ]   7777      v',
+        'v q   ]                 8     v',
+        'v  k       {                  v',
         'v  .     ]       ]     ]      v',
-        'v8                        {   v',
+        'v8  ]          ,           {  v',
         'v                             v',
-        'v            ]      ]         v',
-        'v     ]                       v',
+        'v            ]      ] ]       v',
+        'v     ]          ]            v',
         'v7                            v',
         'v7           ]         ]      v',
         'v7                            v',
-        'v7---                         v',
-        'v99999999999999999999999999999v',
-        'v99999999999999999999999999999v',
-        'v8 ^^^^^^^              {{    v',
+        'v7--- ^  ^^^^   ^             v',
+        'v                             v',
+        'v                             v',
+        'v8 ^      `           ` {{  ` v',
         'v  {                          v',
-        'v             ----        8   v',
+        'v  ]          ----        8   v',
         'v       ]                    ,v',
-        'v   d//c//e                  ,v',
-        'v   fcccccf          ] {     ,v',
-        'v   fcccccf ]                ,v',
-        'v   fcccccf        {         ,v',
-        'v  ]fcccccf                  ,v',
-        'v   n/////*                   v',
-        'v          ]        ]         v',
-        'v {                           v',
-        'v   8    {                    v',
-        'v  777             {         lv',
+        'v                            ,v',
+        'v    ]               ] {     ,v',
+        'v     ]     ]                ,v',
+        'v       ]          s      ]  ,v',
+        'v  ] ]             v         ,v',
+        'v    ]   ]         v          v',
+        'v          ]       v    ]     v',
+        'v {     *yyyyyyyyyyu          v',
+        'v   8    {              ]     v',
+        'v  777                    {  lv',
         'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
     ]
 ];
 const mapConfig = {
     width: 32,
     height: 32,
-    'f': ()=>[
-            sprite('wall-left'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
-        ]
-    ,
-    'g': ()=>[
-            sprite('wall-right'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
-        ]
-    ,
-    '/': ()=>[
-            sprite('wall-top'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
-        ]
-    ,
-    'd': ()=>[
-            sprite('wall-top-left'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
-        ]
-    ,
-    'e': ()=>[
-            sprite('wall-top-right'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
-        ]
-    ,
-    'n': ()=>[
-            sprite('wall-bottom-left'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            solid(),
-            'wall'
-        ]
-    ,
     '*': ()=>[
-            sprite('wall-bottom-right'),
+            sprite('fence-left-end'),
             area({
                 width: 10,
                 height: 10
@@ -5251,10 +5235,6 @@ const mapConfig = {
             sprite('grass-2')
         ]
     ,
-    '9': ()=>[
-            sprite('tiles-1')
-        ]
-    ,
     '8': ()=>[
             sprite('bucket'),
             area({
@@ -5306,9 +5286,184 @@ const mapConfig = {
             "house-floor"
         ]
 };
-const maps2 = [
+const floors = [
+    [
+        'hyyyyyy22yyyyyyyyyyyyyyyyyyyyyj',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        'v      22                     v',
+        '2222222222222222222222222222222',
+        '2222222222222222222222222222222',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        '55555555555555555555555       v',
+        '55555555555555555555555       v',
+        '55555555555555555555555       v',
+        '55555555555555555555555       v',
+        'v                             v',
+        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
+    ]
+];
+const floorsConfig = {
+    width: 32,
+    height: 32,
+    "1": ()=>[
+            sprite("floor-1"), 
+        ]
+    ,
+    '2': ()=>[
+            sprite('tiles-1')
+        ]
+    ,
+    '3': ()=>[
+            sprite('grass-1')
+        ]
+    ,
+    '4': ()=>[
+            sprite('floor-2')
+        ]
+    ,
+    '5': ()=>[
+            sprite('floor-3')
+        ]
+};
+const environment = [
     [
         'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+        'v    13   13                  v',
+        'v    24   24                  v',
+        'v       13  1313 1313         v',
+        'v       24132424 2424         v',
+        'v  13     24                  v',
+        'v  24         13              v',
+        'v             24              v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v             56              v',
+        'v             78              v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                 13          v',
+        'v                 2413        v',
+        'v     13            2413      v',
+        'v     24              24      v',
+        'v                             v',
+        'v                       13    v',
+        'v                       24    v',
+        'v                             v',
+        'v                   13    13  v',
+        'v                   24    24  v',
+        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
+    ]
+];
+const environmentConfig = {
+    width: 32,
+    height: 32,
+    '1': ()=>[
+            sprite('tree-left-top-1'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "tree"
+        ]
+    ,
+    '2': ()=>[
+            sprite('tree-left-bottom-1'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "tree"
+        ]
+    ,
+    '3': ()=>[
+            sprite('tree-right-top-1'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "tree"
+        ]
+    ,
+    '4': ()=>[
+            sprite('tree-right-bottom-1'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "tree"
+        ]
+    ,
+    '5': ()=>[
+            sprite('table-1'),
+            "table"
+        ]
+    ,
+    '6': ()=>[
+            sprite('table-2'),
+            "table"
+        ]
+    ,
+    '7': ()=>[
+            sprite('table-3'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "table"
+        ]
+    ,
+    '8': ()=>[
+            sprite('table-4'),
+            area({
+                width: 20,
+                height: 10
+            }),
+            solid(),
+            "table"
+        ]
+};
+const treasures = [
+    [
+        'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+        'v     2                       v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                3            v',
+        'v                             v',
+        'v                        2    v',
+        'v    6      4                 v',
+        'v                      7      v',
+        'v                             v',
+        'v                 5           v',
         'v                             v',
         'v                             v',
         'v                             v',
@@ -5323,17 +5478,6 @@ const maps2 = [
         'v                             v',
         'v                             v',
         'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
-        'v   ********                  v',
         'v                             v',
         'v                             v',
         'v                             v',
@@ -5341,11 +5485,245 @@ const maps2 = [
         'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
     ]
 ];
-const mapConfig2 = {
+const treasuresConfig = {
     width: 32,
     height: 32,
-    "*": ()=>[
-            sprite("floor-1"), 
+    '1': ()=>[
+            sprite('gem-1'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '2': ()=>[
+            sprite('gem-2'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '3': ()=>[
+            sprite('gem-3'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '4': ()=>[
+            sprite('gem-4'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '5': ()=>[
+            sprite('gem-5'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '6': ()=>[
+            sprite('gem-6'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '7': ()=>[
+            sprite('gem-7'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '8': ()=>[
+            sprite('gem-8'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '9': ()=>[
+            sprite('gem-9'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+    ,
+    '*': ()=>[
+            sprite('gem-10'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "gem",
+            scale(0.5)
+        ]
+};
+const potions = [
+    [
+        'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+        'v     2                       v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                3            v',
+        'v                             v',
+        'v                        2    v',
+        'v    6      4                 v',
+        'v                      7      v',
+        'v                             v',
+        'v                 5           v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
+    ]
+];
+const potionConfig = {
+    width: 32,
+    height: 32,
+    '1': ()=>[
+            sprite('potion-white'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '2': ()=>[
+            sprite('potion-blue'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '3': ()=>[
+            sprite('potion-brown'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '4': ()=>[
+            sprite('potion-purple'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '5': ()=>[
+            sprite('potion-orange'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '6': ()=>[
+            sprite('potion-beige'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '7': ()=>[
+            sprite('potion-green'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '8': ()=>[
+            sprite('potion-green'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '9': ()=>[
+            sprite('potion-green'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
+        ]
+    ,
+    '*': ()=>[
+            sprite('potion-green'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            "potion",
+            scale(0.5)
         ]
 };
 
@@ -5356,17 +5734,24 @@ parcelHelpers.export(exports, "npcText", ()=>npcText
 );
 parcelHelpers.export(exports, "healthText", ()=>healthText
 );
+parcelHelpers.export(exports, "tableText", ()=>tableText
+);
+parcelHelpers.export(exports, "wallText", ()=>wallText
+);
+parcelHelpers.export(exports, "gemText", ()=>gemText
+);
 function npcText(t, c, p) {
     const obj = add([
         text(t, {
             size: 8,
             font: "sink",
-            width: 50
+            width: 100
         }),
-        color(parseInt(c)),
+        color(255, 255, 255),
+        outline(2),
         pos(p.pos), 
     ]);
-    wait(2, ()=>{
+    wait(4, ()=>{
         destroy(obj);
     });
 }
@@ -5385,7 +5770,96 @@ function healthText(h, c) {
         destroy(obj);
     });
 }
+function tableText(m, t) {
+    const obj = add([
+        text(m, {
+            size: 8,
+            font: "sink"
+        }),
+        pos(t.pos),
+        color(0, 255, 0), 
+    ]);
+    wait(5, ()=>{
+        destroy(obj);
+    });
+}
+function wallText(f) {
+    const obj = add([
+        text('WALL', {
+            size: 6,
+            font: "sink"
+        }),
+        pos(f.pos)
+    ]);
+    wait(1, ()=>{
+        destroy(obj);
+    });
+}
+function gemText(f, g) {
+    const obj = add([
+        text('YOU FOUND A GEM', {
+            size: 6,
+            font: "sink"
+        }),
+        pos(f.pos),
+        color(255, 255, 255)
+    ]);
+    wait(1, ()=>{
+        destroy(obj);
+    });
+}
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
+
+},{}],"1YSb8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _kaboom = require("kaboom");
+var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
+loadSprite("border", "/border.png");
+_kaboomDefault.default({
+    width: 480,
+    height: 360,
+    scale: 2
+});
+scene("menu", ()=>{
+    add([
+        text("Adventure game for Bibe <3"),
+        pos(240, 80),
+        scale(3), 
+    ]);
+    add([
+        rect(160, 20),
+        pos(240, 180),
+        "button",
+        {
+            clickAction: ()=>go('game')
+        }, 
+    ]);
+    add([
+        text("Play game"),
+        pos(240, 180),
+        color(0, 0, 0)
+    ]);
+    add([
+        rect(160, 20),
+        pos(240, 210),
+        "button",
+        {
+            clickAction: ()=>window.open('https://kaboomjs.com/', '_blank')
+        }, 
+    ]);
+    add([
+        text("Learn Kaboom.js"),
+        pos(240, 210),
+        color(0, 0, 0)
+    ]);
+    action("button", (b)=>{
+        if (b.isHovered()) b.use(color(0.7, 0.7, 0.7));
+        else b.use(color(1, 1, 1));
+        if (b.isClicked()) b.clickAction();
+    });
+});
+
+},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
 
 //# sourceMappingURL=index.905f6534.js.map
