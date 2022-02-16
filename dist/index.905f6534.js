@@ -523,8 +523,8 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("./kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _characterMovement = require("./scenes/CharacterMovement");
-// import { MenuScene } from './scenes/MenuScene';
-const { scene , go , loadSprite , loadSpriteAtlas  } = _kaboomDefault.default;
+var _menuScene = require("./scenes/MenuScene");
+const { scene , go , loadSprite , loadSpriteAtlas ,  } = _kaboomDefault.default;
 // Keyboard arrows load
 loadSprite('arrow-up', 'https://i.imgur.com/SF656CE.png');
 loadSprite('arrow-down', 'https://i.imgur.com/MaIRmau.png');
@@ -575,6 +575,7 @@ loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
 // Map load
 loadRoot('https://i.imgur.com/');
 loadSprite('bg', "xBEU9c3.png");
+loadSprite('menu-bg', "mA2na29.png");
 loadSprite('grass-1', 'T9tpXI4.png');
 loadSprite('grass-2', 'wzBKZcm.png');
 loadSprite('grass-3', 'zm2ZwLa.png');
@@ -669,11 +670,65 @@ loadSprite('fountain-m-center', '0uZx7M7.png');
 loadSprite('fountain-t-left', 'ZS3Gg1w.png');
 loadSprite('fountain-t-right', 'hi7bqdC.png');
 loadSprite('fountain-t-center', 'QAxPK4C.png');
+loadSprite('full-bag', '9DKAnQZ.png');
+loadSprite('bag-of-greens', 'Lqah7GH.png');
+loadSprite('bag-of-apples', 'i9o72Pn.png');
+loadSprite('bag-of-mushrooms', 'kY9Up2J.png');
+loadSprite('empty-bag', 'MEQhK0G.png');
+loadSprite('wooden-barrel', 'PDwRAxj.png');
+loadSprite('vase-1', '9cuEcDN.png');
+loadSprite('vase-2', 'ilzidZa.png');
+loadSprite('simple-box', 'jVIp5td.png');
 loadSprite('kaboom', 'o9WizfI.png');
 scene('char-movement', _characterMovement.CharacterMovement);
-go('char-movement');
+loadSprite("border", "g3Y69Nq.png");
+scene("menu", ()=>{
+    add([
+        sprite("menu-bg"),
+        scale(0.5)
+    ]);
+    add([
+        sprite("border"),
+        scale(0.2)
+    ]);
+    add([
+        text("Adventure game for Bibe <3"),
+        pos(50, 30),
+        scale(0.2), 
+    ]);
+    add([
+        text("Creator: Mark(Bibe)"),
+        pos(80, 420),
+        scale(0.2), 
+    ]);
+    function addButton(txt, p, f) {
+        const startBtn = add([
+            text(txt),
+            pos(p),
+            area({
+                cursor: "pointer"
+            }),
+            scale(0.5),
+            origin("center"), 
+        ]);
+        startBtn.onClick(f);
+        startBtn.onUpdate(()=>{
+            if (startBtn.isHovering()) {
+                const t = time() * 10;
+                startBtn.color = rgb(wave(0, 255, t), wave(0, 255, t + 2), wave(0, 255, t + 4));
+                startBtn.scale = vec2(1.1);
+            } else {
+                startBtn.scale = vec2(1);
+                startBtn.color = rgb();
+            }
+        });
+    }
+    addButton("Start", vec2(170, 150), ()=>go('char-movement')
+    );
+});
+go('menu');
 
-},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h3uqb":[function(require,module,exports) {
+},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/MenuScene":"1YSb8"}],"h3uqb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "k", ()=>k
@@ -4733,6 +4788,7 @@ function CharacterMovement() {
         'table',
         'ui'
     ], 'game');
+    // debug.inspect = true
     //  DAMAGES, HEALS
     const WALL_DAMAGE = -5;
     const SPIKE = -5;
@@ -4756,8 +4812,8 @@ function CharacterMovement() {
             weight: 0
         }),
         area({
-            width: 32,
-            height: 32
+            width: 20,
+            height: 20
         }),
         "faune",
         {
@@ -4868,7 +4924,7 @@ function CharacterMovement() {
         // run_action = false;
         _textFunctions.npcText('OMG, SO CUTE! ♥', "125,55,255", teddy);
         scoreLabel.value += 10;
-        scoreLabel.text = scoreLabel.value;
+        scoreLabel.text = `SCORE: ${scoreLabel.value}`;
     });
     onCollide('faune', 'gem', (faune, gem)=>{
         updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`;
@@ -5106,8 +5162,8 @@ const mapConfig = {
     '*': ()=>[
             sprite('fence-left-end'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5116,8 +5172,8 @@ const mapConfig = {
     'm': ()=>[
             sprite('fence-right-end'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5126,8 +5182,8 @@ const mapConfig = {
     's': ()=>[
             sprite('fence-top-end'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5136,8 +5192,8 @@ const mapConfig = {
     'h': ()=>[
             sprite('fence-top-left'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5146,8 +5202,8 @@ const mapConfig = {
     'j': ()=>[
             sprite('fence-top-right'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5157,8 +5213,8 @@ const mapConfig = {
             sprite('fence-left-connect'),
             solid(),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             'wall'
         ]
@@ -5173,8 +5229,8 @@ const mapConfig = {
     'y': ()=>[
             sprite('fence-middle-connect'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5183,8 +5239,8 @@ const mapConfig = {
     'z': ()=>[
             sprite('fence-bottom-left'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5193,8 +5249,8 @@ const mapConfig = {
     'u': ()=>[
             sprite('fence-bottom-right'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             'wall'
@@ -5224,9 +5280,10 @@ const mapConfig = {
     '^': ()=>[
             sprite('tree-1'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5234,9 +5291,10 @@ const mapConfig = {
     '´': ()=>[
             sprite('tree-2'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5244,9 +5302,10 @@ const mapConfig = {
     '`': ()=>[
             sprite('tree-3'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5254,9 +5313,10 @@ const mapConfig = {
     '2': ()=>[
             sprite('tree-5'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5272,9 +5332,10 @@ const mapConfig = {
     '8': ()=>[
             sprite('bucket'),
             area({
-                width: 10,
-                height: 10
+                width: 28,
+                height: 27
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5313,8 +5374,6 @@ const mapConfig = {
             })
         ]
     ,
-    // 'a': () =>  [sprite('roof-1'), area({width: 10, height: 10}), "roof"],
-    // 'b': () =>  [sprite('roof-2'), area({width: 10, height: 10}), "roof"],
     'c': ()=>[
             sprite('house-floor-1'),
             "house-floor"
@@ -5407,9 +5466,9 @@ const environment = [
         '      13            2413       ',
         '      24              24       ',
         '                               ',
-        '                        13     ',
-        '                        24     ',
-        '                               ',
+        '  ``                    13     ',
+        '  ´´                    24     ',
+        '  ^                            ',
         '                    13    13   ',
         '                    24    24   ',
         '                               ', 
@@ -5486,9 +5545,10 @@ const environmentConfig = {
     ,
     'a': ()=>[
             sprite('fountain-t-left'),
+            origin('center'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             "fountain"
@@ -5496,9 +5556,10 @@ const environmentConfig = {
     ,
     'b': ()=>[
             sprite('fountain-t-center'),
+            origin('center'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             "fountain"
@@ -5506,9 +5567,10 @@ const environmentConfig = {
     ,
     'c': ()=>[
             sprite('fountain-t-right'),
+            origin('center'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             "fountain"
@@ -5516,9 +5578,10 @@ const environmentConfig = {
     ,
     'd': ()=>[
             sprite('fountain-m-left'),
+            origin('center'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             "fountain"
@@ -5526,9 +5589,10 @@ const environmentConfig = {
     ,
     'e': ()=>[
             sprite('fountain-m-center'),
+            origin('center'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             "fountain"
@@ -5536,9 +5600,10 @@ const environmentConfig = {
     ,
     'f': ()=>[
             sprite('fountain-m-right'),
+            origin('center'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
             solid(),
             "fountain"
@@ -5546,8 +5611,9 @@ const environmentConfig = {
     ,
     'g': ()=>[
             sprite('fountain-b-left'),
+            origin('center'),
             area({
-                width: 10,
+                width: 20,
                 height: 20
             }),
             solid(),
@@ -5556,8 +5622,9 @@ const environmentConfig = {
     ,
     'h': ()=>[
             sprite('fountain-b-center'),
+            origin('center'),
             area({
-                width: 10,
+                width: 20,
                 height: 20
             }),
             solid(),
@@ -5566,12 +5633,43 @@ const environmentConfig = {
     ,
     'i': ()=>[
             sprite('fountain-b-right'),
+            origin('center'),
             area({
-                width: 10,
+                width: 20,
                 height: 20
             }),
             solid(),
             "fountain"
+        ]
+    ,
+    '^': ()=>[
+            sprite('bag-of-greens'),
+            origin('center'),
+            area({
+                width: 20,
+                height: 20
+            }),
+            solid()
+        ]
+    ,
+    '`': ()=>[
+            sprite('bag-of-apples'),
+            origin('center'),
+            area({
+                width: 20,
+                height: 20
+            }),
+            solid()
+        ]
+    ,
+    '´': ()=>[
+            sprite('simple-box'),
+            origin('center'),
+            area({
+                width: 20,
+                height: 20
+            }),
+            solid()
         ]
 };
 const treasures = [
@@ -5936,6 +6034,11 @@ function gemText(f, g) {
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
 
-},{}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
+},{}],"1YSb8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _kaboom = require("kaboom");
+var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
+
+},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
 
 //# sourceMappingURL=index.905f6534.js.map

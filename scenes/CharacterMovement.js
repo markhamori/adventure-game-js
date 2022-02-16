@@ -7,6 +7,8 @@ import { updateDialog } from "../utils/dialogFunction";
 export function CharacterMovement() {
   layers(['bg', 'game', 'table', 'ui'], 'game')
 
+  // debug.inspect = true
+
   //  DAMAGES, HEALS
   const WALL_DAMAGE = -5;
   const SPIKE = -5;
@@ -28,7 +30,7 @@ export function CharacterMovement() {
     origin('center'),
     solid(),
     body({weight: 0}),
-    area({width: 32, height: 32}),
+    area({width: 20, height: 20}),
     "faune",
     {
       health: 100,
@@ -127,7 +129,7 @@ export function CharacterMovement() {
     // run_action = false;
     npcText('OMG, SO CUTE! ♥', "125,55,255" , teddy)
     scoreLabel.value += 10
-    scoreLabel.text = scoreLabel.value
+    scoreLabel.text = `SCORE: ${scoreLabel.value}`
   });
 
   onCollide('faune', 'gem', (faune, gem) => {

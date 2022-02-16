@@ -37,34 +37,32 @@ export const maps = [
 export const mapConfig = {
   width: 32,
   height: 32,
-  '*': () =>  [sprite('fence-left-end'), area({width: 10, height: 10}), solid(), 'wall'],
-  'm': () =>  [sprite('fence-right-end'), area({width: 10, height: 10}), solid(), 'wall'],
-  's': () =>  [sprite('fence-top-end'), area({width: 10, height: 10}), solid(), 'wall'],
-  'h': () =>  [sprite('fence-top-left'), area({width: 10, height: 10}), solid(), 'wall'],
-  'j': () =>  [sprite('fence-top-right'), area({width: 10, height: 10}), solid(), 'wall'],
-  'v': () =>  [sprite('fence-left-connect'), solid(), area({width: 10, height: 10}), 'wall'],
+  '*': () =>  [sprite('fence-left-end'), area({width: 20, height: 20}), solid(), 'wall'],
+  'm': () =>  [sprite('fence-right-end'), area({width: 20, height: 20}), solid(), 'wall'],
+  's': () =>  [sprite('fence-top-end'), area({width: 20, height: 20}), solid(), 'wall'],
+  'h': () =>  [sprite('fence-top-left'), area({width: 20, height: 20}), solid(), 'wall'],
+  'j': () =>  [sprite('fence-top-right'), area({width: 20, height: 20}), solid(), 'wall'],
+  'v': () =>  [sprite('fence-left-connect'), solid(), area({width: 20, height: 20}), 'wall'],
   'x': () =>  [sprite('fence-1'), area(), solid(), 'wall'],
-  'y': () =>  [sprite('fence-middle-connect'), area({width: 10, height: 10}), solid(),'wall'],
-  'z': () =>  [sprite('fence-bottom-left'), area({width: 10, height: 10}), solid(), 'wall'],
-  'u': () =>  [sprite('fence-bottom-right'), area({width: 10, height: 10}), solid(), 'wall'],
+  'y': () =>  [sprite('fence-middle-connect'), area({width: 20, height: 20}), solid(),'wall'],
+  'z': () =>  [sprite('fence-bottom-left'), area({width: 20, height: 20}), solid(), 'wall'],
+  'u': () =>  [sprite('fence-bottom-right'), area({width: 20, height: 20}), solid(), 'wall'],
   ']': () =>  [sprite('tall-grass-1'), area()],
   '[': () =>  [sprite('tall-grass-2')],
   '.': () =>  [sprite('flower-1')],
   ',': () =>  [sprite('flower-2')],
   '-': () =>  [sprite('flower-3')],
-  '^': () =>  [sprite('tree-1'), area({width: 10, height: 10}), solid(), 'wall'],
-  '´': () =>  [sprite('tree-2'), area({width: 10, height: 10}), solid(),'wall'],
-  '`': () =>  [sprite('tree-3'), area({width: 10, height: 10}), solid(), 'wall'],
-  '2': () =>  [sprite('tree-5'), area({width: 10, height: 10}), solid(),'wall'],
+  '^': () =>  [sprite('tree-1'), area({width: 20, height: 20}),origin('center'), solid(), 'wall'],
+  '´': () =>  [sprite('tree-2'), area({width: 20, height: 20}),origin('center'), solid(),'wall'],
+  '`': () =>  [sprite('tree-3'), area({width: 20, height: 20}),origin('center'), solid(), 'wall'],
+  '2': () =>  [sprite('tree-5'), area({width: 20, height: 20}),origin('center'), solid(),'wall'],
   '{': () =>  [sprite('mushroom-1')],
   '1': () =>  [sprite('grass-2')],
-  '8': () =>  [sprite('bucket'), area({width: 10, height: 10}), solid(), 'wall'],
+  '8': () =>  [sprite('bucket'), area({width: 28, height: 27}),origin('center'), solid(), 'wall'],
   '7': () =>  [sprite('wood-pile'), area({width: 10, height: 10}), solid(), 'wall'],
   'q': () =>  [sprite('wood-cut'), area({width: 10, height: 10}), solid(), 'wall'],
   'l': () =>  [sprite('teddy'), area(), 'teddy'],
   'k': () =>  [sprite('pumpkin'), area({width: 10, height: 10})],
-  // 'a': () =>  [sprite('roof-1'), area({width: 10, height: 10}), "roof"],
-  // 'b': () =>  [sprite('roof-2'), area({width: 10, height: 10}), "roof"],
 
   'c': () =>  [sprite('house-floor-1'), "house-floor"],
 }
@@ -154,9 +152,9 @@ export const environment = [
   '      13            2413       ',
   '      24              24       ',
   '                               ',
-  '                        13     ',
-  '                        24     ',
-  '                               ',
+  '  ``                    13     ',
+  '  ´´                    24     ',
+  '  ^                            ',
   '                    13    13   ',
   '                    24    24   ',
   '                               ',
@@ -191,31 +189,40 @@ export const environmentConfig = {
     sprite('table-4'), area({width: 20, height: 10}), solid(), "table"
   ],
   'a': () =>  [
-    sprite('fountain-t-left'), area({width: 10, height: 10}), solid(), "fountain"
+    sprite('fountain-t-left'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'b': () =>  [
-    sprite('fountain-t-center'), area({width: 10, height: 10}), solid(), "fountain"
+    sprite('fountain-t-center'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'c': () =>  [
-    sprite('fountain-t-right'), area({width: 10, height: 10}), solid(), "fountain"
+    sprite('fountain-t-right'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'd': () =>  [
-    sprite('fountain-m-left'), area({width: 10, height: 10}), solid(), "fountain"
+    sprite('fountain-m-left'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'e': () =>  [
-    sprite('fountain-m-center'), area({width: 10, height: 10}), solid(), "fountain"
+    sprite('fountain-m-center'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'f': () =>  [
-    sprite('fountain-m-right'), area({width: 10, height: 10}), solid(), "fountain"
+    sprite('fountain-m-right'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'g': () =>  [
-    sprite('fountain-b-left'), area({width: 10, height: 20}), solid(), "fountain"
+    sprite('fountain-b-left'),origin('center'), area({width: 20, height: 20}), solid(), "fountain"
   ],
   'h': () =>  [
-    sprite('fountain-b-center'), area({width: 10, height:20}), solid(), "fountain"
+    sprite('fountain-b-center'),origin('center'), area({width: 20, height:20}), solid(), "fountain"
   ],
   'i': () =>  [
-    sprite('fountain-b-right'), area({width: 10, height:20}), solid(), "fountain"
+    sprite('fountain-b-right'),origin('center'), area({width: 20, height:20}), solid(), "fountain"
+  ],
+  '^': () =>  [
+    sprite('bag-of-greens'),origin('center'), area({width: 20, height:20}), solid()
+  ],
+  '`': () =>  [
+    sprite('bag-of-apples'),origin('center'), area({width: 20, height:20}), solid()
+  ],
+  '´': () =>  [
+    sprite('simple-box'),origin('center'), area({width: 20, height:20}), solid()
   ],
 }
 

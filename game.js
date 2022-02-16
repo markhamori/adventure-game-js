@@ -1,12 +1,12 @@
 import k from "./kaboom";
 import { CharacterMovement } from './scenes/CharacterMovement';
-// import { MenuScene } from './scenes/MenuScene';
+import { MenuScene } from './scenes/MenuScene';
 
 const {
   scene,
   go,
   loadSprite,
-  loadSpriteAtlas
+  loadSpriteAtlas,
 } = k;
 
 // Keyboard arrows load
@@ -37,6 +37,7 @@ loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
 // Map load
 loadRoot('https://i.imgur.com/')
 loadSprite('bg', "xBEU9c3.png")
+loadSprite('menu-bg', "mA2na29.png")
 loadSprite('grass-1', 'T9tpXI4.png')
 loadSprite('grass-2', 'wzBKZcm.png')
 loadSprite('grass-3', 'zm2ZwLa.png')
@@ -142,8 +143,75 @@ loadSprite('fountain-t-left', 'ZS3Gg1w.png')
 loadSprite('fountain-t-right', 'hi7bqdC.png')
 loadSprite('fountain-t-center', 'QAxPK4C.png')
 
+loadSprite('full-bag', '9DKAnQZ.png')
+loadSprite('bag-of-greens', 'Lqah7GH.png')
+loadSprite('bag-of-apples', 'i9o72Pn.png')
+loadSprite('bag-of-mushrooms', 'kY9Up2J.png')
+loadSprite('empty-bag', 'MEQhK0G.png')
+loadSprite('wooden-barrel', 'PDwRAxj.png')
+loadSprite('vase-1', '9cuEcDN.png')
+loadSprite('vase-2', 'ilzidZa.png')
+loadSprite('simple-box', 'jVIp5td.png')
+
 loadSprite('kaboom', 'o9WizfI.png')
 
 scene('char-movement', CharacterMovement)
 
-go('char-movement')
+loadSprite("border", "g3Y69Nq.png");
+
+scene("menu", () => {
+  
+  add([
+    sprite("menu-bg"),
+    scale(0.5)
+  ])
+
+  add([
+    sprite("border"),
+    scale(0.2)
+  ])
+
+	add([
+		text("Adventure game for Bibe <3"),
+		pos(50, 30),
+		scale(0.20),
+	]);
+
+  add([
+		text("Creator: Mark(Bibe)"),
+		pos(80, 420),
+		scale(0.20),
+	]);
+
+  function addButton(txt, p, f) {
+    const startBtn = add([
+      text(txt),
+      pos(p),
+      area({ cursor: "pointer", }),
+      scale(0.5),
+      origin("center"),
+    ]);
+  
+    startBtn.onClick(f)
+  
+    startBtn.onUpdate(() => {
+      if (startBtn.isHovering()) {
+        const t = time() * 10
+        startBtn.color = rgb(
+          wave(0, 255, t),
+          wave(0, 255, t + 2),
+          wave(0, 255, t + 4),
+        )
+        startBtn.scale = vec2(1.1)
+      } else {
+        startBtn.scale = vec2(1)
+        startBtn.color = rgb()
+      }
+    })
+  }
+
+  addButton("Start", vec2(170, 150), () => go('char-movement'))
+
+});
+
+go('menu')
