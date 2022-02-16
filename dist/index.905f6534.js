@@ -523,7 +523,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("./kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _characterMovement = require("./scenes/CharacterMovement");
-var _menuScene = require("./scenes/MenuScene");
+// import { MenuScene } from './scenes/MenuScene';
 const { scene , go , loadSprite , loadSpriteAtlas  } = _kaboomDefault.default;
 // Keyboard arrows load
 loadSprite('arrow-up', 'https://i.imgur.com/SF656CE.png');
@@ -659,11 +659,21 @@ loadSprite('potion-purple', '1Zkrupo.png');
 loadSprite('potion-orange', 'P9iyFoJ.png');
 loadSprite('potion-beige', '9uA8cJS.png');
 loadSprite('potion-green', 'lJkAlhD.png');
+//FOUNTAIN
+loadSprite('fountain-b-right', 'Zu0vLPC.png');
+loadSprite('fountain-b-left', 'rcWd830.png');
+loadSprite('fountain-b-center', 'AjQEOYW.png');
+loadSprite('fountain-m-left', 'DRIOQCT.png');
+loadSprite('fountain-m-right', 'PU8VRXV.png');
+loadSprite('fountain-m-center', '0uZx7M7.png');
+loadSprite('fountain-t-left', 'ZS3Gg1w.png');
+loadSprite('fountain-t-right', 'hi7bqdC.png');
+loadSprite('fountain-t-center', 'QAxPK4C.png');
 loadSprite('kaboom', 'o9WizfI.png');
 scene('char-movement', _characterMovement.CharacterMovement);
 go('char-movement');
 
-},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/MenuScene":"1YSb8"}],"h3uqb":[function(require,module,exports) {
+},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h3uqb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "k", ()=>k
@@ -4836,20 +4846,6 @@ function CharacterMovement() {
         destroy(kaboom);
         faune.speed = 5;
     });
-    // ADD UI
-    const scoreLabel = add([
-        text('0', {
-            size: 6,
-            font: "sink"
-        }),
-        pos(width() - 150, height() - 40),
-        layer('ui'),
-        {
-            value: faune1.score
-        },
-        scale(2),
-        fixed()
-    ]);
     faune1.onUpdate(()=>{
         camPos(faune1.pos);
     });
@@ -4874,27 +4870,15 @@ function CharacterMovement() {
         scoreLabel.value += 10;
         scoreLabel.text = scoreLabel.value;
     });
+    onCollide('faune', 'gem', (faune, gem)=>{
+        updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`;
+        destroy(gem);
+    });
     // onCollide('faune', 'potion', (faune, potion) => {
     //   updatePlayerHealth(POTION_HEAL)
     //   destroy(potion)
     //   healthText(POTION_HEAL, "127,255,0")
     // })
-    onCollide('faune', 'gem', (faune, gem)=>{
-        updateGemQty(1);
-        const obj = add([
-            text(`You found: ${faune.gems} gems`),
-            pos(faune.pos),
-            color(255, 255, 255),
-            scale(0.2),
-            layer('ui'), 
-        ]);
-        destroy(gem);
-        wait(2, ()=>destroy(obj)
-        );
-    });
-    function updateGemQty(gem) {
-        faune1.gems += gem;
-    }
     // onUpdate('faune', (f) => {
     //   add([
     //     text(faune.health, { size: 8, font: "sink"}),
@@ -4904,6 +4888,20 @@ function CharacterMovement() {
     //     fixed()
     //   ]);
     // })
+    // ADD UI
+    const scoreLabel = add([
+        text('SCORE: 0', {
+            size: 5,
+            font: "sink"
+        }),
+        pos(width() - 200, height() - 40),
+        layer('ui'),
+        {
+            value: faune1.score
+        },
+        scale(2),
+        fixed()
+    ]);
     add([
         text("HEALTH", {
             size: 8,
@@ -4937,6 +4935,25 @@ function CharacterMovement() {
         layer("ui"),
         fixed()
     ]);
+    const gemLabel = add([
+        text('GEMS: 0', {
+            size: 5,
+            font: "sink"
+        }),
+        pos(width() - 300, height() - 40),
+        layer('ui'),
+        {
+            value: faune1.gems
+        },
+        scale(2),
+        fixed()
+    ]);
+    function updateGemQty(gem, score) {
+        faune1.gems += gem;
+    }
+    function addScore(playerScore) {
+        faune1.score += playerScore;
+    }
     function updatePlayerHealth(healthPoints) {
         faune1.health += healthPoints;
         faune1.health = Math.max(faune1.health, 0);
@@ -4960,9 +4977,26 @@ function CharacterMovement() {
     //     });
     // }
     }
-    function addScore(playerScore) {
-        faune1.score += playerScore;
-    }
+    // ******************************* CREATE BULLET
+    // const BULLET_SPEED = 500
+    // function spawnBullet(p) {
+    // 	add([
+    // 		rect(12, 48),
+    // 		area(),
+    // 		pos(p),
+    // 		origin("center"),
+    // 		color(127, 127, 255),
+    // 		outline(4),
+    // 		move(RIGHT, BULLET_SPEED),
+    // 		cleanup(),
+    // 		// strings here means a tag
+    // 		"bullet",
+    // 	])
+    // }
+    // onKeyPress("space", () => {
+    // 	spawnBullet(faune.pos.sub(16, 0))
+    // 	spawnBullet(faune.pos.add(16, 0))
+    // })
     faune1.play('idle-down');
     faune1.action(()=>{
         const left = isKeyDown('left');
@@ -5348,37 +5382,37 @@ const floorsConfig = {
 };
 const environment = [
     [
-        'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-        'v    13   13                  v',
-        'v    24   24                  v',
-        'v       13  1313 1313         v',
-        'v       24132424 2424         v',
-        'v  13     24                  v',
-        'v  24         13              v',
-        'v             24              v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v             56              v',
-        'v             78              v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                 13          v',
-        'v                 2413        v',
-        'v     13            2413      v',
-        'v     24              24      v',
-        'v                             v',
-        'v                       13    v',
-        'v                       24    v',
-        'v                             v',
-        'v                   13    13  v',
-        'v                   24    24  v',
-        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
+        '                               ',
+        '     13   13                   ',
+        '     24   24                   ',
+        '        13  1313 1313          ',
+        '        24132424 2424          ',
+        '   13     24                   ',
+        '   24         13               ',
+        '              24               ',
+        '                    abc        ',
+        '                    def        ',
+        '                    ghi        ',
+        '                               ',
+        '              56               ',
+        '              78               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                  13           ',
+        '                  2413         ',
+        '      13            2413       ',
+        '      24              24       ',
+        '                               ',
+        '                        13     ',
+        '                        24     ',
+        '                               ',
+        '                    13    13   ',
+        '                    24    24   ',
+        '                               ', 
     ]
 ];
 const environmentConfig = {
@@ -5449,21 +5483,111 @@ const environmentConfig = {
             solid(),
             "table"
         ]
+    ,
+    'a': ()=>[
+            sprite('fountain-t-left'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'b': ()=>[
+            sprite('fountain-t-center'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'c': ()=>[
+            sprite('fountain-t-right'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'd': ()=>[
+            sprite('fountain-m-left'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'e': ()=>[
+            sprite('fountain-m-center'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'f': ()=>[
+            sprite('fountain-m-right'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'g': ()=>[
+            sprite('fountain-b-left'),
+            area({
+                width: 10,
+                height: 20
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'h': ()=>[
+            sprite('fountain-b-center'),
+            area({
+                width: 10,
+                height: 20
+            }),
+            solid(),
+            "fountain"
+        ]
+    ,
+    'i': ()=>[
+            sprite('fountain-b-right'),
+            area({
+                width: 10,
+                height: 20
+            }),
+            solid(),
+            "fountain"
+        ]
 };
 const treasures = [
     [
         'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-        'v     2                       v',
         'v                             v',
         'v                             v',
         'v                             v',
-        'v                3            v',
         'v                             v',
-        'v                        2    v',
-        'v    6      4                 v',
-        'v                      7      v',
         'v                             v',
-        'v                 5           v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
         'v                             v',
         'v                             v',
         'v                             v',
@@ -5799,7 +5923,8 @@ function gemText(f, g) {
     const obj = add([
         text('YOU FOUND A GEM', {
             size: 6,
-            font: "sink"
+            font: "sink",
+            width: 10
         }),
         pos(f.pos),
         color(255, 255, 255)
@@ -5811,55 +5936,6 @@ function gemText(f, g) {
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
 
-},{}],"1YSb8":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _kaboom = require("kaboom");
-var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-loadSprite("border", "/border.png");
-_kaboomDefault.default({
-    width: 480,
-    height: 360,
-    scale: 2
-});
-scene("menu", ()=>{
-    add([
-        text("Adventure game for Bibe <3"),
-        pos(240, 80),
-        scale(3), 
-    ]);
-    add([
-        rect(160, 20),
-        pos(240, 180),
-        "button",
-        {
-            clickAction: ()=>go('game')
-        }, 
-    ]);
-    add([
-        text("Play game"),
-        pos(240, 180),
-        color(0, 0, 0)
-    ]);
-    add([
-        rect(160, 20),
-        pos(240, 210),
-        "button",
-        {
-            clickAction: ()=>window.open('https://kaboomjs.com/', '_blank')
-        }, 
-    ]);
-    add([
-        text("Learn Kaboom.js"),
-        pos(240, 210),
-        color(0, 0, 0)
-    ]);
-    action("button", (b)=>{
-        if (b.isHovered()) b.use(color(0.7, 0.7, 0.7));
-        else b.use(color(1, 1, 1));
-        if (b.isClicked()) b.clickAction();
-    });
-});
-
-},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
+},{}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
 
 //# sourceMappingURL=index.905f6534.js.map

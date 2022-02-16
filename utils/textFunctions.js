@@ -47,7 +47,7 @@ export function wallText(f) {
 
 export function gemText(f,g) {
   const obj = add([
-    text('YOU FOUND A GEM', { size: 6, font: "sink"}),
+    text('YOU FOUND A GEM', { size: 6, font: "sink", width: 10}),
     pos(f.pos),
     color(255,255,255)
   ])

@@ -1,7 +1,7 @@
 import k from "../kaboom";
 import { maps, mapConfig } from '../map/map';
 import { npcText, healthText, tableText, wallText, gemText } from "../utils/textFunctions";
-import { floors, floorsConfig,environment, environmentConfig, treasures, treasuresConfig } from "../map/map";
+import { floors, floorsConfig, environment, environmentConfig, treasures, treasuresConfig } from "../map/map";
 import { updateDialog } from "../utils/dialogFunction";
 
 export function CharacterMovement() {
@@ -101,18 +101,6 @@ export function CharacterMovement() {
     faune.speed = 5
   });
 
-  // ADD UI
-  const scoreLabel = add([
-    text('0', { size: 6, font: "sink"}),
-    pos(width() - 150, height() - 40),
-    layer('ui'),
-    {
-      value: faune.score,
-    },
-    scale(2),
-    fixed()
-  ]) 
-
   faune.onUpdate(() => {
     camPos(faune.pos)
   })
@@ -135,7 +123,6 @@ export function CharacterMovement() {
     wallText(faune)
   });
 
-
   onCollide("faune", "teddy", (faune, teddy) => {
     // run_action = false;
     npcText('OMG, SO CUTE! ♥', "125,55,255" , teddy)
@@ -143,28 +130,21 @@ export function CharacterMovement() {
     scoreLabel.text = scoreLabel.value
   });
 
+  onCollide('faune', 'gem', (faune, gem) => {
+    updateGemQty(1),
+    gemLabel.value += 1,
+    gemLabel.text = `GEMS: ${gemLabel.value}`,
+    addScore(50),
+    scoreLabel.value += 50,
+    scoreLabel.text = `SCORE: ${scoreLabel.value}`
+    destroy(gem)
+  })
+
   // onCollide('faune', 'potion', (faune, potion) => {
   //   updatePlayerHealth(POTION_HEAL)
   //   destroy(potion)
   //   healthText(POTION_HEAL, "127,255,0")
   // })
-
-  onCollide('faune', 'gem', (faune, gem) => {
-    updateGemQty(1)
-    const obj = add([
-      text(`You found: ${faune.gems} gems`),
-      pos(faune.pos),
-      color(255,255,255),
-      scale(0.2),
-      layer('ui'),
-    ])
-    destroy(gem)
-    wait(2, () => destroy(obj))
-  })
-
-  function updateGemQty(gem){
-    faune.gems += gem;
-  }
 
   // onUpdate('faune', (f) => {
   //   add([
@@ -176,6 +156,17 @@ export function CharacterMovement() {
   //   ]);
   // })
   
+  // ADD UI
+  const scoreLabel = add([
+    text('SCORE: 0', { size: 5, font: "sink"}),
+    pos(width() - 200, height() - 40),
+    layer('ui'),
+    {
+      value: faune.score,
+    },
+    scale(2),
+    fixed()
+  ]) 
 
   add([
     text("HEALTH", { size: 8, font: "sink"}),
@@ -211,6 +202,25 @@ export function CharacterMovement() {
       fixed()
   ]);
 
+  const gemLabel = add([
+    text('GEMS: 0', { size: 5, font: "sink"}),
+    pos(width() - 300, height() - 40),
+    layer('ui'),
+    {
+      value: faune.gems,
+    },
+    scale(2),
+    fixed()
+  ]) 
+
+  function updateGemQty(gem, score){
+    faune.gems += gem;
+  }
+
+  function addScore (playerScore) {
+    faune.score += playerScore
+  }
+
   function updatePlayerHealth(healthPoints){
     faune.health += healthPoints;
     faune.health = Math.max(faune.health, 0);
@@ -238,9 +248,28 @@ export function CharacterMovement() {
     // }
   }
 
-  function addScore (playerScore) {
-    faune.score += playerScore
-  }
+  // ******************************* CREATE BULLET
+  // const BULLET_SPEED = 500
+
+  // function spawnBullet(p) {
+	// 	add([
+	// 		rect(12, 48),
+	// 		area(),
+	// 		pos(p),
+	// 		origin("center"),
+	// 		color(127, 127, 255),
+	// 		outline(4),
+	// 		move(RIGHT, BULLET_SPEED),
+	// 		cleanup(),
+	// 		// strings here means a tag
+	// 		"bullet",
+	// 	])
+	// }
+
+  // onKeyPress("space", () => {
+	// 	spawnBullet(faune.pos.sub(16, 0))
+	// 	spawnBullet(faune.pos.add(16, 0))
+	// })
 
   faune.play('idle-down')
 

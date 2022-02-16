@@ -1,6 +1,6 @@
 import k from "./kaboom";
 import { CharacterMovement } from './scenes/CharacterMovement';
-import { MenuScene } from './scenes/MenuScene';
+// import { MenuScene } from './scenes/MenuScene';
 
 const {
   scene,
@@ -131,6 +131,16 @@ loadSprite('potion-orange', 'P9iyFoJ.png')
 loadSprite('potion-beige', '9uA8cJS.png')
 loadSprite('potion-green', 'lJkAlhD.png')
 
+//FOUNTAIN
+loadSprite('fountain-b-right', 'Zu0vLPC.png')
+loadSprite('fountain-b-left', 'rcWd830.png')
+loadSprite('fountain-b-center', 'AjQEOYW.png')
+loadSprite('fountain-m-left', 'DRIOQCT.png')
+loadSprite('fountain-m-right', 'PU8VRXV.png')
+loadSprite('fountain-m-center', '0uZx7M7.png')
+loadSprite('fountain-t-left', 'ZS3Gg1w.png')
+loadSprite('fountain-t-right', 'hi7bqdC.png')
+loadSprite('fountain-t-center', 'QAxPK4C.png')
 
 loadSprite('kaboom', 'o9WizfI.png')
 

@@ -129,37 +129,37 @@ export const floorsConfig = {
 
 export const environment = [
   [
-	'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-  'v    13   13                  v',
-  'v    24   24                  v',
-  'v       13  1313 1313         v',
-  'v       24132424 2424         v',
-  'v  13     24                  v',
-  'v  24         13              v',
-  'v             24              v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v             56              v',
-  'v             78              v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                 13          v',
-  'v                 2413        v',
-  'v     13            2413      v',
-  'v     24              24      v',
-  'v                             v',
-  'v                       13    v',
-  'v                       24    v',
-  'v                             v',
-  'v                   13    13  v',
-  'v                   24    24  v',
-  'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu',
+	'                               ',
+  '     13   13                   ',
+  '     24   24                   ',
+  '        13  1313 1313          ',
+  '        24132424 2424          ',
+  '   13     24                   ',
+  '   24         13               ',
+  '              24               ',
+  '                    abc        ',
+  '                    def        ',
+  '                    ghi        ',
+  '                               ',
+  '              56               ',
+  '              78               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                  13           ',
+  '                  2413         ',
+  '      13            2413       ',
+  '      24              24       ',
+  '                               ',
+  '                        13     ',
+  '                        24     ',
+  '                               ',
+  '                    13    13   ',
+  '                    24    24   ',
+  '                               ',
   ]
 ]
 
@@ -190,22 +190,49 @@ export const environmentConfig = {
   '8': () =>  [
     sprite('table-4'), area({width: 20, height: 10}), solid(), "table"
   ],
+  'a': () =>  [
+    sprite('fountain-t-left'), area({width: 10, height: 10}), solid(), "fountain"
+  ],
+  'b': () =>  [
+    sprite('fountain-t-center'), area({width: 10, height: 10}), solid(), "fountain"
+  ],
+  'c': () =>  [
+    sprite('fountain-t-right'), area({width: 10, height: 10}), solid(), "fountain"
+  ],
+  'd': () =>  [
+    sprite('fountain-m-left'), area({width: 10, height: 10}), solid(), "fountain"
+  ],
+  'e': () =>  [
+    sprite('fountain-m-center'), area({width: 10, height: 10}), solid(), "fountain"
+  ],
+  'f': () =>  [
+    sprite('fountain-m-right'), area({width: 10, height: 10}), solid(), "fountain"
+  ],
+  'g': () =>  [
+    sprite('fountain-b-left'), area({width: 10, height: 20}), solid(), "fountain"
+  ],
+  'h': () =>  [
+    sprite('fountain-b-center'), area({width: 10, height:20}), solid(), "fountain"
+  ],
+  'i': () =>  [
+    sprite('fountain-b-right'), area({width: 10, height:20}), solid(), "fountain"
+  ],
 }
 
 export const treasures = [
   [
 	'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-  'v     2                       v',
   'v                             v',
   'v                             v',
   'v                             v',
-  'v                3            v',
   'v                             v',
-  'v                        2    v',
-  'v    6      4                 v',
-  'v                      7      v',
   'v                             v',
-  'v                 5           v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
   'v                             v',
   'v                             v',
   'v                             v',

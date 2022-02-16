@@ -1,6 +1,6 @@
 import kaboom from "kaboom";
 
-loadSprite("border", "/border.png");
+loadSprite("border", "https://www.transparentpng.com/download/border/aEPAGD-black-border-png-background-picture-frame-design.png");
 
 kaboom({
 	width: 480,
