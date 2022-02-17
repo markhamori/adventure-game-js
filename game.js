@@ -1,5 +1,4 @@
 import k from "./kaboom";
-import { CharacterMovement } from './scenes/CharacterMovement';
 import { MenuScene } from './scenes/MenuScene';
 
 const {
@@ -153,65 +152,48 @@ loadSprite('vase-1', '9cuEcDN.png')
 loadSprite('vase-2', 'ilzidZa.png')
 loadSprite('simple-box', 'jVIp5td.png')
 
-loadSprite('kaboom', 'o9WizfI.png')
-
-scene('char-movement', CharacterMovement)
-
+// Menu border
 loadSprite("border", "g3Y69Nq.png");
 
-scene("menu", () => {
-  
-  add([
-    sprite("menu-bg"),
-    scale(0.5)
-  ])
+// Floor
+loadSpriteAtlas("lu5PJXh.png", {
+	"floor": {
+		"x": 16,
+		"y": 64,
+		"width": 48,
+		"height": 48,
+		"sliceX": 3,
+		"sliceY": 3
+	},
+	"chest": {
+		"x": 304,
+		"y": 304,
+		"width": 48,
+		"height": 16,
+		"sliceX": 3,
+		"anims": {
+			"open": {
+				"from": 0,
+				"to": 2,
+				"speed": 20,
+				"loop": false
+			},
+			"close": {
+				"from": 2,
+				"to": 0,
+				"speed": 20,
+				"loop": false
+			}
+		}
+	},
+  "sword": {
+		"x": 322,
+		"y": 81,
+		"width": 12,
+		"height": 30
+	},
+})
 
-  add([
-    sprite("border"),
-    scale(0.2)
-  ])
+loadSprite('kaboom', 'o9WizfI.png')
 
-	add([
-		text("Adventure game for Bibe <3"),
-		pos(50, 30),
-		scale(0.20),
-	]);
-
-  add([
-		text("Creator: Mark(Bibe)"),
-		pos(80, 420),
-		scale(0.20),
-	]);
-
-  function addButton(txt, p, f) {
-    const startBtn = add([
-      text(txt),
-      pos(p),
-      area({ cursor: "pointer", }),
-      scale(0.5),
-      origin("center"),
-    ]);
-  
-    startBtn.onClick(f)
-  
-    startBtn.onUpdate(() => {
-      if (startBtn.isHovering()) {
-        const t = time() * 10
-        startBtn.color = rgb(
-          wave(0, 255, t),
-          wave(0, 255, t + 2),
-          wave(0, 255, t + 4),
-        )
-        startBtn.scale = vec2(1.1)
-      } else {
-        startBtn.scale = vec2(1)
-        startBtn.color = rgb()
-      }
-    })
-  }
-
-  addButton("Start", vec2(170, 150), () => go('char-movement'))
-
-});
-
-go('menu')
+go('menu-scene', MenuScene)

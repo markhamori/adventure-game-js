@@ -522,7 +522,6 @@ function hmrAcceptRun(bundle, id) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _kaboom = require("./kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-var _characterMovement = require("./scenes/CharacterMovement");
 var _menuScene = require("./scenes/MenuScene");
 const { scene , go , loadSprite , loadSpriteAtlas ,  } = _kaboomDefault.default;
 // Keyboard arrows load
@@ -679,56 +678,50 @@ loadSprite('wooden-barrel', 'PDwRAxj.png');
 loadSprite('vase-1', '9cuEcDN.png');
 loadSprite('vase-2', 'ilzidZa.png');
 loadSprite('simple-box', 'jVIp5td.png');
-loadSprite('kaboom', 'o9WizfI.png');
-scene('char-movement', _characterMovement.CharacterMovement);
+// Menu border
 loadSprite("border", "g3Y69Nq.png");
-scene("menu", ()=>{
-    add([
-        sprite("menu-bg"),
-        scale(0.5)
-    ]);
-    add([
-        sprite("border"),
-        scale(0.2)
-    ]);
-    add([
-        text("Adventure game for Bibe <3"),
-        pos(50, 30),
-        scale(0.2), 
-    ]);
-    add([
-        text("Creator: Mark(Bibe)"),
-        pos(80, 420),
-        scale(0.2), 
-    ]);
-    function addButton(txt, p, f) {
-        const startBtn = add([
-            text(txt),
-            pos(p),
-            area({
-                cursor: "pointer"
-            }),
-            scale(0.5),
-            origin("center"), 
-        ]);
-        startBtn.onClick(f);
-        startBtn.onUpdate(()=>{
-            if (startBtn.isHovering()) {
-                const t = time() * 10;
-                startBtn.color = rgb(wave(0, 255, t), wave(0, 255, t + 2), wave(0, 255, t + 4));
-                startBtn.scale = vec2(1.1);
-            } else {
-                startBtn.scale = vec2(1);
-                startBtn.color = rgb();
+// Floor
+loadSpriteAtlas("lu5PJXh.png", {
+    "floor": {
+        "x": 16,
+        "y": 64,
+        "width": 48,
+        "height": 48,
+        "sliceX": 3,
+        "sliceY": 3
+    },
+    "chest": {
+        "x": 304,
+        "y": 304,
+        "width": 48,
+        "height": 16,
+        "sliceX": 3,
+        "anims": {
+            "open": {
+                "from": 0,
+                "to": 2,
+                "speed": 20,
+                "loop": false
+            },
+            "close": {
+                "from": 2,
+                "to": 0,
+                "speed": 20,
+                "loop": false
             }
-        });
+        }
+    },
+    "sword": {
+        "x": 322,
+        "y": 81,
+        "width": 12,
+        "height": 30
     }
-    addButton("Start", vec2(170, 150), ()=>go('char-movement')
-    );
 });
-go('menu');
+loadSprite('kaboom', 'o9WizfI.png');
+go('menu-scene', _menuScene.MenuScene);
 
-},{"./kaboom":"h3uqb","./scenes/CharacterMovement":"gjS8w","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/MenuScene":"1YSb8"}],"h3uqb":[function(require,module,exports) {
+},{"./kaboom":"h3uqb","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/MenuScene":"1YSb8"}],"h3uqb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "k", ()=>k
@@ -4771,17 +4764,68 @@ exports.export = function(dest, destName, get) {
     });
 };
 
-},{}],"gjS8w":[function(require,module,exports) {
+},{}],"1YSb8":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+var _kaboom = require("kaboom");
+var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
+var _gameScene = require("./GameScene");
+scene('game-scene', _gameScene.GameScene);
+scene("menu-scene", ()=>{
+    add([
+        sprite("menu-bg"),
+        scale(0.5)
+    ]);
+    add([
+        sprite("border"),
+        scale(0.2)
+    ]);
+    add([
+        text("Adventure game for Bibe <3"),
+        pos(50, 30),
+        scale(0.2), 
+    ]);
+    add([
+        text("Creator: Mark(Bibe)"),
+        pos(80, 420),
+        scale(0.2), 
+    ]);
+    function addButton(txt, p, f) {
+        const startBtn = add([
+            text(txt),
+            pos(p),
+            area({
+                cursor: "pointer"
+            }),
+            scale(0.5),
+            origin("center"), 
+        ]);
+        startBtn.onClick(f);
+        startBtn.onUpdate(()=>{
+            if (startBtn.isHovering()) {
+                const t = time() * 10;
+                startBtn.color = rgb(wave(0, 255, t), wave(0, 255, t + 2), wave(0, 255, t + 4));
+                startBtn.scale = vec2(1.1);
+            } else {
+                startBtn.scale = vec2(1);
+                startBtn.color = rgb();
+            }
+        });
+    }
+    addButton("Start", vec2(170, 150), ()=>go('game-scene')
+    );
+});
+
+},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./GameScene":"62fr6"}],"62fr6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "CharacterMovement", ()=>CharacterMovement
+parcelHelpers.export(exports, "GameScene", ()=>GameScene
 );
 var _kaboom = require("../kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-var _map = require("../map/map");
 var _textFunctions = require("../utils/textFunctions");
+var _map = require("../map/map");
 var _dialogFunction = require("../utils/dialogFunction");
-function CharacterMovement() {
+function GameScene() {
     layers([
         'bg',
         'game',
@@ -4795,6 +4839,8 @@ function CharacterMovement() {
     const POTION_HEAL = 15;
     // ADD FLOORS - TILES
     addLevel(_map.floors[0], _map.floorsConfig);
+    // ADD POTION MAP
+    // addLevel(potions[0], potionConfig)
     // SELECTED MAP
     addLevel(_map.maps[0], _map.mapConfig);
     // ADD BACKGROUND
@@ -4823,10 +4869,18 @@ function CharacterMovement() {
             score: 0
         }
     ]);
-    // SELECTED MAP
+    // ADD TREASURE MAP
     addLevel(_map.treasures[0], _map.treasuresConfig);
-    // SELECTED MAP
+    // ADD ENVIRONMENT MAP
     addLevel(_map.environment[0], _map.environmentConfig);
+    // const sword = add([
+    //   pos(),
+    //   sprite("sword"),
+    //   origin("bot"),
+    //   rotate(0),
+    //   follow(faune, vec2(-4, 5)),
+    //   spin(),
+    // ])
     const kaboom1 = add([
         pos(width() * 0.5, height() * 0.5),
         sprite('kaboom'),
@@ -4853,16 +4907,12 @@ function CharacterMovement() {
                 "cute little game."
             ],
             [
-                "faune",
-                "What's that?"
+                "table-4",
+                "Collect all of the missing gemstones..."
             ],
             [
                 "table-4",
-                "Find all of the missing"
-            ],
-            [
-                "table-4",
-                "gemstones. Gl! :)"
+                "So it will bring light into our lives!"
             ], 
         ];
         let curDialog = 0;
@@ -4884,15 +4934,24 @@ function CharacterMovement() {
             pos(textbox.pos),
             origin("center")
         ]);
+        const txt2 = add([
+            text('Press space to continue the dialog...', {
+                size: 10,
+                width: width() - 300
+            }),
+            pos(center().x + 80, height() + 20),
+            origin("center")
+        ]);
         // Update the on screen sprite & text
         function updateDialog() {
             const [char, dialog] = dialogs[curDialog];
             txt.text = dialog;
         }
         onKeyPress("space", ()=>{
-            if (curDialog === 5) {
+            if (curDialog === 4) {
                 destroy(textbox);
                 destroy(txt);
+                destroy(txt2);
             }
             curDialog = (curDialog + 1) % dialogs.length;
             updateDialog();
@@ -5050,8 +5109,9 @@ function CharacterMovement() {
     // 	])
     // }
     // onKeyPress("space", () => {
-    // 	spawnBullet(faune.pos.sub(16, 0))
-    // 	spawnBullet(faune.pos.add(16, 0))
+    // spawnBullet(faune.pos.sub(16, 0))
+    // spawnBullet(faune.pos.add(16, 0))
+    // sword.spin()
     // })
     faune1.play('idle-down');
     faune1.action(()=>{
@@ -5096,9 +5156,26 @@ function createArrow(spriteName, key, x, y) {
     arrow.action(()=>{
         arrow.opacity = keyIsDown(key) ? 1 : 0.5;
     });
-}
+} // function spin() {
+ // 	let spinning = false
+ // 	return {
+ // 		id: "spin",
+ // 		update() {
+ // 			if (spinning) {
+ // 				this.angle += 1200 * dt()
+ // 				if (this.angle >= 360) {
+ // 					this.angle = 0
+ // 					spinning = false
+ // 				}
+ // 			}
+ // 		},
+ // 		spin() {
+ // 			spinning = true
+ // 		},
+ // 	}
+ // }
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","../kaboom":"h3uqb","../map/map":"1X5Ec","../utils/textFunctions":"knIhf","../utils/dialogFunction":"2of7M"}],"1X5Ec":[function(require,module,exports) {
+},{"../kaboom":"h3uqb","../map/map":"1X5Ec","../utils/textFunctions":"knIhf","../utils/dialogFunction":"2of7M","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1X5Ec":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "maps", ()=>maps
@@ -5846,108 +5923,48 @@ const potions = [
     ]
 ];
 const potionConfig = {
-    width: 32,
-    height: 32,
-    '1': ()=>[
-            sprite('potion-white'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
+    width: 16,
+    height: 16,
+    ' ': ()=>[
+            sprite("floor", {
+                frame: ~~rand(0, 8)
+            })
         ]
-    ,
-    '2': ()=>[
-            sprite('potion-blue'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '3': ()=>[
-            sprite('potion-brown'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '4': ()=>[
-            sprite('potion-purple'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '5': ()=>[
-            sprite('potion-orange'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '6': ()=>[
-            sprite('potion-beige'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '7': ()=>[
-            sprite('potion-green'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '8': ()=>[
-            sprite('potion-green'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '9': ()=>[
-            sprite('potion-green'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-    ,
-    '*': ()=>[
-            sprite('potion-green'),
-            area({
-                width: 10,
-                height: 10
-            }),
-            "potion",
-            scale(0.5)
-        ]
-};
+} // export const potionConfig = {
+ // 	width:32,
+ // 	height: 32,
+ //   '1': () =>  [
+ //     sprite('potion-white'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '2': () =>  [
+ //     sprite('potion-blue'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '3': () =>  [
+ //     sprite('potion-brown'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '4': () =>  [
+ //     sprite('potion-purple'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '5': () =>  [
+ //     sprite('potion-orange'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '6': () =>  [
+ //     sprite('potion-beige'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '7': () =>  [
+ //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '8': () =>  [
+ //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '9': () =>  [
+ //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ //   '*': () =>  [
+ //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
+ //   ],
+ // }
+;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"knIhf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -6034,11 +6051,6 @@ function gemText(f, g) {
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
 
-},{}],"1YSb8":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-var _kaboom = require("kaboom");
-var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
-
-},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
+},{}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
 
 //# sourceMappingURL=index.905f6534.js.map
