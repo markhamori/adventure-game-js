@@ -2,6 +2,7 @@ import k from "../kaboom";
 import { npcText, healthText, tableText, wallText, gemText } from "../utils/textFunctions";
 import { maps, mapConfig, potions, potionConfig, floors, floorsConfig, environment, environmentConfig, treasures, treasuresConfig } from "../map/map";
 import { updateDialog } from "../utils/dialogFunction";
+import { HappyEndScene } from "./FinalScene";
 
 export function GameScene() {
   layers(['bg', 'game', 'table', 'ui'], 'game')
@@ -38,7 +39,7 @@ export function GameScene() {
     {
       health: 100,
       speed: 2,
-      gems: 0,
+      gems: 10,
       score: 0
     }
   ])
@@ -57,6 +58,20 @@ export function GameScene() {
   //   follow(faune, vec2(-4, 5)),
   //   spin(),
   // ])
+
+  scene('happy-end-scene', HappyEndScene)
+
+  faune.onUpdate(() => {
+    if(faune.gems === 10 ) {
+      const endText = add([
+        text('Wow. Congratz! You did it!!!', {size: 15, font: 'sink'}),
+        origin('center'),
+      ])
+      wait(2, () => {
+        go("happy-end-scene", 1000)
+      })
+    }
+  })
 
   const kaboom = add([
     pos(width() * 0.5, height() * 0.5),
@@ -156,8 +171,12 @@ export function GameScene() {
     gemLabel.text = `GEMS: ${gemLabel.value}`,
     addScore(50),
     scoreLabel.value += 50,
-    scoreLabel.text = `SCORE: ${scoreLabel.value}`
-    destroy(gem)
+    scoreLabel.text = `SCORE: ${scoreLabel.value}`,
+    gem.scale = 0.75,
+    wait(2, () => {
+      gem.scale = 1,
+      destroy(gem)
+    })
   })
 
   // onCollide('faune', 'potion', (faune, potion) => {
@@ -286,11 +305,24 @@ export function GameScene() {
 	// 	])
 	// }
 
-  // onKeyPress("space", () => {
+  onKeyPress("space", () => {
 		// spawnBullet(faune.pos.sub(16, 0))
 		// spawnBullet(faune.pos.add(16, 0))
     // sword.spin()
-	// })
+    let interacted = false
+    every("chest", (c) => {
+      if (faune.isTouching(c)) {
+        if (c.opened) {
+          c.play("close")
+          c.opened = false
+        } else {
+          c.play("open")
+          c.opened = true
+        }
+        interacted = true
+      }
+    })
+	})
 
   faune.play('idle-down')
 

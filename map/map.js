@@ -13,7 +13,7 @@ export const maps = [
     'v7                            v',
     'v7           ]         ]      v',
     'v7                            v',
-    'v7--- ^  ^^^^   ^             v',
+    'v7--- ^   ^^^^   ^            v',
     'v                             v',
     'v                             v',
     'v8 ^      `           ` {{  ` v',
@@ -59,8 +59,8 @@ export const mapConfig = {
   '{': () =>  [sprite('mushroom-1')],
   '1': () =>  [sprite('grass-2')],
   '8': () =>  [sprite('bucket'), area({width: 28, height: 27}),origin('center'), solid(), 'wall'],
-  '7': () =>  [sprite('wood-pile'), area({width: 10, height: 10}), solid(), 'wall'],
-  'q': () =>  [sprite('wood-cut'), area({width: 10, height: 10}), solid(), 'wall'],
+  '7': () =>  [sprite('wood-pile'), area({width: 20, height: 20}), origin('center'), solid(), 'wall'],
+  'q': () =>  [sprite('wood-cut'), area({width: 20, height: 20}), origin('center'), solid(), 'wall'],
   'l': () =>  [sprite('teddy'), area(), 'teddy'],
   'k': () =>  [sprite('pumpkin'), area({width: 10, height: 10})],
 
@@ -165,16 +165,16 @@ export const environmentConfig = {
 	width:32,
 	height: 32,
   '1': () =>  [
-    sprite('tree-left-top-1'), area({width: 10, height: 10}), "tree"
+    sprite('tree-left-top-1'), area({width: 30, height: 30}), origin('center'), "tree"
   ],
   '2': () =>  [
-    sprite('tree-left-bottom-1'), area({width: 10, height: 10}), "tree"
+    sprite('tree-left-bottom-1'), area({width: 30, height: 30}), origin('center'), "tree"
   ],
   '3': () =>  [
-    sprite('tree-right-top-1'), area({width: 10, height: 10}), "tree"
+    sprite('tree-right-top-1'), area({width: 30, height: 30}), origin('center'), "tree"
   ],
   '4': () =>  [
-    sprite('tree-right-bottom-1'), area({width: 10, height: 10}), "tree"
+    sprite('tree-right-bottom-1'), area({width: 30, height: 30}), origin('center'), "tree"
   ],
   '5': () =>  [
     sprite('table-1'), "table"
@@ -229,6 +229,16 @@ export const environmentConfig = {
 export const treasures = [
   [
 	'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+  'v                       /     v',
+  'v *                        9  v',
+  'v                             v',
+  'v                   4         v',
+  'v     3                       v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                             v',
+  'v                  2          v',
   'v                             v',
   'v                             v',
   'v                             v',
@@ -236,28 +246,18 @@ export const treasures = [
   'v                             v',
   'v                             v',
   'v                             v',
+  'v           6                 v',
   'v                             v',
   'v                             v',
   'v                             v',
   'v                             v',
   'v                             v',
   'v                             v',
+  'v    1                    5   v',
   'v                             v',
+  'v              7              v',
   'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
-  'v                             v',
+  'v                  8          v',
   'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu',
   ]
 ]
@@ -266,34 +266,37 @@ export const treasuresConfig = {
 	width:32,
 	height: 32,
   '1': () =>  [
-    sprite('gem-1'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-1'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '2': () =>  [
-    sprite('gem-2'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-2'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '3': () =>  [
-    sprite('gem-3'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-3'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '4': () =>  [
-    sprite('gem-4'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-4'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '5': () =>  [
-    sprite('gem-5'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-5'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '6': () =>  [
-    sprite('gem-6'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-6'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '7': () =>  [
-    sprite('gem-7'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-7'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '8': () =>  [
-    sprite('gem-8'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-8'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '9': () =>  [
-    sprite('gem-9'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-9'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
   ],
   '*': () =>  [
-    sprite('gem-10'), area({width: 10, height: 10}), "gem", scale(0.5)
+    sprite('gem-10'), area({width: 10, height: 10}), "gem", origin('center'), scale(0.5)
+  ],
+  '/': () =>  [
+    sprite('chest'), area({width: 10, height: 10}), { opened: false, }, "chest", area(), solid(), scale(1.2)
   ],
 }
 

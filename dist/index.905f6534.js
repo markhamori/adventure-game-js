@@ -4772,26 +4772,43 @@ var _gameScene = require("./GameScene");
 scene('game-scene', _gameScene.GameScene);
 scene("menu-scene", ()=>{
     add([
-        sprite("menu-bg"),
-        scale(0.5)
+        rect(width() - 120, height()),
+        pos(60, 0),
+        color(100, 25, 35)
+    ]);
+    add([
+        rect(width() - 120, height() - 350),
+        pos(60, 60),
+        color(255, 255, 255),
+        opacity(0.25)
     ]);
     add([
         sprite("border"),
+        pos(65, 3),
         scale(0.2)
     ]);
     add([
-        text("Adventure game for Bibe <3"),
-        pos(50, 30),
-        scale(0.2), 
+        text("ADVENTURE GAME FOR BIBE <3", {
+            size: 12,
+            font: 'sink'
+        }),
+        pos(120, 80),
+        scale(1), 
     ]);
     add([
-        text("Creator: Mark(Bibe)"),
-        pos(80, 420),
-        scale(0.2), 
+        text("Creator: Mark(Bibe)", {
+            size: 12,
+            font: 'sink'
+        }),
+        pos(150, 380),
+        scale(1), 
     ]);
     function addButton(txt, p, f) {
         const startBtn = add([
-            text(txt),
+            text(txt, {
+                size: 16,
+                font: 'sink'
+            }),
             pos(p),
             area({
                 cursor: "pointer"
@@ -4802,7 +4819,7 @@ scene("menu-scene", ()=>{
         startBtn.onClick(f);
         startBtn.onUpdate(()=>{
             if (startBtn.isHovering()) {
-                const t = time() * 10;
+                const t = time() * 1;
                 startBtn.color = rgb(wave(0, 255, t), wave(0, 255, t + 2), wave(0, 255, t + 4));
                 startBtn.scale = vec2(1.1);
             } else {
@@ -4811,11 +4828,12 @@ scene("menu-scene", ()=>{
             }
         });
     }
-    addButton("Start", vec2(170, 150), ()=>go('game-scene')
-    );
+    addButton("START", vec2(240, 150), ()=>{
+        go('game-scene');
+    });
 });
 
-},{"kaboom":"larQu","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./GameScene":"62fr6"}],"62fr6":[function(require,module,exports) {
+},{"kaboom":"larQu","./GameScene":"62fr6","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"62fr6":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "GameScene", ()=>GameScene
@@ -4825,6 +4843,7 @@ var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _textFunctions = require("../utils/textFunctions");
 var _map = require("../map/map");
 var _dialogFunction = require("../utils/dialogFunction");
+var _finalScene = require("./FinalScene");
 function GameScene() {
     layers([
         'bg',
@@ -4865,7 +4884,7 @@ function GameScene() {
         {
             health: 100,
             speed: 2,
-            gems: 0,
+            gems: 10,
             score: 0
         }
     ]);
@@ -4881,6 +4900,21 @@ function GameScene() {
     //   follow(faune, vec2(-4, 5)),
     //   spin(),
     // ])
+    scene('happy-end-scene', _finalScene.HappyEndScene);
+    faune1.onUpdate(()=>{
+        if (faune1.gems === 10) {
+            const endText = add([
+                text('Wow. Congratz! You did it!!!', {
+                    size: 15,
+                    font: 'sink'
+                }),
+                origin('center'), 
+            ]);
+            wait(2, ()=>{
+                go("happy-end-scene", 1000);
+            });
+        }
+    });
     const kaboom1 = add([
         pos(width() * 0.5, height() * 0.5),
         sprite('kaboom'),
@@ -4986,8 +5020,9 @@ function GameScene() {
         scoreLabel.text = `SCORE: ${scoreLabel.value}`;
     });
     onCollide('faune', 'gem', (faune, gem)=>{
-        updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`;
-        destroy(gem);
+        updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`, gem.scale = 0.75, wait(2, ()=>{
+            gem.scale = 1, destroy(gem);
+        });
     });
     // onCollide('faune', 'potion', (faune, potion) => {
     //   updatePlayerHealth(POTION_HEAL)
@@ -5108,11 +5143,24 @@ function GameScene() {
     // 		"bullet",
     // 	])
     // }
-    // onKeyPress("space", () => {
-    // spawnBullet(faune.pos.sub(16, 0))
-    // spawnBullet(faune.pos.add(16, 0))
-    // sword.spin()
-    // })
+    onKeyPress("space", ()=>{
+        // spawnBullet(faune.pos.sub(16, 0))
+        // spawnBullet(faune.pos.add(16, 0))
+        // sword.spin()
+        let interacted = false;
+        every("chest", (c)=>{
+            if (faune1.isTouching(c)) {
+                if (c.opened) {
+                    c.play("close");
+                    c.opened = false;
+                } else {
+                    c.play("open");
+                    c.opened = true;
+                }
+                interacted = true;
+            }
+        });
+    });
     faune1.play('idle-down');
     faune1.action(()=>{
         const left = isKeyDown('left');
@@ -5175,7 +5223,90 @@ function createArrow(spriteName, key, x, y) {
  // 	}
  // }
 
-},{"../kaboom":"h3uqb","../map/map":"1X5Ec","../utils/textFunctions":"knIhf","../utils/dialogFunction":"2of7M","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1X5Ec":[function(require,module,exports) {
+},{"../kaboom":"h3uqb","../utils/textFunctions":"knIhf","../map/map":"1X5Ec","../utils/dialogFunction":"2of7M","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./FinalScene":"9kvUm"}],"knIhf":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "npcText", ()=>npcText
+);
+parcelHelpers.export(exports, "healthText", ()=>healthText
+);
+parcelHelpers.export(exports, "tableText", ()=>tableText
+);
+parcelHelpers.export(exports, "wallText", ()=>wallText
+);
+parcelHelpers.export(exports, "gemText", ()=>gemText
+);
+function npcText(t, c, p) {
+    const obj = add([
+        text(t, {
+            size: 8,
+            font: "sink",
+            width: 100
+        }),
+        color(255, 255, 255),
+        outline(2),
+        pos(p.pos), 
+    ]);
+    wait(4, ()=>{
+        destroy(obj);
+    });
+}
+function healthText(h, c) {
+    const obj = add([
+        text(`+${h}`, {
+            size: 8,
+            font: "sink"
+        }),
+        pos(width() - 360, height() - 50),
+        color(0, 255, 0),
+        layer('ui'),
+        fixed()
+    ]);
+    wait(2, ()=>{
+        destroy(obj);
+    });
+}
+function tableText(m, t) {
+    const obj = add([
+        text(m, {
+            size: 8,
+            font: "sink"
+        }),
+        pos(t.pos),
+        color(0, 255, 0), 
+    ]);
+    wait(5, ()=>{
+        destroy(obj);
+    });
+}
+function wallText(f) {
+    const obj = add([
+        text('WALL', {
+            size: 6,
+            font: "sink"
+        }),
+        pos(f.pos)
+    ]);
+    wait(1, ()=>{
+        destroy(obj);
+    });
+}
+function gemText(f, g) {
+    const obj = add([
+        text('YOU FOUND A GEM', {
+            size: 6,
+            font: "sink",
+            width: 10
+        }),
+        pos(f.pos),
+        color(255, 255, 255)
+    ]);
+    wait(1, ()=>{
+        destroy(obj);
+    });
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"1X5Ec":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "maps", ()=>maps
@@ -5213,7 +5344,7 @@ const maps = [
         'v7                            v',
         'v7           ]         ]      v',
         'v7                            v',
-        'v7--- ^  ^^^^   ^             v',
+        'v7--- ^   ^^^^   ^            v',
         'v                             v',
         'v                             v',
         'v8 ^      `           ` {{  ` v',
@@ -5420,9 +5551,10 @@ const mapConfig = {
     '7': ()=>[
             sprite('wood-pile'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5430,9 +5562,10 @@ const mapConfig = {
     'q': ()=>[
             sprite('wood-cut'),
             area({
-                width: 10,
-                height: 10
+                width: 20,
+                height: 20
             }),
+            origin('center'),
             solid(),
             'wall'
         ]
@@ -5557,36 +5690,40 @@ const environmentConfig = {
     '1': ()=>[
             sprite('tree-left-top-1'),
             area({
-                width: 10,
-                height: 10
+                width: 30,
+                height: 30
             }),
+            origin('center'),
             "tree"
         ]
     ,
     '2': ()=>[
             sprite('tree-left-bottom-1'),
             area({
-                width: 10,
-                height: 10
+                width: 30,
+                height: 30
             }),
+            origin('center'),
             "tree"
         ]
     ,
     '3': ()=>[
             sprite('tree-right-top-1'),
             area({
-                width: 10,
-                height: 10
+                width: 30,
+                height: 30
             }),
+            origin('center'),
             "tree"
         ]
     ,
     '4': ()=>[
             sprite('tree-right-bottom-1'),
             area({
-                width: 10,
-                height: 10
+                width: 30,
+                height: 30
             }),
+            origin('center'),
             "tree"
         ]
     ,
@@ -5752,6 +5889,16 @@ const environmentConfig = {
 const treasures = [
     [
         'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
+        'v                       /     v',
+        'v *                        9  v',
+        'v                             v',
+        'v                   4         v',
+        'v     3                       v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                             v',
+        'v                  2          v',
         'v                             v',
         'v                             v',
         'v                             v',
@@ -5759,28 +5906,18 @@ const treasures = [
         'v                             v',
         'v                             v',
         'v                             v',
+        'v           6                 v',
         'v                             v',
         'v                             v',
         'v                             v',
         'v                             v',
         'v                             v',
         'v                             v',
+        'v    1                    5   v',
         'v                             v',
+        'v              7              v',
         'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
+        'v                  8          v',
         'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
     ]
 ];
@@ -5794,6 +5931,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5804,6 +5942,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5814,6 +5953,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5824,6 +5964,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5834,6 +5975,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5844,6 +5986,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5854,6 +5997,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5864,6 +6008,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5874,6 +6019,7 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
         ]
     ,
@@ -5884,7 +6030,23 @@ const treasuresConfig = {
                 height: 10
             }),
             "gem",
+            origin('center'),
             scale(0.5)
+        ]
+    ,
+    '/': ()=>[
+            sprite('chest'),
+            area({
+                width: 10,
+                height: 10
+            }),
+            {
+                opened: false
+            },
+            "chest",
+            area(),
+            solid(),
+            scale(1.2)
         ]
 };
 const potions = [
@@ -5966,91 +6128,26 @@ const potionConfig = {
  // }
 ;
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"knIhf":[function(require,module,exports) {
-var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
-parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "npcText", ()=>npcText
-);
-parcelHelpers.export(exports, "healthText", ()=>healthText
-);
-parcelHelpers.export(exports, "tableText", ()=>tableText
-);
-parcelHelpers.export(exports, "wallText", ()=>wallText
-);
-parcelHelpers.export(exports, "gemText", ()=>gemText
-);
-function npcText(t, c, p) {
-    const obj = add([
-        text(t, {
-            size: 8,
-            font: "sink",
-            width: 100
-        }),
-        color(255, 255, 255),
-        outline(2),
-        pos(p.pos), 
-    ]);
-    wait(4, ()=>{
-        destroy(obj);
-    });
-}
-function healthText(h, c) {
-    const obj = add([
-        text(`+${h}`, {
-            size: 8,
-            font: "sink"
-        }),
-        pos(width() - 360, height() - 50),
-        color(0, 255, 0),
-        layer('ui'),
-        fixed()
-    ]);
-    wait(2, ()=>{
-        destroy(obj);
-    });
-}
-function tableText(m, t) {
-    const obj = add([
-        text(m, {
-            size: 8,
-            font: "sink"
-        }),
-        pos(t.pos),
-        color(0, 255, 0), 
-    ]);
-    wait(5, ()=>{
-        destroy(obj);
-    });
-}
-function wallText(f) {
-    const obj = add([
-        text('WALL', {
-            size: 6,
-            font: "sink"
-        }),
-        pos(f.pos)
-    ]);
-    wait(1, ()=>{
-        destroy(obj);
-    });
-}
-function gemText(f, g) {
-    const obj = add([
-        text('YOU FOUND A GEM', {
-            size: 6,
-            font: "sink",
-            width: 10
-        }),
-        pos(f.pos),
-        color(255, 255, 255)
-    ]);
-    wait(1, ()=>{
-        destroy(obj);
-    });
-}
-
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
 
-},{}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
+},{}],"9kvUm":[function(require,module,exports) {
+var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
+parcelHelpers.defineInteropFlag(exports);
+parcelHelpers.export(exports, "HappyEndScene", ()=>HappyEndScene
+);
+function HappyEndScene() {
+    add([
+        text('Will you marry me? Hozzám jössz feleségül?', {
+            size: 16,
+            font: 'sinko',
+            width: 260
+        }),
+        color(255, 255, 255),
+        origin('center'),
+        pos(width() / 2, height() / 2), 
+    ]);
+}
+
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
 
 //# sourceMappingURL=index.905f6534.js.map
