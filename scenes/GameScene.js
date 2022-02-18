@@ -63,13 +63,7 @@ export function GameScene() {
 
   faune.onUpdate(() => {
     if(faune.gems === 10 ) {
-      const endText = add([
-        text('Wow. Congratz! You did it!!!', {size: 15, font: 'sink'}),
-        origin('center'),
-      ])
-      wait(2, () => {
         go("happy-end-scene", 1000)
-      })
     }
   })
 
@@ -173,10 +167,7 @@ export function GameScene() {
     scoreLabel.value += 50,
     scoreLabel.text = `SCORE: ${scoreLabel.value}`,
     gem.scale = 0.75,
-    wait(2, () => {
-      gem.scale = 1,
-      destroy(gem)
-    })
+    destroy(gem)
   })
 
   // onCollide('faune', 'potion', (faune, potion) => {

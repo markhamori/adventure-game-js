@@ -4902,18 +4902,7 @@ function GameScene() {
     // ])
     scene('happy-end-scene', _finalScene.HappyEndScene);
     faune1.onUpdate(()=>{
-        if (faune1.gems === 10) {
-            const endText = add([
-                text('Wow. Congratz! You did it!!!', {
-                    size: 15,
-                    font: 'sink'
-                }),
-                origin('center'), 
-            ]);
-            wait(2, ()=>{
-                go("happy-end-scene", 1000);
-            });
-        }
+        if (faune1.gems === 10) go("happy-end-scene", 1000);
     });
     const kaboom1 = add([
         pos(width() * 0.5, height() * 0.5),
@@ -5020,9 +5009,7 @@ function GameScene() {
         scoreLabel.text = `SCORE: ${scoreLabel.value}`;
     });
     onCollide('faune', 'gem', (faune, gem)=>{
-        updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`, gem.scale = 0.75, wait(2, ()=>{
-            gem.scale = 1, destroy(gem);
-        });
+        updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`, gem.scale = 0.75, destroy(gem);
     });
     // onCollide('faune', 'potion', (faune, potion) => {
     //   updatePlayerHealth(POTION_HEAL)
@@ -6136,16 +6123,59 @@ parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "HappyEndScene", ()=>HappyEndScene
 );
 function HappyEndScene() {
-    add([
-        text('Will you marry me? Hozzám jössz feleségül?', {
-            size: 16,
+    const firstTxt = add([
+        text('You found all of the gemstones!', {
+            size: 22,
             font: 'sinko',
-            width: 260
+            width: 300
         }),
         color(255, 255, 255),
         origin('center'),
         pos(width() / 2, height() / 2), 
     ]);
+    wait(4, ()=>{
+        destroy(firstTxt);
+        const secondTxt = add([
+            text('1234', {
+                size: 22,
+                font: 'sinko',
+                width: 300
+            }),
+            color(255, 255, 255),
+            origin('center'),
+            pos(width() / 2, height() / 2), 
+        ]);
+        wait(4, ()=>{
+            destroy(secondTxt);
+        });
+    });
+    wait(8, ()=>{
+        const thirdTxt = add([
+            text('5678', {
+                size: 22,
+                font: 'sinko',
+                width: 300
+            }),
+            color(255, 255, 255),
+            origin('center'),
+            pos(width() / 2, height() / 2), 
+        ]);
+        wait(4, ()=>{
+            destroy(thirdTxt);
+        });
+    });
+    wait(12, ()=>{
+        const fourthTxt = add([
+            text('Will you marry me?', {
+                size: 22,
+                font: 'sinko',
+                width: 300
+            }),
+            color(255, 255, 255),
+            origin('center'),
+            pos(width() / 2, height() / 2), 
+        ]);
+    });
 }
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["g5aBM","5JiMD"], "5JiMD", "parcelRequireb82c")
