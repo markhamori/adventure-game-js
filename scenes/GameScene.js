@@ -7,26 +7,18 @@ import { HappyEndScene } from "./FinalScene";
 export function GameScene() {
   layers(['bg', 'game', 'table', 'ui'], 'game')
 
-  // debug.inspect = true
-
-  //  DAMAGES, HEALS
-  const WALL_DAMAGE = -5;
-  const SPIKE = -5;
-  const POTION_HEAL = 15;
+  // INIT VARS
+  let curDialog = 0
 
   // ADD FLOORS - TILES
   addLevel(floors[0], floorsConfig)
 
-  // ADD POTION MAP
-  // addLevel(potions[0], potionConfig)
-
-  // SELECTED MAP
+  // SELECT CURRENT MAP
   addLevel(maps[0], mapConfig)
   
   // ADD BACKGROUND
   add([sprite('bg'), layer('bg')])
  
-
   // ADD PLAYER
   const faune = add([
     sprite('faune'),
@@ -49,24 +41,23 @@ export function GameScene() {
 
   // ADD ENVIRONMENT MAP
   addLevel(environment[0], environmentConfig)
-
-  // const sword = add([
-  //   pos(),
-  //   sprite("sword"),
-  //   origin("bot"),
-  //   rotate(0),
-  //   follow(faune, vec2(-4, 5)),
-  //   spin(),
-  // ])
-
+  
+  // ADD FINAL SCENE
   scene('happy-end-scene', HappyEndScene)
 
+  // WHEN PLAYER REACH THE MAX GEMS - GO TO END SCENE
   faune.onUpdate(() => {
     if(faune.gems === 10 ) {
         go("happy-end-scene", 1000)
     }
   })
 
+  // CAM POSITION
+  faune.onUpdate(() => {
+    camPos(faune.pos)
+  })
+
+  // TEST KABOOM - IT GIVES SPEED
   const kaboom = add([
     pos(width() * 0.5, height() * 0.5),
     sprite('kaboom'),
@@ -76,6 +67,7 @@ export function GameScene() {
     'kaboom'
   ])
 
+  // COLLIDE - FAUNE - TABLE
   onCollide("faune", "table", (faune, table) => {
     const dialogs = [
       [ "table-4", "Hi Bibe!" ],
@@ -84,9 +76,8 @@ export function GameScene() {
       [ "table-4", "Collect all of the missing gemstones..." ],
       [ "table-4", "1337" ],
     ]
-    let curDialog = 0
 
-    // Text bubble
+    // TABLE TEXT INTERACTION
     const textbox = add([
       rect(width() - 300, 100, { radius: 16 }),
       origin("center"),
@@ -94,26 +85,21 @@ export function GameScene() {
       outline(2),
     ])
 
-    // Text
+    // TABLE TEXT INTERACTION
     const txt = add([
       text("Hi Bibe!", { size: 16, width: width() - 300 }),
       pos(textbox.pos),
       origin("center")
     ])
 
+    // TABLE TEXT INTERACTION
     const txt2 = add([
       text('Press space to continue the dialog...', {size: 10, width: width() - 300}),
       pos(center().x + 80, height() + 20),
       origin("center")
     ])
-
-    // Update the on screen sprite & text
-    function updateDialog() {
-      const [ char, dialog ] = dialogs[curDialog]
-      txt.text = dialog
-      txt2
-    }
     
+    // TABLE TEXT INTERACTION
     onKeyPress("space", () => {
       if (curDialog === 4) {
         destroy(textbox)
@@ -123,17 +109,22 @@ export function GameScene() {
       curDialog = (curDialog + 1) % dialogs.length
       updateDialog()
     })
+
+    // TABLE TEXT FUNCTION
+    function updateDialog() {
+      const [ char, dialog ] = dialogs[curDialog]
+      txt.text = dialog
+      txt2
+    }
   });
 
+  // COLLIDE - FAUNE - TEST KABOOM
   onCollide("faune", "kaboom", (faune, kaboom) => {
     destroy(kaboom)
     faune.speed = 5
   });
 
-  faune.onUpdate(() => {
-    camPos(faune.pos)
-  })
-
+  // COLLIDE - FAUNE - TREE 
   onCollide("faune", "tree", (faune, tree) => {
     tree.opacity = 0.5
     wait(3, () => {
@@ -141,12 +132,14 @@ export function GameScene() {
     })
   });
 
+  // COLLIDE - FAUNE - TEDDY 
   onCollide("faune", "teddy", (faune, teddy) => {
     npcText('OMG, SO CUTE! ♥', "125,55,255" , teddy)
     scoreLabel.value += 10
     scoreLabel.text = `SCORE: ${scoreLabel.value}`
   });
 
+  // COLLIDE - FAUNE - GEMS
   onCollide('faune', 'gem', (faune, gem) => {
     const gemText = add([
       text('+1', {size: 10, font: 'sink'}),
@@ -165,7 +158,7 @@ export function GameScene() {
     })
   })
   
-  // ADD UI
+  // USER INTERFACE LABELS
   const scoreLabel = add([
     text('SCORE: 0', { size: 5, font: "sink"}),
     pos(width() - 200, height() - 40),
@@ -222,6 +215,7 @@ export function GameScene() {
     fixed()
   ]) 
 
+  // UI FUNCTIONS
   function updateGemQty(gem, score){
     faune.gems += gem;
   }
@@ -242,6 +236,7 @@ export function GameScene() {
     else healthBar.color = rgb(0,255,0);
   }
 
+  // CHEST INTERACTION
   onKeyPress("space", () => {
     let interacted = false
     every("chest", (c) => {
@@ -258,6 +253,7 @@ export function GameScene() {
     })
 	})
 
+  // FAUNE ACTIONS
   faune.play('idle-down')
 
   faune.action(() => {
@@ -318,6 +314,7 @@ export function GameScene() {
   createArrow('arrow-right', 'right', width() - 50, height() - 55)
 }
 
+// KEYBOARD ARROW ACTIONS
 function createArrow(spriteName, key, x, y) {
   const arrow = add([
     pos(x,y),
@@ -331,22 +328,3 @@ function createArrow(spriteName, key, x, y) {
     arrow.opacity = keyIsDown(key) ? 1 : 0.5
   })
 }
-
-// function spin() {
-// 	let spinning = false
-// 	return {
-// 		id: "spin",
-// 		update() {
-// 			if (spinning) {
-// 				this.angle += 1200 * dt()
-// 				if (this.angle >= 360) {
-// 					this.angle = 0
-// 					spinning = false
-// 				}
-// 			}
-// 		},
-// 		spin() {
-// 			spinning = true
-// 		},
-// 	}
-// }

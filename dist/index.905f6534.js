@@ -4851,16 +4851,11 @@ function GameScene() {
         'table',
         'ui'
     ], 'game');
-    // debug.inspect = true
-    //  DAMAGES, HEALS
-    const WALL_DAMAGE = -5;
-    const SPIKE = -5;
-    const POTION_HEAL = 15;
+    // INIT VARS
+    let curDialog = 0;
     // ADD FLOORS - TILES
     addLevel(_map.floors[0], _map.floorsConfig);
-    // ADD POTION MAP
-    // addLevel(potions[0], potionConfig)
-    // SELECTED MAP
+    // SELECT CURRENT MAP
     addLevel(_map.maps[0], _map.mapConfig);
     // ADD BACKGROUND
     add([
@@ -4892,18 +4887,17 @@ function GameScene() {
     addLevel(_map.treasures[0], _map.treasuresConfig);
     // ADD ENVIRONMENT MAP
     addLevel(_map.environment[0], _map.environmentConfig);
-    // const sword = add([
-    //   pos(),
-    //   sprite("sword"),
-    //   origin("bot"),
-    //   rotate(0),
-    //   follow(faune, vec2(-4, 5)),
-    //   spin(),
-    // ])
+    // ADD FINAL SCENE
     scene('happy-end-scene', _finalScene.HappyEndScene);
+    // WHEN PLAYER REACH THE MAX GEMS - GO TO END SCENE
     faune1.onUpdate(()=>{
         if (faune1.gems === 10) go("happy-end-scene", 1000);
     });
+    // CAM POSITION
+    faune1.onUpdate(()=>{
+        camPos(faune1.pos);
+    });
+    // TEST KABOOM - IT GIVES SPEED
     const kaboom1 = add([
         pos(width() * 0.5, height() * 0.5),
         sprite('kaboom'),
@@ -4915,6 +4909,7 @@ function GameScene() {
         scale(0.5),
         'kaboom'
     ]);
+    // COLLIDE - FAUNE - TABLE
     onCollide("faune", "table", (faune, table)=>{
         const dialogs = [
             [
@@ -4938,8 +4933,7 @@ function GameScene() {
                 "1337"
             ], 
         ];
-        let curDialog = 0;
-        // Text bubble
+        // TABLE TEXT INTERACTION
         const textbox = add([
             rect(width() - 300, 100, {
                 radius: 16
@@ -4948,7 +4942,7 @@ function GameScene() {
             pos(center().x + 80, height() - 50),
             outline(2), 
         ]);
-        // Text
+        // TABLE TEXT INTERACTION
         const txt = add([
             text("Hi Bibe!", {
                 size: 16,
@@ -4957,6 +4951,7 @@ function GameScene() {
             pos(textbox.pos),
             origin("center")
         ]);
+        // TABLE TEXT INTERACTION
         const txt2 = add([
             text('Press space to continue the dialog...', {
                 size: 10,
@@ -4965,11 +4960,7 @@ function GameScene() {
             pos(center().x + 80, height() + 20),
             origin("center")
         ]);
-        // Update the on screen sprite & text
-        function updateDialog() {
-            const [char, dialog] = dialogs[curDialog];
-            txt.text = dialog;
-        }
+        // TABLE TEXT INTERACTION
         onKeyPress("space", ()=>{
             if (curDialog === 4) {
                 destroy(textbox);
@@ -4979,25 +4970,31 @@ function GameScene() {
             curDialog = (curDialog + 1) % dialogs.length;
             updateDialog();
         });
+        // TABLE TEXT FUNCTION
+        function updateDialog() {
+            const [char, dialog] = dialogs[curDialog];
+            txt.text = dialog;
+        }
     });
+    // COLLIDE - FAUNE - TEST KABOOM
     onCollide("faune", "kaboom", (faune, kaboom)=>{
         destroy(kaboom);
         faune.speed = 5;
     });
-    faune1.onUpdate(()=>{
-        camPos(faune1.pos);
-    });
+    // COLLIDE - FAUNE - TREE 
     onCollide("faune", "tree", (faune, tree)=>{
         tree.opacity = 0.5;
         wait(3, ()=>{
             tree.opacity = 1;
         });
     });
+    // COLLIDE - FAUNE - TEDDY 
     onCollide("faune", "teddy", (faune, teddy)=>{
         _textFunctions.npcText('OMG, SO CUTE! ♥', "125,55,255", teddy);
         scoreLabel.value += 10;
         scoreLabel.text = `SCORE: ${scoreLabel.value}`;
     });
+    // COLLIDE - FAUNE - GEMS
     onCollide('faune', 'gem', (faune, gem)=>{
         const gemText = add([
             text('+1', {
@@ -5011,7 +5008,7 @@ function GameScene() {
             destroy(gemText);
         });
     });
-    // ADD UI
+    // USER INTERFACE LABELS
     const scoreLabel = add([
         text('SCORE: 0', {
             size: 5,
@@ -5071,6 +5068,7 @@ function GameScene() {
         scale(2),
         fixed()
     ]);
+    // UI FUNCTIONS
     function updateGemQty(gem, score) {
         faune1.gems += gem;
     }
@@ -5086,6 +5084,7 @@ function GameScene() {
         else if (faune1.health < 50) healthBar.color = rgb(255, 127, 0);
         else healthBar.color = rgb(0, 255, 0);
     }
+    // CHEST INTERACTION
     onKeyPress("space", ()=>{
         let interacted = false;
         every("chest", (c)=>{
@@ -5101,6 +5100,7 @@ function GameScene() {
             }
         });
     });
+    // FAUNE ACTIONS
     faune1.play('idle-down');
     faune1.action(()=>{
         const left = isKeyDown('left');
@@ -5133,6 +5133,7 @@ function GameScene() {
     createArrow('arrow-left', 'left', width() - 110, height() - 55);
     createArrow('arrow-right', 'right', width() - 50, height() - 55);
 }
+// KEYBOARD ARROW ACTIONS
 function createArrow(spriteName, key, x, y) {
     const arrow = add([
         pos(x, y),
@@ -5144,24 +5145,7 @@ function createArrow(spriteName, key, x, y) {
     arrow.action(()=>{
         arrow.opacity = keyIsDown(key) ? 1 : 0.5;
     });
-} // function spin() {
- // 	let spinning = false
- // 	return {
- // 		id: "spin",
- // 		update() {
- // 			if (spinning) {
- // 				this.angle += 1200 * dt()
- // 				if (this.angle >= 360) {
- // 					this.angle = 0
- // 					spinning = false
- // 				}
- // 			}
- // 		},
- // 		spin() {
- // 			spinning = true
- // 		},
- // 	}
- // }
+}
 
 },{"../kaboom":"h3uqb","../utils/textFunctions":"knIhf","../map/map":"1X5Ec","../utils/dialogFunction":"2of7M","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./FinalScene":"9kvUm"}],"knIhf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
@@ -5264,10 +5248,6 @@ parcelHelpers.export(exports, "environmentConfig", ()=>environmentConfig
 parcelHelpers.export(exports, "treasures", ()=>treasures
 );
 parcelHelpers.export(exports, "treasuresConfig", ()=>treasuresConfig
-);
-parcelHelpers.export(exports, "potions", ()=>potions
-);
-parcelHelpers.export(exports, "potionConfig", ()=>potionConfig
 );
 const maps = [
     [
@@ -5989,50 +5969,6 @@ const treasuresConfig = {
             scale(1.2)
         ]
 };
-const potions = [
-    [
-        'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-        'v     2                       v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                3            v',
-        'v                             v',
-        'v                        2    v',
-        'v    6      4                 v',
-        'v                      7      v',
-        'v                             v',
-        'v                 5           v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
-    ]
-];
-const potionConfig = {
-    width: 16,
-    height: 16,
-    ' ': ()=>[
-            sprite("floor", {
-                frame: ~~rand(0, 8)
-            })
-        ]
-};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
 
@@ -6052,10 +5988,10 @@ function HappyEndScene() {
         origin('center'),
         pos(width() / 2, height() / 2), 
     ]);
-    wait(4, ()=>{
+    wait(5, ()=>{
         destroy(firstTxt);
         const secondTxt = add([
-            text('1234', {
+            text('Na jo. Mar lehet kozben kitalaltad "mire megy ki a jatek" :D', {
                 size: 22,
                 font: 'sinko',
                 width: 300
@@ -6064,13 +6000,13 @@ function HappyEndScene() {
             origin('center'),
             pos(width() / 2, height() / 2), 
         ]);
-        wait(4, ()=>{
+        wait(5, ()=>{
             destroy(secondTxt);
         });
     });
     wait(8, ()=>{
         const thirdTxt = add([
-            text('5678', {
+            text('Mondjuk remenykedem, hogy megsem, es tenyleg meglepeteskent er ez az egesz', {
                 size: 22,
                 font: 'sinko',
                 width: 300
@@ -6079,13 +6015,28 @@ function HappyEndScene() {
             origin('center'),
             pos(width() / 2, height() / 2), 
         ]);
-        wait(4, ()=>{
+        wait(5, ()=>{
             destroy(thirdTxt);
         });
     });
     wait(12, ()=>{
         const fourthTxt = add([
-            text('Will you marry me?', {
+            text('Meg persze akkora boldogsaggal, mint amekkora izgatottsaggal raktam ossze ezt neked...', {
+                size: 22,
+                font: 'sinko',
+                width: 300
+            }),
+            color(255, 255, 255),
+            origin('center'),
+            pos(width() / 2, height() / 2), 
+        ]);
+        wait(5, ()=>{
+            destroy(fourthTxt);
+        });
+    });
+    wait(16, ()=>{
+        const fifthText = add([
+            text('Hozzam jossz felesegul? ♥', {
                 size: 22,
                 font: 'sinko',
                 width: 300
