@@ -26,7 +26,7 @@ scene("menu-scene", () => {
   ])
 
 	add([
-		text("ADVENTURE GAME FOR BIBE <3", {size: 12, font: 'sink'}),
+		text("ADVENTURE GAME FOR BIBE ♥", {size: 12, font: 'sink'}),
 		pos(120, 80),
 		scale(1),
 	]);

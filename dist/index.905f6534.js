@@ -530,7 +530,7 @@ loadSprite('arrow-down', 'https://i.imgur.com/MaIRmau.png');
 loadSprite('arrow-left', 'https://i.imgur.com/EjWmZs8.png');
 loadSprite('arrow-right', 'https://i.imgur.com/GeZiBRT.png');
 // Character load
-loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
+loadSpriteAtlas('https://i.imgur.com/ilrhTPm.png', {
     'faune': {
         x: 0,
         y: 0,
@@ -4788,7 +4788,7 @@ scene("menu-scene", ()=>{
         scale(0.2)
     ]);
     add([
-        text("ADVENTURE GAME FOR BIBE <3", {
+        text("ADVENTURE GAME FOR BIBE ♥", {
             size: 12,
             font: 'sink'
         }),
@@ -4884,7 +4884,7 @@ function GameScene() {
         {
             health: 100,
             speed: 2,
-            gems: 10,
+            gems: 0,
             score: 0
         }
     ]);
@@ -4923,11 +4923,11 @@ function GameScene() {
             ],
             [
                 "table-4",
-                "You have one task in this"
+                "You have one easy task"
             ],
             [
                 "table-4",
-                "cute little game."
+                "in this little rpg game"
             ],
             [
                 "table-4",
@@ -4935,7 +4935,7 @@ function GameScene() {
             ],
             [
                 "table-4",
-                "So it will bring light into our lives!"
+                "1337"
             ], 
         ];
         let curDialog = 0;
@@ -4987,44 +4987,30 @@ function GameScene() {
     faune1.onUpdate(()=>{
         camPos(faune1.pos);
     });
-    onCollide("faune", "wall", (faune, wall)=>{
-        // run_action = false;
-        // destroy(faune)
-        updatePlayerHealth(WALL_DAMAGE);
-    });
     onCollide("faune", "tree", (faune, tree)=>{
         tree.opacity = 0.5;
         wait(3, ()=>{
             tree.opacity = 1;
         });
     });
-    onCollide("faune", "wall", (faune, wall)=>{
-        // run_action = false;
-        _textFunctions.wallText(faune);
-    });
     onCollide("faune", "teddy", (faune, teddy)=>{
-        // run_action = false;
         _textFunctions.npcText('OMG, SO CUTE! ♥', "125,55,255", teddy);
         scoreLabel.value += 10;
         scoreLabel.text = `SCORE: ${scoreLabel.value}`;
     });
     onCollide('faune', 'gem', (faune, gem)=>{
+        const gemText = add([
+            text('+1', {
+                size: 10,
+                font: 'sink'
+            }),
+            pos(gem.pos), 
+        ]);
         updateGemQty(1), gemLabel.value += 1, gemLabel.text = `GEMS: ${gemLabel.value}`, addScore(50), scoreLabel.value += 50, scoreLabel.text = `SCORE: ${scoreLabel.value}`, gem.scale = 0.75, destroy(gem);
+        wait(4, ()=>{
+            destroy(gemText);
+        });
     });
-    // onCollide('faune', 'potion', (faune, potion) => {
-    //   updatePlayerHealth(POTION_HEAL)
-    //   destroy(potion)
-    //   healthText(POTION_HEAL, "127,255,0")
-    // })
-    // onUpdate('faune', (f) => {
-    //   add([
-    //     text(faune.health, { size: 8, font: "sink"}),
-    //     pos(width() - 350, height() - 35),
-    //     origin("center"),
-    //     layer("ui"),
-    //     fixed()
-    //   ]);
-    // })
     // ADD UI
     const scoreLabel = add([
         text('SCORE: 0', {
@@ -5099,41 +5085,8 @@ function GameScene() {
         if (faune1.health < 20) healthBar.color = rgb(255, 0, 0);
         else if (faune1.health < 50) healthBar.color = rgb(255, 127, 0);
         else healthBar.color = rgb(0, 255, 0);
-    // if (faune.health <=0){
-    //     destroy(faune);
-    //     for (let i = 0; i < 500; i++) {
-    //         wait(0.01 *i, ()=>{
-    //             makeExplosion(vec2(rand(0,MAP_WIDTH,), rand(0, MAP_HEIGHT)), 5, 10, 10);
-    //             play("explosion", {
-    //                 detune: rand(-1200, 1200)
-    //             });
-    //         });
-    //     }
-    //     wait(2, ()=>{
-    //         go("endGame");
-    //     });
-    // }
     }
-    // ******************************* CREATE BULLET
-    // const BULLET_SPEED = 500
-    // function spawnBullet(p) {
-    // 	add([
-    // 		rect(12, 48),
-    // 		area(),
-    // 		pos(p),
-    // 		origin("center"),
-    // 		color(127, 127, 255),
-    // 		outline(4),
-    // 		move(RIGHT, BULLET_SPEED),
-    // 		cleanup(),
-    // 		// strings here means a tag
-    // 		"bullet",
-    // 	])
-    // }
     onKeyPress("space", ()=>{
-        // spawnBullet(faune.pos.sub(16, 0))
-        // spawnBullet(faune.pos.add(16, 0))
-        // sword.spin()
         let interacted = false;
         every("chest", (c)=>{
             if (faune1.isTouching(c)) {
@@ -6079,41 +6032,7 @@ const potionConfig = {
                 frame: ~~rand(0, 8)
             })
         ]
-} // export const potionConfig = {
- // 	width:32,
- // 	height: 32,
- //   '1': () =>  [
- //     sprite('potion-white'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '2': () =>  [
- //     sprite('potion-blue'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '3': () =>  [
- //     sprite('potion-brown'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '4': () =>  [
- //     sprite('potion-purple'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '5': () =>  [
- //     sprite('potion-orange'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '6': () =>  [
- //     sprite('potion-beige'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '7': () =>  [
- //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '8': () =>  [
- //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '9': () =>  [
- //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- //   '*': () =>  [
- //     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
- //   ],
- // }
-;
+};
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
 

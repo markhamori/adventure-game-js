@@ -39,7 +39,7 @@ export function GameScene() {
     {
       health: 100,
       speed: 2,
-      gems: 10,
+      gems: 0,
       score: 0
     }
   ])
@@ -79,10 +79,10 @@ export function GameScene() {
   onCollide("faune", "table", (faune, table) => {
     const dialogs = [
       [ "table-4", "Hi Bibe!" ],
-      [ "table-4", "You have one task in this" ],
-      [ "table-4", "cute little game." ],
+      [ "table-4", "You have one easy task" ],
+      [ "table-4", "in this little rpg game" ],
       [ "table-4", "Collect all of the missing gemstones..." ],
-      [ "table-4", "So it will bring light into our lives!" ],
+      [ "table-4", "1337" ],
     ]
     let curDialog = 0
 
@@ -134,12 +134,6 @@ export function GameScene() {
     camPos(faune.pos)
   })
 
-  onCollide("faune", "wall", (faune, wall) => {
-    // run_action = false;
-    // destroy(faune)
-    updatePlayerHealth(WALL_DAMAGE)
-  });
-
   onCollide("faune", "tree", (faune, tree) => {
     tree.opacity = 0.5
     wait(3, () => {
@@ -147,19 +141,17 @@ export function GameScene() {
     })
   });
 
-  onCollide("faune", "wall", (faune, wall) => {
-    // run_action = false;
-    wallText(faune)
-  });
-
   onCollide("faune", "teddy", (faune, teddy) => {
-    // run_action = false;
     npcText('OMG, SO CUTE! ♥', "125,55,255" , teddy)
     scoreLabel.value += 10
     scoreLabel.text = `SCORE: ${scoreLabel.value}`
   });
 
   onCollide('faune', 'gem', (faune, gem) => {
+    const gemText = add([
+      text('+1', {size: 10, font: 'sink'}),
+      pos(gem.pos),
+    ])
     updateGemQty(1),
     gemLabel.value += 1,
     gemLabel.text = `GEMS: ${gemLabel.value}`,
@@ -168,23 +160,10 @@ export function GameScene() {
     scoreLabel.text = `SCORE: ${scoreLabel.value}`,
     gem.scale = 0.75,
     destroy(gem)
+    wait(4, () => {
+      destroy(gemText)
+    })
   })
-
-  // onCollide('faune', 'potion', (faune, potion) => {
-  //   updatePlayerHealth(POTION_HEAL)
-  //   destroy(potion)
-  //   healthText(POTION_HEAL, "127,255,0")
-  // })
-
-  // onUpdate('faune', (f) => {
-  //   add([
-  //     text(faune.health, { size: 8, font: "sink"}),
-  //     pos(width() - 350, height() - 35),
-  //     origin("center"),
-  //     layer("ui"),
-  //     fixed()
-  //   ]);
-  // })
   
   // ADD UI
   const scoreLabel = add([
@@ -261,45 +240,9 @@ export function GameScene() {
     if (faune.health < 20) healthBar.color = rgb(255,0,0);
     else if (faune.health < 50) healthBar.color = rgb(255,127,0);
     else healthBar.color = rgb(0,255,0);
-
-    // if (faune.health <=0){
-    //     destroy(faune);
-    //     for (let i = 0; i < 500; i++) {
-    //         wait(0.01 *i, ()=>{
-    //             makeExplosion(vec2(rand(0,MAP_WIDTH,), rand(0, MAP_HEIGHT)), 5, 10, 10);
-    //             play("explosion", {
-    //                 detune: rand(-1200, 1200)
-    //             });
-    //         });
-    //     }
-    //     wait(2, ()=>{
-    //         go("endGame");
-    //     });
-    // }
   }
 
-  // ******************************* CREATE BULLET
-  // const BULLET_SPEED = 500
-
-  // function spawnBullet(p) {
-	// 	add([
-	// 		rect(12, 48),
-	// 		area(),
-	// 		pos(p),
-	// 		origin("center"),
-	// 		color(127, 127, 255),
-	// 		outline(4),
-	// 		move(RIGHT, BULLET_SPEED),
-	// 		cleanup(),
-	// 		// strings here means a tag
-	// 		"bullet",
-	// 	])
-	// }
-
   onKeyPress("space", () => {
-		// spawnBullet(faune.pos.sub(16, 0))
-		// spawnBullet(faune.pos.add(16, 0))
-    // sword.spin()
     let interacted = false
     every("chest", (c) => {
       if (faune.isTouching(c)) {

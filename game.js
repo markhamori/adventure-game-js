@@ -15,7 +15,7 @@ loadSprite('arrow-left', 'https://i.imgur.com/EjWmZs8.png')
 loadSprite('arrow-right', 'https://i.imgur.com/GeZiBRT.png')
 
 // Character load
-loadSpriteAtlas('https://i.imgur.com/V1rfdZM.png', {
+loadSpriteAtlas('https://i.imgur.com/ilrhTPm.png', {
   'faune': {
     x: 0,
     y: 0,

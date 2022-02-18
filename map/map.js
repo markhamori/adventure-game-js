@@ -343,38 +343,3 @@ export const potionConfig = {
     sprite("floor", { frame: ~~rand(0, 8) })
   ]
 }
-
-// export const potionConfig = {
-// 	width:32,
-// 	height: 32,
-//   '1': () =>  [
-//     sprite('potion-white'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '2': () =>  [
-//     sprite('potion-blue'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '3': () =>  [
-//     sprite('potion-brown'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '4': () =>  [
-//     sprite('potion-purple'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '5': () =>  [
-//     sprite('potion-orange'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '6': () =>  [
-//     sprite('potion-beige'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '7': () =>  [
-//     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '8': () =>  [
-//     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '9': () =>  [
-//     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-//   '*': () =>  [
-//     sprite('potion-green'), area({width: 10, height: 10}), "potion", scale(0.5)
-//   ],
-// }
