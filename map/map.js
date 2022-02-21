@@ -123,6 +123,79 @@ export const floorsConfig = {
   ],
 }
 
+export const house = [
+  [
+	'                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '    ab ab ab    ab             ',
+  '    cd cd cd    cd             ',
+  '    ef ef ef    ef             ',
+  '    gh gh gh    gh             ',
+  '    ij ij ij    ij             ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  '                               ',
+  ]
+]
+
+export const houseConfig = {
+  width: 48,
+  height: 42,
+  'a': () =>  [
+    sprite('house-left-top-1'), area(), origin("center"), "house"
+  ],
+  'b': () =>  [
+    sprite('house-right-top-1'), area(), origin("center"), "house"
+  ],
+  'c': () =>  [
+    sprite('house-roof-left-1'), area(), origin("center"), "house"
+  ],
+  'd': () =>  [
+    sprite('house-roof-right-1'), area(), origin("center"), "house"
+  ],
+  'e': () =>  [
+    sprite('house-front-left-1'), area(), origin("center"), solid(), "house"
+  ],
+  'f': () =>  [
+    sprite('house-front-right-1'), area(), origin("center"), solid(), "house"
+  ],
+  'g': () =>  [
+    sprite('house-front-middle-1'), area({width: 30, height: 30}), origin("center"), solid(), "house"
+  ],
+  'h': () =>  [
+    sprite('house-front-middle-2'), area({width: 30, height: 30}), origin("center"), solid(), "house"
+  ],
+  'i': () =>  [
+    sprite('house-front-bottom-1'), area({width: 30, height: 30}), origin("center"), solid(), "house"
+  ],
+  'j': () =>  [
+    sprite('house-front-bottom-2'), area({width: 30, height: 30}), origin("center"), solid(), "house"
+  ],
+}
+
 export const environment = [
   [
 	'                               ',
@@ -147,8 +220,8 @@ export const environment = [
   '                               ',
   '                  13           ',
   '                  2413         ',
-  '      13     jl     2413       ',
-  '      24     km       24       ',
+  '  13         jl     2413       ',
+  '  24         km       24       ',
   '                               ',
   '  ``                    13     ',
   '  ´´                    24     ',
@@ -187,7 +260,6 @@ export const environmentConfig = {
   'm': () =>  [
     sprite('tree-right-bottom-2'), area({width: 30, height: 30}), origin('center'), "tree"
   ],
-
   '5': () =>  [
     sprite('table-1'), "table"
   ],
@@ -261,12 +333,12 @@ export const treasures = [
   '                               ',
   '                               ',
   '                               ',
-  '                               ',
   '               9               ',
   '                               ',
   '                               ',
-  '                        5      ',
   '                               ',
+  '                               ',
+  '                        5      ',
   '   1           7               ',
   '                               ',
   '                               ',

@@ -573,7 +573,7 @@ loadSpriteAtlas('https://i.imgur.com/ilrhTPm.png', {
 });
 // Map load
 loadRoot('https://i.imgur.com/');
-loadSprite('bg', "xBEU9c3.png");
+loadSprite('bg', "OyVnWGV.png");
 loadSprite('menu-bg', "mA2na29.png");
 loadSprite('grass-1', 'T9tpXI4.png');
 loadSprite('grass-2', 'wzBKZcm.png');
@@ -656,6 +656,17 @@ loadSprite('tree-left-top-2', '1CTzivC.png');
 loadSprite('tree-left-bottom-2', 'p39lQls.png');
 loadSprite('tree-right-top-2', '7oP58ES.png');
 loadSprite('tree-right-bottom-2', 'Vta3BUZ.png');
+//HOUSE
+loadSprite('house-left-top-1', 'PBNoCws.png');
+loadSprite('house-right-top-1', '57dhjCR.png');
+loadSprite('house-roof-left-1', 'F036Emu.png');
+loadSprite('house-roof-right-1', '0d3NkWH.png');
+loadSprite('house-front-left-1', 'Qaahz6M.png');
+loadSprite('house-front-right-1', 'OSJzrRQ.png');
+loadSprite('house-front-middle-1', 'Rt6HYF2.png');
+loadSprite('house-front-middle-2', 'pRjyWKV.png');
+loadSprite('house-front-bottom-1', 'RSf9KBx.png');
+loadSprite('house-front-bottom-2', 'MwsdqD7.png');
 //POTIONS
 loadSprite('potion-white', 'pQaO9jf.png');
 loadSprite('potion-blue', 'XGMFw7M.png');
@@ -4860,6 +4871,8 @@ function GameScene() {
         'table',
         'ui'
     ], 'game');
+    // Debugger - check collide
+    // debug.inspect = true
     // INIT VARS
     let curDialog = 0;
     // ADD FLOORS - TILES
@@ -4869,6 +4882,8 @@ function GameScene() {
     // ADD BACKGROUND
     add([
         sprite('bg'),
+        origin('center'),
+        scale(0.5),
         layer('bg')
     ]);
     // ADD PLAYER
@@ -4894,6 +4909,8 @@ function GameScene() {
     ]);
     // ADD TREASURE MAP
     addLevel(_map.treasures[0], _map.treasuresConfig);
+    // ADD HOUSES
+    addLevel(_map.house[0], _map.houseConfig);
     // ADD ENVIRONMENT MAP
     addLevel(_map.environment[0], _map.environmentConfig);
     // ADD FINAL SCENE
@@ -4989,6 +5006,13 @@ function GameScene() {
     onCollide("faune", "kaboom", (faune, kaboom)=>{
         destroy(kaboom);
         faune.speed = 5;
+    });
+    // COLLIDE - FAUNE - HOUSE 
+    onCollide("faune", "house", (faune, house)=>{
+        house.opacity = 0.5;
+        wait(3, ()=>{
+            house.opacity = 1;
+        });
     });
     // COLLIDE - FAUNE - TREE 
     onCollide("faune", "tree", (faune, tree)=>{
@@ -5249,6 +5273,10 @@ parcelHelpers.export(exports, "mapConfig", ()=>mapConfig
 parcelHelpers.export(exports, "floors", ()=>floors
 );
 parcelHelpers.export(exports, "floorsConfig", ()=>floorsConfig
+);
+parcelHelpers.export(exports, "house", ()=>house
+);
+parcelHelpers.export(exports, "houseConfig", ()=>houseConfig
 );
 parcelHelpers.export(exports, "environment", ()=>environment
 );
@@ -5573,6 +5601,134 @@ const floorsConfig = {
             sprite('floor-3')
         ]
 };
+const house = [
+    [
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '    ab ab ab    ab             ',
+        '    cd cd cd    cd             ',
+        '    ef ef ef    ef             ',
+        '    gh gh gh    gh             ',
+        '    ij ij ij    ij             ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ', 
+    ]
+];
+const houseConfig = {
+    width: 48,
+    height: 42,
+    'a': ()=>[
+            sprite('house-left-top-1'),
+            area(),
+            origin("center"),
+            "house"
+        ]
+    ,
+    'b': ()=>[
+            sprite('house-right-top-1'),
+            area(),
+            origin("center"),
+            "house"
+        ]
+    ,
+    'c': ()=>[
+            sprite('house-roof-left-1'),
+            area(),
+            origin("center"),
+            "house"
+        ]
+    ,
+    'd': ()=>[
+            sprite('house-roof-right-1'),
+            area(),
+            origin("center"),
+            "house"
+        ]
+    ,
+    'e': ()=>[
+            sprite('house-front-left-1'),
+            area(),
+            origin("center"),
+            solid(),
+            "house"
+        ]
+    ,
+    'f': ()=>[
+            sprite('house-front-right-1'),
+            area(),
+            origin("center"),
+            solid(),
+            "house"
+        ]
+    ,
+    'g': ()=>[
+            sprite('house-front-middle-1'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin("center"),
+            solid(),
+            "house"
+        ]
+    ,
+    'h': ()=>[
+            sprite('house-front-middle-2'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin("center"),
+            solid(),
+            "house"
+        ]
+    ,
+    'i': ()=>[
+            sprite('house-front-bottom-1'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin("center"),
+            solid(),
+            "house"
+        ]
+    ,
+    'j': ()=>[
+            sprite('house-front-bottom-2'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin("center"),
+            solid(),
+            "house"
+        ]
+};
 const environment = [
     [
         '                               ',
@@ -5597,8 +5753,8 @@ const environment = [
         '                               ',
         '                  13           ',
         '                  2413         ',
-        '      13     jl     2413       ',
-        '      24     km       24       ',
+        '  13         jl     2413       ',
+        '  24         km       24       ',
         '                               ',
         '  ``                    13     ',
         '  ´´                    24     ',
@@ -5873,12 +6029,12 @@ const treasures = [
         '                               ',
         '                               ',
         '                               ',
-        '                               ',
         '               9               ',
         '                               ',
         '                               ',
-        '                        5      ',
         '                               ',
+        '                               ',
+        '                        5      ',
         '   1           7               ',
         '                               ',
         '                               ',

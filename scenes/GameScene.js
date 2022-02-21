@@ -1,10 +1,13 @@
 import k from "../kaboom";
 import { npcText, healthText, tableText, wallText, gemText } from "../utils/textFunctions";
-import { maps, mapConfig, potions, potionConfig, floors, floorsConfig, environment, environmentConfig, treasures, treasuresConfig } from "../map/map";
+import { maps, mapConfig, potions, potionConfig, floors, floorsConfig, environment, environmentConfig, treasures, treasuresConfig, house, houseConfig } from "../map/map";
 import { HappyEndScene } from "./FinalScene";
 
 export function GameScene() {
   layers(['bg', 'game', 'table', 'ui'], 'game')
+
+  // Debugger - check collide
+  // debug.inspect = true
 
   // INIT VARS
   let curDialog = 0
@@ -16,7 +19,7 @@ export function GameScene() {
   addLevel(maps[0], mapConfig)
   
   // ADD BACKGROUND
-  add([sprite('bg'), layer('bg')])
+  add([sprite('bg'), origin('center'), scale(0.5), layer('bg')])
  
   // ADD PLAYER
   const faune = add([
@@ -37,6 +40,9 @@ export function GameScene() {
 
   // ADD TREASURE MAP
   addLevel(treasures[0], treasuresConfig)
+
+  // ADD HOUSES
+  addLevel(house[0], houseConfig)
 
   // ADD ENVIRONMENT MAP
   addLevel(environment[0], environmentConfig)
@@ -121,6 +127,14 @@ export function GameScene() {
   onCollide("faune", "kaboom", (faune, kaboom) => {
     destroy(kaboom)
     faune.speed = 5
+  });
+
+  // COLLIDE - FAUNE - HOUSE 
+  onCollide("faune", "house", (faune, house) => {
+    house.opacity = 0.5
+    wait(3, () => {
+      house.opacity = 1
+    })
   });
 
   // COLLIDE - FAUNE - TREE 

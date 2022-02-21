@@ -35,7 +35,7 @@ loadSpriteAtlas('https://i.imgur.com/ilrhTPm.png', {
 
 // Map load
 loadRoot('https://i.imgur.com/')
-loadSprite('bg', "xBEU9c3.png")
+loadSprite('bg', "OyVnWGV.png")
 loadSprite('menu-bg', "mA2na29.png")
 loadSprite('grass-1', 'T9tpXI4.png')
 loadSprite('grass-2', 'wzBKZcm.png')
@@ -127,6 +127,18 @@ loadSprite('tree-left-top-2', '1CTzivC.png')
 loadSprite('tree-left-bottom-2', 'p39lQls.png')
 loadSprite('tree-right-top-2', '7oP58ES.png')
 loadSprite('tree-right-bottom-2', 'Vta3BUZ.png')
+
+//HOUSE
+loadSprite('house-left-top-1', 'PBNoCws.png')
+loadSprite('house-right-top-1', '57dhjCR.png')
+loadSprite('house-roof-left-1', 'F036Emu.png')
+loadSprite('house-roof-right-1', '0d3NkWH.png')
+loadSprite('house-front-left-1', 'Qaahz6M.png')
+loadSprite('house-front-right-1', 'OSJzrRQ.png')
+loadSprite('house-front-middle-1', 'Rt6HYF2.png')
+loadSprite('house-front-middle-2', 'pRjyWKV.png')
+loadSprite('house-front-bottom-1', 'RSf9KBx.png')
+loadSprite('house-front-bottom-2', 'MwsdqD7.png')
 
 //POTIONS
 loadSprite('potion-white', 'pQaO9jf.png')
