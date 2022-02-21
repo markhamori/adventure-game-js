@@ -4,7 +4,6 @@ import { GameScene } from './GameScene';
 scene('game-scene', GameScene)
 
 scene("menu-scene", () => {
-
   add([
     rect(width() - 120,height()),
     pos(60,0),

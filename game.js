@@ -116,11 +116,17 @@ loadSprite('gem-12', '2W3TzuB.png')
 //WALL
 loadSprite('house-floor-1', 'TWa6h7y.png')
 
-//TREE
+//TREE 1
 loadSprite('tree-left-top-1', 'GrXDM5P.png')
 loadSprite('tree-left-bottom-1', 'A5YlEvj.png')
 loadSprite('tree-right-top-1', 'yTHXGcr.png')
 loadSprite('tree-right-bottom-1', 'GIDxRYK.png')
+
+//TREE 2
+loadSprite('tree-left-top-2', '1CTzivC.png')
+loadSprite('tree-left-bottom-2', 'p39lQls.png')
+loadSprite('tree-right-top-2', '7oP58ES.png')
+loadSprite('tree-right-bottom-2', 'Vta3BUZ.png')
 
 //POTIONS
 loadSprite('potion-white', 'pQaO9jf.png')
@@ -151,6 +157,12 @@ loadSprite('wooden-barrel', 'PDwRAxj.png')
 loadSprite('vase-1', '9cuEcDN.png')
 loadSprite('vase-2', 'ilzidZa.png')
 loadSprite('simple-box', 'jVIp5td.png')
+
+loadSprite('zeroText', 'R09VOrp.png')
+loadSprite('firstText', '8DBaYp5.png')
+loadSprite('secondText', 'Qam9yND.png')
+loadSprite('thirdText', 'zFegSQH.png')
+loadSprite('forthText', 'Ym8JasZ.png')
 
 // Menu border
 loadSprite("border", "g3Y69Nq.png");

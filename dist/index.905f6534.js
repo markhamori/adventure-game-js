@@ -646,11 +646,16 @@ loadSprite('gem-11', 'qDP8vw1.png');
 loadSprite('gem-12', '2W3TzuB.png');
 //WALL
 loadSprite('house-floor-1', 'TWa6h7y.png');
-//TREE
+//TREE 1
 loadSprite('tree-left-top-1', 'GrXDM5P.png');
 loadSprite('tree-left-bottom-1', 'A5YlEvj.png');
 loadSprite('tree-right-top-1', 'yTHXGcr.png');
 loadSprite('tree-right-bottom-1', 'GIDxRYK.png');
+//TREE 2
+loadSprite('tree-left-top-2', '1CTzivC.png');
+loadSprite('tree-left-bottom-2', 'p39lQls.png');
+loadSprite('tree-right-top-2', '7oP58ES.png');
+loadSprite('tree-right-bottom-2', 'Vta3BUZ.png');
 //POTIONS
 loadSprite('potion-white', 'pQaO9jf.png');
 loadSprite('potion-blue', 'XGMFw7M.png');
@@ -678,6 +683,11 @@ loadSprite('wooden-barrel', 'PDwRAxj.png');
 loadSprite('vase-1', '9cuEcDN.png');
 loadSprite('vase-2', 'ilzidZa.png');
 loadSprite('simple-box', 'jVIp5td.png');
+loadSprite('zeroText', 'R09VOrp.png');
+loadSprite('firstText', '8DBaYp5.png');
+loadSprite('secondText', 'Qam9yND.png');
+loadSprite('thirdText', 'zFegSQH.png');
+loadSprite('forthText', 'Ym8JasZ.png');
 // Menu border
 loadSprite("border", "g3Y69Nq.png");
 // Floor
@@ -4842,7 +4852,6 @@ var _kaboom = require("../kaboom");
 var _kaboomDefault = parcelHelpers.interopDefault(_kaboom);
 var _textFunctions = require("../utils/textFunctions");
 var _map = require("../map/map");
-var _dialogFunction = require("../utils/dialogFunction");
 var _finalScene = require("./FinalScene");
 function GameScene() {
     layers([
@@ -4914,19 +4923,19 @@ function GameScene() {
         const dialogs = [
             [
                 "table-4",
-                "Hi Bibe!"
+                "Szia Bibe!"
             ],
             [
                 "table-4",
-                "You have one easy task"
+                "Egyetlen feladatod van"
             ],
             [
                 "table-4",
-                "in this little rpg game"
+                "ebben a szimpla rpg game-ben"
             ],
             [
                 "table-4",
-                "Collect all of the missing gemstones..."
+                "Keresd meg mind a 10 db dragakovet..."
             ],
             [
                 "table-4",
@@ -4944,7 +4953,7 @@ function GameScene() {
         ]);
         // TABLE TEXT INTERACTION
         const txt = add([
-            text("Hi Bibe!", {
+            text("Szia Bibe!", {
                 size: 16,
                 width: width() - 300
             }),
@@ -4953,7 +4962,7 @@ function GameScene() {
         ]);
         // TABLE TEXT INTERACTION
         const txt2 = add([
-            text('Press space to continue the dialog...', {
+            text('Space-el tudsz tova`bb le`pni...', {
                 size: 10,
                 width: width() - 300
             }),
@@ -4990,7 +4999,7 @@ function GameScene() {
     });
     // COLLIDE - FAUNE - TEDDY 
     onCollide("faune", "teddy", (faune, teddy)=>{
-        _textFunctions.npcText('OMG, SO CUTE! ♥', "125,55,255", teddy);
+        _textFunctions.npcText('DE CUKIII! ♥', "125,55,255", faune);
         scoreLabel.value += 10;
         scoreLabel.text = `SCORE: ${scoreLabel.value}`;
     });
@@ -5147,7 +5156,7 @@ function createArrow(spriteName, key, x, y) {
     });
 }
 
-},{"../kaboom":"h3uqb","../utils/textFunctions":"knIhf","../map/map":"1X5Ec","../utils/dialogFunction":"2of7M","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./FinalScene":"9kvUm"}],"knIhf":[function(require,module,exports) {
+},{"../kaboom":"h3uqb","../utils/textFunctions":"knIhf","../map/map":"1X5Ec","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./FinalScene":"9kvUm"}],"knIhf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "npcText", ()=>npcText
@@ -5163,9 +5172,9 @@ parcelHelpers.export(exports, "gemText", ()=>gemText
 function npcText(t, c, p) {
     const obj = add([
         text(t, {
-            size: 8,
+            size: 12,
             font: "sink",
-            width: 100
+            width: 110
         }),
         color(255, 255, 255),
         outline(2),
@@ -5260,9 +5269,9 @@ const maps = [
         'v8  ]          ,           {  v',
         'v                             v',
         'v            ]      ] ]       v',
-        'v     ]          ]            v',
+        'v     ]                       v',
         'v7                            v',
-        'v7           ]         ]      v',
+        'v7           ]   *yyyyyyyyyym v',
         'v7                            v',
         'v7--- ^   ^^^^   ^            v',
         'v                             v',
@@ -5503,47 +5512,42 @@ const mapConfig = {
                 height: 10
             })
         ]
-    ,
-    'c': ()=>[
-            sprite('house-floor-1'),
-            "house-floor"
-        ]
 };
 const floors = [
     [
-        'hyyyyyy22yyyyyyyyyyyyyyyyyyyyyj',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
-        'v      22                     v',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
+        '       22                      ',
         '2222222222222222222222222222222',
         '2222222222222222222222222222222',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        '55555555555555555555555       v',
-        '55555555555555555555555       v',
-        '55555555555555555555555       v',
-        '55555555555555555555555       v',
-        'v                             v',
-        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '5555555555555555555555555555555',
+        '5555555555555555555555555555555',
+        '5555555555555555555555555555555',
+        '5555555555555555555555555555555',
+        '                               ',
+        '                               ', 
     ]
 ];
 const floorsConfig = {
@@ -5572,34 +5576,34 @@ const floorsConfig = {
 const environment = [
     [
         '                               ',
-        '     13   13                   ',
-        '     24   24                   ',
-        '        13  1313 1313          ',
-        '        24132424 2424          ',
-        '   13     24                   ',
-        '   24         13               ',
+        '     13   13   jl           jl ',
+        '     24   24   km           km ',
+        '        13  1313 1313     jl   ',
+        '        24132424 2424     km   ',
+        '   13jl   24                   ',
+        '   24km       13               ',
         '              24               ',
         '                    abc        ',
         '                    def        ',
         '                    ghi        ',
         '                               ',
         '              56               ',
-        '              78               ',
+        '              78            jl ',
+        '                            km ',
         '                               ',
-        '                               ',
-        '                               ',
-        '                               ',
+        '          jljl                 ',
+        '          kmkm                 ',
         '                               ',
         '                               ',
         '                  13           ',
         '                  2413         ',
-        '      13            2413       ',
-        '      24              24       ',
+        '      13     jl     2413       ',
+        '      24     km       24       ',
         '                               ',
         '  ``                    13     ',
         '  ´´                    24     ',
-        '  ^                            ',
-        '                    13    13   ',
+        '  ^      13 13 13              ',
+        '         24 24 24   13    13   ',
         '                    24    24   ',
         '                               ', 
     ]
@@ -5639,6 +5643,46 @@ const environmentConfig = {
     ,
     '4': ()=>[
             sprite('tree-right-bottom-1'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin('center'),
+            "tree"
+        ]
+    ,
+    'j': ()=>[
+            sprite('tree-left-top-2'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin('center'),
+            "tree"
+        ]
+    ,
+    'k': ()=>[
+            sprite('tree-left-bottom-2'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin('center'),
+            "tree"
+        ]
+    ,
+    'l': ()=>[
+            sprite('tree-right-top-2'),
+            area({
+                width: 30,
+                height: 30
+            }),
+            origin('center'),
+            "tree"
+        ]
+    ,
+    'm': ()=>[
+            sprite('tree-right-bottom-2'),
             area({
                 width: 30,
                 height: 30
@@ -5808,37 +5852,37 @@ const environmentConfig = {
 };
 const treasures = [
     [
-        'hyyyyyyyyyyyyyyyyyyyyyyyyyyyyyj',
-        'v                       /     v',
-        'v *                        9  v',
-        'v                             v',
-        'v                   4         v',
-        'v     3                       v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                  2          v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v           6                 v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v                             v',
-        'v    1                    5   v',
-        'v                             v',
-        'v              7              v',
-        'v                             v',
-        'v                  8          v',
-        'zyyyyyyyyyyyyyyyyyyyyyyyyyyyyyu', 
+        '                               ',
+        '     *                  /      ',
+        '                4              ',
+        '                               ',
+        '                               ',
+        '   3                           ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                  2            ',
+        '                               ',
+        '                               ',
+        '             6                 ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '                               ',
+        '               9               ',
+        '                               ',
+        '                               ',
+        '                        5      ',
+        '                               ',
+        '   1           7               ',
+        '                               ',
+        '                               ',
+        '                             8 ', 
     ]
 ];
 const treasuresConfig = {
@@ -5970,79 +6014,57 @@ const treasuresConfig = {
         ]
 };
 
-},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"2of7M":[function(require,module,exports) {
-
-},{}],"9kvUm":[function(require,module,exports) {
+},{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"9kvUm":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "HappyEndScene", ()=>HappyEndScene
 );
 function HappyEndScene() {
-    const firstTxt = add([
-        text('You found all of the gemstones!', {
-            size: 22,
-            font: 'sinko',
-            width: 300
-        }),
-        color(255, 255, 255),
+    const zeroText = add([
+        sprite('zeroText'),
+        scale(0.5),
         origin('center'),
         pos(width() / 2, height() / 2), 
     ]);
-    wait(5, ()=>{
-        destroy(firstTxt);
-        const secondTxt = add([
-            text('Na jo. Mar lehet kozben kitalaltad "mire megy ki a jatek" :D', {
-                size: 22,
-                font: 'sinko',
-                width: 300
-            }),
-            color(255, 255, 255),
+    wait(4, ()=>{
+        destroy(zeroText);
+        const firstTxt = add([
+            sprite('firstText'),
+            scale(0.5),
             origin('center'),
             pos(width() / 2, height() / 2), 
         ]);
-        wait(5, ()=>{
-            destroy(secondTxt);
+        wait(4, ()=>{
+            destroy(firstTxt);
         });
     });
     wait(8, ()=>{
-        const thirdTxt = add([
-            text('Mondjuk remenykedem, hogy megsem, es tenyleg meglepeteskent er ez az egesz', {
-                size: 22,
-                font: 'sinko',
-                width: 300
-            }),
-            color(255, 255, 255),
+        const secondTxt = add([
+            sprite('secondText'),
+            scale(0.5),
             origin('center'),
             pos(width() / 2, height() / 2), 
         ]);
-        wait(5, ()=>{
-            destroy(thirdTxt);
+        wait(4, ()=>{
+            destroy(secondTxt);
         });
     });
     wait(12, ()=>{
-        const fourthTxt = add([
-            text('Meg persze akkora boldogsaggal, mint amekkora izgatottsaggal raktam ossze ezt neked...', {
-                size: 22,
-                font: 'sinko',
-                width: 300
-            }),
-            color(255, 255, 255),
+        const thirdTxt = add([
+            sprite('thirdText'),
             origin('center'),
+            scale(0.5),
             pos(width() / 2, height() / 2), 
         ]);
-        wait(5, ()=>{
-            destroy(fourthTxt);
+        wait(4, ()=>{
+            destroy(thirdTxt);
         });
     });
     wait(16, ()=>{
-        const fifthText = add([
-            text('Hozzam jossz felesegul? ♥', {
-                size: 22,
-                font: 'sinko',
-                width: 300
-            }),
-            color(255, 255, 255),
+        const forthText = add([
+            sprite('forthText'),
             origin('center'),
+            scale(0.5),
             pos(width() / 2, height() / 2), 
         ]);
     });

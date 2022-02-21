@@ -1,53 +1,53 @@
 export function HappyEndScene() {
-  const firstTxt = add([
-    text('You found all of the gemstones!', {size: 22, font: 'sinko', width: 300}), 
-    color(255,255,255),
+  const zeroText = add([
+    sprite('zeroText'),
+    scale(0.5),
     origin('center'),  
     pos(width() / 2, height() / 2),
   ])
 
-  wait(5, () => {
-    destroy(firstTxt)
-    const secondTxt = add([
-      text('Na jo. Mar lehet kozben kitalaltad "mire megy ki a jatek" :D', {size: 22, font: 'sinko', width: 300}), 
-      color(255,255,255),
+  wait(4, () => {
+    destroy(zeroText)
+    const firstTxt = add([
+      sprite('firstText'),
+      scale(0.5),
       origin('center'),  
       pos(width() / 2, height() / 2),
     ])
-    wait(5, () => {
-      destroy(secondTxt)
+    wait(4, () => {
+      destroy(firstTxt)
     })
   })
 
   wait(8, () => {
-    const thirdTxt = add([
-      text('Mondjuk remenykedem, hogy megsem, es tenyleg meglepeteskent er ez az egesz', {size: 22, font: 'sinko', width: 300}), 
-      color(255,255,255),
+    const secondTxt = add([
+      sprite('secondText'),
+      scale(0.5),
       origin('center'),  
       pos(width() / 2, height() / 2),
     ])
-    wait(5, () => {
-      destroy(thirdTxt)
+    wait(4, () => {
+      destroy(secondTxt)
     })
   })
 
   wait(12, () => {
-    const fourthTxt = add([
-      text('Meg persze akkora boldogsaggal, mint amekkora izgatottsaggal raktam ossze ezt neked...', {size: 22, font: 'sinko', width: 300}), 
-      color(255,255,255),
+    const thirdTxt = add([
+      sprite('thirdText'),
       origin('center'),  
+      scale(0.5),
       pos(width() / 2, height() / 2),
     ])
-    wait(5, () => {
-      destroy(fourthTxt)
+    wait(4, () => {
+      destroy(thirdTxt)
     })
   })
 
   wait(16, () => {
-    const fifthText = add([
-      text('Hozzam jossz felesegul? ♥', {size: 22, font: 'sinko', width: 300}), 
-      color(255,255,255),
+    const forthText = add([
+      sprite('forthText'),
       origin('center'),  
+      scale(0.5),
       pos(width() / 2, height() / 2),
     ])
   })

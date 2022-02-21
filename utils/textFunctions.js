@@ -1,6 +1,6 @@
 export function npcText(t, c, p) {
   const obj = add([
-    text(t, { size: 8, font: "sink", width: 100 }),
+    text(t, { size: 12, font: "sink", width: 110 }),
     color(255,255,255),
     outline(2),
     pos(p.pos),

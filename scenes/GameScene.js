@@ -1,7 +1,6 @@
 import k from "../kaboom";
 import { npcText, healthText, tableText, wallText, gemText } from "../utils/textFunctions";
 import { maps, mapConfig, potions, potionConfig, floors, floorsConfig, environment, environmentConfig, treasures, treasuresConfig } from "../map/map";
-import { updateDialog } from "../utils/dialogFunction";
 import { HappyEndScene } from "./FinalScene";
 
 export function GameScene() {
@@ -70,10 +69,10 @@ export function GameScene() {
   // COLLIDE - FAUNE - TABLE
   onCollide("faune", "table", (faune, table) => {
     const dialogs = [
-      [ "table-4", "Hi Bibe!" ],
-      [ "table-4", "You have one easy task" ],
-      [ "table-4", "in this little rpg game" ],
-      [ "table-4", "Collect all of the missing gemstones..." ],
+      [ "table-4", "Szia Bibe!" ],
+      [ "table-4", "Egyetlen feladatod van" ],
+      [ "table-4", "ebben a szimpla rpg game-ben" ],
+      [ "table-4", "Keresd meg mind a 10 db dragakovet..." ],
       [ "table-4", "1337" ],
     ]
 
@@ -87,14 +86,14 @@ export function GameScene() {
 
     // TABLE TEXT INTERACTION
     const txt = add([
-      text("Hi Bibe!", { size: 16, width: width() - 300 }),
+      text("Szia Bibe!", { size: 16, width: width() - 300 }),
       pos(textbox.pos),
       origin("center")
     ])
 
     // TABLE TEXT INTERACTION
     const txt2 = add([
-      text('Press space to continue the dialog...', {size: 10, width: width() - 300}),
+      text('Space-el tudsz tova`bb le`pni...', {size: 10, width: width() - 300}),
       pos(center().x + 80, height() + 20),
       origin("center")
     ])
@@ -134,7 +133,7 @@ export function GameScene() {
 
   // COLLIDE - FAUNE - TEDDY 
   onCollide("faune", "teddy", (faune, teddy) => {
-    npcText('OMG, SO CUTE! ♥', "125,55,255" , teddy)
+    npcText('DE CUKIII! ♥', "125,55,255" , faune)
     scoreLabel.value += 10
     scoreLabel.text = `SCORE: ${scoreLabel.value}`
   });
