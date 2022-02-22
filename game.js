@@ -55,9 +55,11 @@ loadSprite('flower-3', 'Nr43Xyq.png')
 loadSprite('flower-4', 'tkokRhJ.png')
 loadSprite('mushroom-1', 'fUaiv4U.png')
 
+// Tiles load
 loadSprite('tiles-1', 'kjiVSiw.png')
 loadSprite('tiles-2', 'kjiVSiw.png')
 
+// Wall and fence load
 loadSprite('wall-left', 'PhbwlZI.png')
 loadSprite('wall-right', 'qNJFgeA.png')
 loadSprite('wall-top-left', 'j2gzIbx.png')
