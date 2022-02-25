@@ -592,8 +592,10 @@ loadSprite('flower-2', 'cy7pfxE.png');
 loadSprite('flower-3', 'Nr43Xyq.png');
 loadSprite('flower-4', 'tkokRhJ.png');
 loadSprite('mushroom-1', 'fUaiv4U.png');
+// Tiles load
 loadSprite('tiles-1', 'kjiVSiw.png');
 loadSprite('tiles-2', 'kjiVSiw.png');
+// Wall and fence load
 loadSprite('wall-left', 'PhbwlZI.png');
 loadSprite('wall-right', 'qNJFgeA.png');
 loadSprite('wall-top-left', 'j2gzIbx.png');
@@ -742,7 +744,7 @@ loadSpriteAtlas("lu5PJXh.png", {
 loadSprite('kaboom', 'o9WizfI.png');
 go('menu-scene', _menuScene.MenuScene);
 
-},{"./kaboom":"h3uqb","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./scenes/MenuScene":"1YSb8"}],"h3uqb":[function(require,module,exports) {
+},{"./kaboom":"h3uqb","./scenes/MenuScene":"1YSb8","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h3uqb":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "k", ()=>k
@@ -758,6 +760,8 @@ const k = _kaboomDefault.default({
         1
     ],
     global: true,
+    width: 480,
+    height: 480,
     debug: true
 });
 exports.default = k;
@@ -1738,7 +1742,7 @@ var no = a((i = {
             loaded: !1
         };
     })(), l = (()=>{
-        var d;
+        var d, h;
         let e = t.gl, n = cn(sn, on), r = Ke(new ImageData(new Uint8ClampedArray([
             255,
             255,
@@ -1746,8 +1750,8 @@ var no = a((i = {
             255
         ]), 1, 1)), u = (d = i.background) != null ? d : E(0, 0, 0);
         if (i.background) {
-            let h = v.fromArray(i.background);
-            e.clearColor(h.r / 255, h.g / 255, h.b / 255, 1);
+            let m = v.fromArray(i.background);
+            e.clearColor(m.r / 255, m.g / 255, m.b / 255, (h = i.background[3]) != null ? h : 1);
         }
         e.enable(e.BLEND), e.enable(e.SCISSOR_TEST), e.blendFuncSeparate(e.SRC_ALPHA, e.ONE_MINUS_SRC_ALPHA, e.ONE, e.ONE_MINUS_SRC_ALPHA);
         let c = e.createBuffer();
@@ -4924,17 +4928,14 @@ function GameScene() {
         camPos(faune1.pos);
     });
     // TEST KABOOM - IT GIVES SPEED
-    const kaboom1 = add([
-        pos(width() * 0.5, height() * 0.5),
-        sprite('kaboom'),
-        area({
-            width: 20,
-            height: 20
-        }),
-        solid(),
-        scale(0.5),
-        'kaboom'
-    ]);
+    // const kaboom = add([
+    //   pos(width() * 0.5, height() * 0.5),
+    //   sprite('kaboom'),
+    //   area({width: 20, height: 20}),
+    //   solid(),
+    //   scale(0.5),
+    //   'kaboom'
+    // ])
     // COLLIDE - FAUNE - TABLE
     onCollide("faune", "table", (faune, table)=>{
         const dialogs = [
@@ -5180,7 +5181,7 @@ function createArrow(spriteName, key, x, y) {
     });
 }
 
-},{"../kaboom":"h3uqb","../utils/textFunctions":"knIhf","../map/map":"1X5Ec","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3","./FinalScene":"9kvUm"}],"knIhf":[function(require,module,exports) {
+},{"../kaboom":"h3uqb","../utils/textFunctions":"knIhf","../map/map":"1X5Ec","./FinalScene":"9kvUm","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"knIhf":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "npcText", ()=>npcText

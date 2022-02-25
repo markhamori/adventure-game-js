@@ -63,14 +63,14 @@ export function GameScene() {
   })
 
   // TEST KABOOM - IT GIVES SPEED
-  const kaboom = add([
-    pos(width() * 0.5, height() * 0.5),
-    sprite('kaboom'),
-    area({width: 20, height: 20}),
-    solid(),
-    scale(0.5),
-    'kaboom'
-  ])
+  // const kaboom = add([
+  //   pos(width() * 0.5, height() * 0.5),
+  //   sprite('kaboom'),
+  //   area({width: 20, height: 20}),
+  //   solid(),
+  //   scale(0.5),
+  //   'kaboom'
+  // ])
 
   // COLLIDE - FAUNE - TABLE
   onCollide("faune", "table", (faune, table) => {
